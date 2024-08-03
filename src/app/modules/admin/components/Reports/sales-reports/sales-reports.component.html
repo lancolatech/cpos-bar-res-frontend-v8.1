@@ -1,0 +1,600 @@
+<section *ngIf="!loading" class="container px-4 mx-auto">
+  <div class="flex flex-row justify-between">
+    <select (change)="onShiftSelectionChange()" [(ngModel)]="selectedShiftId">
+      <option *ngFor="let shift of shifts" [value]="shift.id">
+        {{ shift.shiftName }}
+      </option>
+    </select>
+    <div>
+      <label for="startDate" class="block text-sm text-white">Start Day</label>
+      <input
+        [(ngModel)]="startDate"
+        (ngModelChange)="onDateChange('start', $event)"
+        type="date"
+      />
+    </div>
+    <h1 class="text-white flex items-center">To</h1>
+
+    <div>
+      <label for="endDate" class="block text-sm text-white">End Day</label>
+      <input
+        [(ngModel)]="endDate"
+        (ngModelChange)="onDateChange('end', $event)"
+        type="date"
+      />
+    </div>
+  </div>
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <div class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-white dark:text-white">
+          SALES REPORT
+        </h2>
+
+        <span
+          class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-800"
+          >Ksh. {{ totalSales }}</span
+        >
+      </div>
+    </div>
+
+    <div class="flex items-center mt-4 gap-x-3">
+      <button
+        (click)="printReport()"
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_3098_154395)">
+            <path
+              d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832"
+              stroke="currentColor"
+              stroke-width="1.67"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3098_154395">
+              <rect width="20" height="20" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        <span>Print Report</span>
+      </button>
+
+      <button
+        routerLink="/admin/add-product"
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+
+        <span>Download Report</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- <div class="mt-6 md:flex md:items-center md:justify-between">
+          <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
+              <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
+                  View all
+              </button>
+    
+              <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                  Monitored
+              </button>
+    
+              <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                  Unmonitored
+              </button>
+          </div>
+      </div> -->
+
+  <div *ngIf="shiftRepots">
+    <div class="flex flex-col mt-6">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div
+          class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8 pb-10"
+        >
+          <div
+            class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+          >
+            <table
+              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <thead class="bg-gray dark:bg-gray">
+                <tr>
+                  <th
+                    scope="col"
+                    class="py-3.5 px-4 text-lg font-normal text-left rtl:text-right text-white dark:text-white"
+                  >
+                    <button
+                      class="flex items-center gap-x-3 focus:outline-none"
+                    >
+                      <span>Sales Type</span>
+
+                      <svg
+                        class="h-3"
+                        viewBox="0 0 10 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.3"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Amount
+                  </th>
+                  <!--   
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">
+                                      Price
+                                  </th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity</th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity-Level</th>
+    
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Options</th> -->
+                </tr>
+              </thead>
+              <tbody
+                class="bg-jadedust divide-y divide-gray dark:divide-gray dark:bg-darkGray"
+              >
+                <tr>
+                  <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        Normal Sales
+                      </h2>
+                    </div>
+                  </td>
+                  <td
+                    class="px-12 py-4 text-lg font-medium whitespace-nowrap flex flex-col items-center gap-1"
+                  >
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      Ksh. {{ shiftTotalSales - shiftCreditTotalSales }}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        Credit Sales
+                      </h2>
+                    </div>
+                  </td>
+                  <td
+                    class="px-12 py-4 text-lg font-medium whitespace-nowrap flex flex-col items-center gap-1"
+                  >
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      Ksh. {{ shiftCreditTotalSales }}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        Advance Order Sales
+                      </h2>
+                    </div>
+                  </td>
+                  <td
+                    class="px-12 py-4 text-lg font-medium whitespace-nowrap flex flex-col items-center gap-1"
+                  >
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      Ksh. {{ shiftAvancedTotalSales }}
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="px-4 py-4 text-lg font-bold whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-jadedust dark:text-blue-800">
+                        Total Sales
+                      </h2>
+                    </div>
+                  </td>
+                  <td
+                    class="px-12 py-4 text-lg font-bold whitespace-nowrap flex flex-col items-center gap-1"
+                  >
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      Ksh. {{ totalSales }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <tbody
+      class="bg-jadedust divide-y mt-5 divide-gray dark:divide-gray dark:bg-darkGray"
+    >
+      <tr *ngFor="let user of getUsersSalesArray()">
+        <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+          <div>
+            <h2 class="font-medium text-gray-800 dark:text-white">
+              {{ user.name }}
+            </h2>
+          </div>
+        </td>
+        <td
+          class="px-12 py-4 text-lg font-medium whitespace-nowrap flex flex-col items-center gap-1"
+        >
+          <div
+            class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+          >
+            Ksh. {{ user.sales }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+    <div class="flex flex-col mt-6">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div
+            class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+          >
+            <table
+              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <thead class="bg-gray dark:bg-gray">
+                <tr>
+                  <th
+                    scope="col"
+                    class="py-3.5 px-4 text-lg font-normal text-left rtl:text-right text-white dark:text-white"
+                  >
+                    <button
+                      class="flex items-center gap-x-3 focus:outline-none"
+                    >
+                      <span>Items</span>
+
+                      <svg
+                        class="h-3"
+                        viewBox="0 0 10 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.3"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Quantity
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Price
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Total
+                  </th>
+                  <!--   
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">
+                                      Price
+                                  </th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity</th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity-Level</th>
+    
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Options</th> -->
+                </tr>
+              </thead>
+              <tbody
+                class="bg-jadedust divide-y divide-gray dark:divide-gray dark:bg-darkGray"
+              >
+                <tr *ngFor="let item of itemsSold">
+                  <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        {{ item.name }}
+                      </h2>
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      {{ item.selectedItems }}
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal text-white gap-x-2"
+                    >
+                      Ksh. {{ item.price }}
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal text-white gap-x-2"
+                    >
+                      Ksh. {{ item.price * item.selectedItems }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col mt-6">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div
+            class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+          >
+            <table
+              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <thead class="bg-gray dark:bg-gray">
+                <tr>
+                  <th
+                    scope="col"
+                    class="py-3.5 px-4 text-lg font-normal text-left rtl:text-right text-white dark:text-white"
+                  >
+                    <button
+                      class="flex items-center gap-x-3 focus:outline-none"
+                    >
+                      <span>Items</span>
+
+                      <svg
+                        class="h-3"
+                        viewBox="0 0 10 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.3"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Quantity
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Price
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-12 py-3.5 text-lg font-normal text-left rtl:text-right text-gray-white dark:text-white"
+                  >
+                    Total
+                  </th>
+                  <!--   
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">
+                                      Price
+                                  </th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity</th>
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Quantity-Level</th>
+    
+                                  <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white dark:text-white">Options</th> -->
+                </tr>
+              </thead>
+              <tbody
+                class="bg-jadedust divide-y divide-gray dark:divide-gray dark:bg-darkGray"
+              >
+                <tr *ngFor="let item of advanceItemsSold">
+                  <td class="px-4 py-4 text-lg font-medium whitespace-nowrap">
+                    <div>
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        {{ item.name }}
+                      </h2>
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-800 gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
+                    >
+                      {{ item.selectedItems }}
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal text-white gap-x-2"
+                    >
+                      Ksh. {{ item.price }}
+                    </div>
+                  </td>
+                  <td class="px-12 py-4 text-lg font-medium whitespace-nowrap">
+                    <div
+                      class="inline px-3 py-1 text-sm font-normal text-white gap-x-2"
+                    >
+                      Ksh. {{ item.price * item.selectedItems }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!shiftRepots"
+    class="relative overflow-x-auto shadow-md sm:rounded-lg"
+  >
+    <table class="w-full text-sm text-left rtl:text-right text-white mb-10">
+      <thead class="text-xs text-white">
+        <tr>
+          <th scope="col" class="p-4">
+            <div class="flex items-center">
+              <input
+                id="checkbox-all-search"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label for="checkbox-all-search" class="sr-only">checkbox</label>
+            </div>
+          </th>
+          <th scope="col" class="px-6 py-3">Shift/Day</th>
+          <th scope="col" class="px-6 py-3">Normal Sales</th>
+          <th scope="col" class="px-6 py-3">Credit Sales</th>
+          <th scope="col" class="px-6 py-3">Advance Orders Sales</th>
+          <th scope="col" class="px-6 py-3">Total Sales</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <h1 class="text-white">testing</h1> -->
+        <tr
+          *ngFor="let report of selectedRangeReports"
+          class="border-b hover:bg-jadedust"
+        >
+          <td class="w-4 p-4">
+            <div class="flex items-center">
+              <input
+                id="checkbox-table-search-1"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label for="checkbox-table-search-1" class="sr-only"
+                >checkbox</label
+              >
+            </div>
+          </td>
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-white whitespace-nowrap"
+          >
+            {{ report.shiftName }}
+          </th>
+          <td class="px-6 py-4">
+            {{ report.totalSales - report.totalCreditSales }}
+          </td>
+          <td class="px-6 py-4">{{ report.totalCreditSales }}</td>
+          <td class="px-6 py-4">{{ report.totalAdvanceSales }}</td>
+          <td class="px-6 py-4 text-blue-300">Ksh.{{ report.totalSales }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div
+  *ngIf="loading"
+  class="flex items-center justify-center w-full h-screen border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+>
+  <div role="status">
+    <svg
+      aria-hidden="true"
+      class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+      viewBox="0 0 100 101"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor"
+      />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill"
+      />
+    </svg>
+    <span class="mt-2 text-white">Loading...</span>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>

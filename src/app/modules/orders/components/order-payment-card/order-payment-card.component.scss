@@ -1,0 +1,26 @@
+.active-button {
+    background-color: white;
+  }
+  
+
+  
+/* Default styles */
+.big-screenn {
+  display: flex; /* Show by default */
+}
+.small-screen {
+  display: none; /* Hide by default */
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 640px) {
+  .big-screenn {
+    display: none; /* Hide on small screens */
+  }
+  .small-screen {
+    display: block; /* Show on small screens */
+  }
+}
+
+  
+  

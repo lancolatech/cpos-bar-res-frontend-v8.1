@@ -1,0 +1,59 @@
+<!-- app-payment-details-card.component.html -->
+
+<h2 class="text-xl text-center text-white font-semibold mb-4">Track Payments For the Advance Order</h2>
+
+<div class="flex flex-wrap -mx-4">
+  <div class="w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 px-4 mb-4" *ngFor="let payment of advancedOrdersPayments">
+    <div class="bg-white p-6 rounded-md shadow-md">
+      <h2 class="text-xl text-center text-black font-semibold mb-4">Payment Details</h2>
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Order ID:</span>
+        <span class="text-gray-800">{{ payment.advanced_order_id }}</span>
+      </div>
+    
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Amount Paid:</span>
+        <span class="text-green-600">{{ payment.amount_paid }}</span>
+      </div>
+    
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Payment Date:</span>
+        <span class="text-gray-800">{{ payment.payment_date }}</span>
+      </div>
+    
+      <div *ngIf="payment.cash_paid" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Cash Paid:</span>
+        <span class="text-gray-800">{{ payment.cash_paid || 'N/A' }}</span>
+      </div>
+    
+      <div *ngIf="payment.mpesa_paid" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Mpesa Paid:</span>
+        <span class="text-gray-800">{{ payment.mpesa_paid || 'N/A' }}</span>
+      </div>
+    
+      <div *ngIf="payment.bank_paid" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Bank Paid:</span>
+        <span class="text-gray-800">{{ payment.bank_paid || 'N/A' }}</span>
+      </div>
+<div *ngIf="payment.voucher_amount" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Voucher Amount:</span>
+        <span class="text-gray-800">{{ payment.voucher_amount || 'N/A' }}</span>
+      </div>
+    
+      <div *ngIf="payment.voucher_amount" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Voucher Code:</span>
+        <span class="text-gray-800">{{ payment.voucher_code || 'N/A' }}</span>
+      </div>
+    
+      <div *ngIf="payment.complimentary_amount != '0.00'" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Complimentary Amount:</span>
+        <span class="text-gray-800">{{ payment.complimentary_amount || 'N/A' }}</span>
+      </div>
+    
+      <div *ngIf="payment.complimentary_amount" class="flex items-center justify-between mb-4">
+        <span class="text-gray-600">Complementary Of:</span>
+        <span class="text-gray-800">{{ payment.complementary_of || 'N/A' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

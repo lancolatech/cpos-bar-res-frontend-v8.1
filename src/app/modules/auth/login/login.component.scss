@@ -1,0 +1,102 @@
+.w-96.mx-auto.bg-white.p-8.rounded.shadow-lg {
+   width: 100%;
+   max-width: 100%;
+   background-color: "dark";
+}
+
+
+.btn-number {
+  border: 1px solid #000;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: dark;
+  color: #fff;
+}
+
+.btn-login {
+  background-color: #0099ff;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 25px;
+}
+
+.btn-backspace {
+  background-color: #8B0000;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  font-size: 35px;
+}
+.btn-delete {
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 35px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+
+.custom-input {
+align-self:flex-start;
+left:83px;
+top:245px;
+position:absolute;
+width:227px;
+height:322px;
+}
+
+/* Increase the font size and add other styles as needed */
+.btn-number {
+  font-size: 35px; /* Adjust the font size as desired */
+  font-weight: bold; /* Add bold style to make the numbers more visible */
+  color: #fff; /* Change the text color if needed */
+  border: 1px solid #4CAF50; /* Add border styles if needed */
+  border-radius: 8px; /* Add border-radius for rounded corners */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer; /* Add a pointer cursor on hover */
+}
+
+/* Add a hover effect to the buttons if desired */
+.btn-number:hover {
+  background-color: #45a049; /* Change the background color on hover */
+}
+
+.button-container {
+  display: flex; /* Use flexbox to keep buttons on the same line */
+  justify-content: space-between; /* Add space between buttons */
+  width: 100%;
+}
+
+
+/* Center the text horizontally and vertically */
+.text-center {
+   color: #fff;
+   font-size: 35px;
+
+}
+
+.loader{
+  position: absolute;
+  top:0px;
+  right:0px;
+  width:100%;
+  height:100%;
+  background-color:#7a7171;
+  background-size: 50px;
+  background-repeat:no-repeat;
+  background-position:center;
+  z-index:10000000;
+  opacity: 0.1;
+  filter: alpha(opacity=40);
+}
+
+
+
+

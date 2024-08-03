@@ -1,0 +1,53 @@
+/* Example CSS styles */
+.full-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222; /* Adjust background color as desired */
+  }
+  
+  .full-page-content {
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    overflow: auto; /* Enable scrolling if content exceeds available space */
+  }
+  
+  /* Additional styles for table, buttons, inputs, etc. */
+  table {
+    width: 100%;
+    // border: #CFDDDB;
+    border-collapse: collapse;
+    /* ... other table styles */
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    /* ... other table cell styles */
+  }
+  
+  button {
+    padding: 8px 16px;
+    background-color: #CFDDDB; /* Button color */
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    border-radius: 20px;
+
+  }
+  
+  input[type="number"] {
+    width: 80px;
+    background: #CFDDDB;
+    color: black;
+    border-radius: 20px;
+    padding-left: 5px;    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* ... other input styles */
+  }
+  

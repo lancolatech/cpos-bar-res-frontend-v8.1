@@ -1,0 +1,19 @@
+/* Define your styles here */
+/* Hide the second main for large and medium screens */
+.second-main {
+    display: none;
+  }
+  
+  /* Media query for small screens */
+  @media screen and (max-width: 639px) {
+    /* Hide the first main on small screens */
+    .first-main {
+      display: none;
+    }
+  
+    /* Display the second main on small screens */
+    .second-main {
+      display: block;
+    }
+  }
+  

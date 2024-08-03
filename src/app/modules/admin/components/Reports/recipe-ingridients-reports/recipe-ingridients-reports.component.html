@@ -1,0 +1,205 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800 flex items-center">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-8 w-8 inline-block mr-2 text-blue-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      />
+    </svg>
+    Recipe Ingredients Reports
+  </h1>
+
+  <form
+    [formGroup]="reportForm"
+    (ngSubmit)="onSubmit()"
+    class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
+  >
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2">
+        Report Type
+      </label>
+      <div class="flex items-center">
+        <label class="inline-flex items-center mr-6">
+          <input
+            type="radio"
+            formControlName="reportType"
+            value="shift"
+            class="form-radio text-blue-500"
+          />
+          <span class="ml-2 text-gray-800">Shift</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input
+            type="radio"
+            formControlName="reportType"
+            value="dateRange"
+            class="form-radio text-blue-500"
+          />
+          <span class="ml-2 text-gray-800">Date Range</span>
+        </label>
+      </div>
+    </div>
+
+    <div *ngIf="reportForm.get('reportType')?.value === 'shift'" class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="shift">
+        Select Shift
+      </label>
+      <select
+        formControlName="shiftId"
+        id="shift"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      >
+        <option value="">Select a shift</option>
+        <option *ngFor="let shift of shifts" [value]="shift.id">
+          {{ shift.shiftName }}
+        </option>
+      </select>
+    </div>
+
+    <div
+      *ngIf="reportForm.get('reportType')?.value === 'dateRange'"
+      class="mb-4"
+    >
+      <div class="flex justify-between">
+        <div class="w-1/2 mr-2">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="startDate"
+          >
+            Start Date
+          </label>
+          <input
+            type="date"
+            formControlName="startDate"
+            id="startDate"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div class="w-1/2 ml-2">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="endDate"
+          >
+            End Date
+          </label>
+          <input
+            type="date"
+            formControlName="endDate"
+            id="endDate"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Generate Report
+      </button>
+    </div>
+  </form>
+
+  <div
+    *ngIf="reports.length > 0"
+    class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
+  >
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Report Summary</h2>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="bg-gray-100 p-4 rounded">
+        <h3 class="text-lg font-semibold mb-2">Total Cost</h3>
+        <p class="text-2xl font-bold text-green-600">
+          Ksh.{{ totalCost | number : "1.2-2" }}
+        </p>
+      </div>
+      <div class="bg-gray-100 p-4 rounded">
+        <h3 class="text-lg font-semibold mb-2">Estimated Profit</h3>
+        <p class="text-2xl font-bold text-blue-600">
+          Ksh.{{ estimatedProfit | number : "1.2-2" }}
+        </p>
+      </div>
+    </div>
+
+    <h3 class="text-xl font-bold mb-4 text-gray-800">Production Records</h3>
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead>
+        <tr>
+          <th
+            class="py-2 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+          >
+            Recipe
+          </th>
+          <th
+            class="py-2 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+          >
+            Expected Quantity
+          </th>
+          <th
+            class="py-2 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+          >
+            Produced Quantity
+          </th>
+          <th
+            class="py-2 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+          >
+            Cost
+          </th>
+          <th
+            class="py-2 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+          >
+            Date
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of reports">
+          <td class="py-2 px-4 border-b border-gray-200">
+            {{ record.recipeName }}
+          </td>
+          <td
+            class="py-2 px-4 border-b border-gray-200"
+            [ngClass]="{
+              'text-green-500':
+                record.actualProducedQuantity > record.ExpectedQuantity,
+              'text-red':
+                record.actualProducedQuantity < record.ExpectedQuantity,
+              'text-gray':
+                record.actualProducedQuantity === record.ExpectedQuantity
+            }"
+          >
+            {{ record.ExpectedQuantity }}
+          </td>
+          <td
+            class="py-2 px-4 border-b border-gray-200"
+            [ngClass]="{
+              'text-green-500':
+                record.actualProducedQuantity > record.ExpectedQuantity,
+              'text-red':
+                record.actualProducedQuantity < record.ExpectedQuantity,
+              'text-gray':
+                record.actualProducedQuantity === record.ExpectedQuantity
+            }"
+          >
+            {{ record.actualProducedQuantity }}
+          </td>
+          <td class="py-2 px-4 border-b border-gray-200">
+            Ksh. {{ record.cost | number : "1.2-2" }}
+          </td>
+          <td class="py-2 px-4 border-b border-gray-200">
+            {{ record.date | date : "medium" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

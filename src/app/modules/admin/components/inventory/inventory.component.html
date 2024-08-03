@@ -1,0 +1,31 @@
+<div class="text-white font-lexend">
+  <input    (input)="onInputChange()" type="text" placeholder="Search" [(ngModel)]="query" class="outline-none w-[250px] h-[40px] px-2 rounded-2 text-white bg-darkGray">
+    <h1 class="flex justify-center ">Update Inventory</h1>
+    <table class="mt-3 font-normal">
+      <thead class="font-lexend">
+        <tr>
+          <th>Category</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Buying Price</th>
+          <th>Quantity to Add</th> 
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let category of filteredCategories">
+          <ng-container *ngFor="let product of category.products">
+            <tr>
+              <td>{{ category.category_name }}</td>
+              <td>{{ product.product_name }}</td>
+              <td><span class="text-white" [(ngModel)]="product.product_quantity">{{product.product_quantity}}</span></td>
+              <td><input type="number" class="text-neutral-900" [(ngModel)]="product.buying_price"></td>
+              <td><input type="number" class="text-neutral-900" [(ngModel)]="product.quantityToAdd"></td> <!-- New input field -->
+              <td><button (click)="updateProduct(product)">Update</button></td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  

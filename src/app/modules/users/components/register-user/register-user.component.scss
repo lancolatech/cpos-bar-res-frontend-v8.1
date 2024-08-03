@@ -1,0 +1,19 @@
+.form-container {
+  form {
+    .form-control {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: inherit;
+      color: white;
+
+      input {
+        color: black;
+      }
+
+      .role {
+        padding: 10px;
+      }
+    }
+  }
+}

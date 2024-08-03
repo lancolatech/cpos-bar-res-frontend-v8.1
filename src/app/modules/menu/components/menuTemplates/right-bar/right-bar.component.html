@@ -1,0 +1,70 @@
+<div class="w-[302px]  h-[80vh] relative p-4 bg-black text-white border border-gray-200 rounded-lg shadow sm:p-8 ">
+  <div class="flex flex-col ">
+    <div class="flow-root h-[50vh] overflow-y-auto overflow-x-auto">
+      <ul role="list" class="">
+        <ng-container>
+          <li class="bg-zinc-800 my-2 orderItems" *ngFor="let receiptItem of receiptItems; let ndx = index;">
+            <div class="flex flex-row space-x-4" (mouseenter)="receiptItem.showDeleteIcon = true" (mouseleave)="receiptItem.showDeleteIcon = false">
+              <a (click)="deleteItem(receiptItem)" class="Vector" style="width: 14px; height: 18px;" *ngIf="receiptItem.showDeleteIcon">
+                <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z" fill="#F1C8D0"/>
+                    </svg>   
+                  </a>  
+                <div class="flex-shrink-0" *ngIf="receiptItem.orderCount > 0">
+                  <div class="w-6 h-6 bg-white text-black text-center rounded-full">{{ndx + 1}}</div>
+                </div>
+                <div class="flex-1" *ngIf="receiptItem.orderCount > 0">
+                  <p class="text-sm font-light text-white truncate dark:text-white">{{receiptItem.product_name}}</p>
+                </div>
+                <div class="flex-1" *ngIf="receiptItem.orderCount > 0">
+                  <p class="text-sm font-light text-white truncate dark:text-white">
+                    x{{receiptItem.orderCount}}
+                  </p>
+                </div>
+                <div class="inline-flex items-center text-base font-semibold text-white dark:text-white px-2" *ngIf="receiptItem.orderCount > 0">
+                  ${{receiptItem.totalPrice}}
+                </div> 
+              </div>
+          </li>
+          
+        </ng-container>
+
+      </ul>
+    </div>
+    <div class="h-px bg-white border-dotted my-3"> </div>
+    <div class="h-[20vh] relative">
+      <div class="flex justify-between">
+        <div class="flex-1">
+          <p class="text-sm font-light text-white truncate dark:text-white">Subtotal</p>
+        </div>
+        <div class=" text-base font-light text-white dark:text-white">
+          $ {{subTotal}}
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <div class="flex-1">
+          <p class="text-sm font-light text-white truncate dark:text-white">Tax 10%</p>
+        </div>
+        <div class=" text-base font-light text-white dark:text-white">
+          $ 6.87
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <div class="flex-1">
+          <p class="text-sm font-medium text-white truncate dark:text-white">Total</p>
+        </div>
+        <div class=" text-base font-medium text-white dark:text-white">
+          ${{total}}
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-1  ">
+      <div>
+        <button type="button" (click)="placeOrder()"
+          class="text-black bg-white font-bold rounded-full text-sm px-8 py-2.5 w-64 text-center">Place
+          Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,321 @@
+<!-- order-payment-card.component.html -->
+
+<div class="flex flex-row justify-between overflow-y-auto">
+  <div
+    class="max-w-md mx-auto bg-white font-lexend mt-3 p-8 rounded-[20px] shadow-md"
+    style="max-height: 100vh; overflow-y: auto"
+  >
+    <h2 class="text-2xl font-semibold mb-1">Payment Details</h2>
+    <div class="flex flex-row gap-1">
+      <div
+        class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        Credit-Sale #{{ selectedOrderDetails.id }}
+      </div>
+      <div
+        class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        Total:Ksh.{{ selectedOrderDetails.credit_amount }}
+      </div>
+      <!-- <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60">
+                By:{{ selectedOrderDetails.waiters_name }}
+              </div> -->
+      <div
+        class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        Bal:Ksh.{{
+          selectedOrderDetails.credit_amount -
+            selectedOrderDetails.amount_paid || 0
+        }}
+      </div>
+    </div>
+
+    <!-- Payment Modes -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-black">Payment Modes</label>
+      <div>
+        <label class="inline-flex items-center">
+          <input
+            type="radio"
+            [(ngModel)]="selectedPaymentMode"
+            [value]="'cash'"
+            class="form-radio h-5 w-5 text-blue-600"
+            (change)="onPaymentModeChange()"
+          />
+          <span class="ml-2">Cash</span>
+        </label>
+
+        <label class="inline-flex items-center ml-4">
+          <input
+            type="radio"
+            [(ngModel)]="selectedPaymentMode"
+            [value]="'mpesa'"
+            class="form-radio h-5 w-5 text-blue-600"
+            (change)="onPaymentModeChange()"
+          />
+          <span class="ml-2">Mpesa</span>
+        </label>
+
+        <label class="inline-flex items-center ml-4">
+          <input
+            type="radio"
+            [(ngModel)]="selectedPaymentMode"
+            [value]="'bank'"
+            class="form-radio bg-gray h-5 w-5 text-blue-600"
+            (change)="onPaymentModeChange()"
+          />
+          <span class="ml-2">Bank</span>
+        </label>
+        <label class="inline-flex items-center ml-4">
+          <input
+            type="radio"
+            [(ngModel)]="selectedPaymentMode"
+            [value]="'Voucher'"
+            class="form-radio bg-gray h-5 w-5 text-blue-600"
+            (change)="onPaymentModeChange()"
+          />
+          <span class="ml-2">Voucher</span>
+        </label>
+        <label class="inline-flex items-center ml-4">
+          <input
+            type="radio"
+            [(ngModel)]="selectedPaymentMode"
+            [value]="'Complimentary'"
+            class="form-radio bg-gray h-5 w-5 text-blue-600"
+            (change)="onPaymentModeChange()"
+          />
+          <span class="ml-2">Complimentary</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Amount Paid for Each Payment Mode -->
+    <div class="mb-4" *ngIf="selectedPaymentMode === 'cash' || cashAmount">
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount Paid (Cash)</label
+      >
+      <input
+        [(ngModel)]="cashAmount"
+        type="number"
+        id="1"
+        class="mt-1 p-2 border rounded w-full"
+      />
+    </div>
+
+    <div class="mb-4" *ngIf="selectedPaymentMode === 'mpesa' || mpesaAmount">
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount Paid (Mpesa)</label
+      >
+      <input
+        [(ngModel)]="mpesaAmount"
+        type="number"
+        id="2"
+        class="mt-1 p-2 border rounded w-full"
+      />
+      <label class="block text-sm font-medium text-gray-600"
+        >Mpesa Confirmation Code</label
+      >
+      <input
+        [(ngModel)]="mpesaConfirmationCode"
+        type="text"
+        class="mt-1 p-2 border rounded w-full"
+      />
+    </div>
+
+    <div class="mb-4" *ngIf="selectedPaymentMode === 'bank' || bankAmount">
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount Paid (Bank)</label
+      >
+      <input
+        [(ngModel)]="bankAmount"
+        type="number"
+        id="3"
+        class="mt-1 p-2 border rounded w-full"
+      />
+      <label class="block text-sm font-medium text-gray-600"
+        >Bank Confirmation Code</label
+      >
+      <input
+        [(ngModel)]="bankConfirmationCode"
+        type="text"
+        class="mt-1 p-2 border rounded w-full"
+      />
+    </div>
+    <div
+      class="mb-4"
+      *ngIf="selectedPaymentMode === 'Voucher' || voucherAmount"
+    >
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount Paid (Voicher)</label
+      >
+      <input
+        [(ngModel)]="voucherAmount"
+        type="number"
+        id="4"
+        class="mt-1 p-2 border rounded w-full"
+      />
+      <label class="block text-sm font-medium text-gray-600"
+        >Voicher Code</label
+      >
+      <input
+        [(ngModel)]="VoucherCode"
+        type="text"
+        class="mt-1 p-2 border rounded w-full"
+      />
+    </div>
+
+    <div
+      class="mb-4"
+      *ngIf="selectedPaymentMode === 'Complimentary' || compilmentaryAmount"
+    >
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount Paid (Complimentary)</label
+      >
+      <input
+        [(ngModel)]="compilmentaryAmount"
+        type="number"
+        id="5"
+        class="mt-1 p-2 bg-gray border rounded w-full"
+      />
+      <label class="block text-sm font-medium text-gray-600"
+        >Compimentary of</label
+      >
+      <input
+        [(ngModel)]="complimentaryOf"
+        type="text"
+        class="mt-1 p-2 border rounded w-full"
+      />
+    </div>
+
+    <!-- Balance -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-600"
+        >Amount To Pay</label
+      >
+      <div
+        class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        {{
+          +selectedOrderDetails.credit_amount -
+            (+selectedOrderDetails.amount_paid || 0)
+        }}
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-between">
+      <button
+        *ngIf="posting"
+        disabled
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+      >
+        <svg
+          aria-hidden="true"
+          role="status"
+          class="inline w-4 h-4 me-3 text-white animate-spin"
+          viewBox="0 0 100 101"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            fill="#E5E7EB"
+          />
+          <path
+            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+            fill="currentColor"
+          />
+        </svg>
+        Posting...
+      </button>
+      <button
+        *ngIf="!posting"
+        (click)="updateOrder()"
+        class="bg-emerald-200 text-emerald-900 p-2 rounded-full hover:bg-blue-600"
+      >
+        Submit Payment
+      </button>
+      <button
+        *ngIf="!posting"
+        (click)="cancelCreditSale()"
+        class="bg-red text-black p-2 rounded-full hover:bg-maroon-600"
+      >
+        Cancel Payment
+      </button>
+    </div>
+  </div>
+
+  <div class="w-[450px] h-[92vh] mr-10 ml-10 mt-3 bg-white rounded-[20px]">
+    <div class="w-[80%] h-[90vh] flex-col gap-[20px] inline-flex ml-10 mt-10">
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <h2 class="text-black text-center text-base font-normal font-lexend">
+          Amount Paid
+        </h2>
+        <input
+          #amountInput
+          type="text"
+          placeholder="0.00"
+          class="w-[75px] h-[31px] text-black text-[25px] font-semibold font-['Inter']"
+        />
+      </div>
+      <div
+        class="mt-4 w-[200px] ml-[60px]"
+        style="display: flex; align-items: center"
+      >
+        <div class="grid grid-cols-3 gap-2">
+          <!-- to add numbers 1 to 9 button -->
+          <ng-container *ngFor="let number of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+            <button
+              (click)="addToInput(number)"
+              class="w-[63px] h-[67px] bg-gray hover:bg-darkGray rounded-full text-white font-inter text-xl"
+            >
+              {{ number }}
+            </button> </ng-container
+          ><br />
+          <!-- push button with 0 to the centre -->
+          <ng-container class="mx-auto my-auto">
+            <button
+              (click)="addToInput(0)"
+              class="w-[63px] h-[67px] bg-gray hover:bg-darkGray rounded-full text-white font-inter text-xl"
+            >
+              0
+            </button>
+          </ng-container>
+          <!-- to add backspace button -->
+          <svg
+            class="uil-cancel cursor-pointer hover:bg-zinc-500 rounded-full w-[63px] h-[67px]"
+            (click)="backspace()"
+            width="76"
+            height="76"
+            viewBox="0 0 76 76"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.42162 35.8876L23.1338 17.0329C23.4293 16.6782 23.7993 16.3929 24.2175 16.1974C24.6357 16.0019 25.0918 15.9009 25.5535 15.9016H60.1203C62.6206 15.9016 65.0184 16.8949 66.7864 18.6628C68.5544 20.4308 69.5476 22.8287 69.5476 25.329V50.4685C69.5476 52.9687 68.5544 55.3666 66.7864 57.1346C65.0184 58.9025 62.6206 59.8958 60.1203 59.8958H25.5535C25.0918 59.8965 24.6357 59.7956 24.2175 59.6C23.7993 59.4045 23.4293 59.1192 23.1338 58.7645L7.42162 39.9099C6.95131 39.3452 6.69376 38.6336 6.69376 37.8987C6.69376 37.1638 6.95131 36.4522 7.42162 35.8876ZM27.0304 53.6109H60.1203C60.9537 53.6109 61.753 53.2798 62.3423 52.6905C62.9317 52.1012 63.2627 51.3019 63.2627 50.4685V25.329C63.2627 24.4955 62.9317 23.6962 62.3423 23.1069C61.753 22.5176 60.9537 22.1865 60.1203 22.1865H27.0304L13.9265 37.8987L27.0304 53.6109ZM35.8921 29.3827C36.1842 29.0882 36.5318 28.8544 36.9147 28.6949C37.2977 28.5353 37.7084 28.4532 38.1232 28.4532C38.5381 28.4532 38.9488 28.5353 39.3317 28.6949C39.7147 28.8544 40.0622 29.0882 40.3544 29.3827L44.4081 33.4679L48.4619 29.3827C49.0536 28.791 49.8561 28.4585 50.693 28.4585C51.5298 28.4585 52.3324 28.791 52.9241 29.3827C53.5159 29.9744 53.8483 30.777 53.8483 31.6138C53.8483 32.0282 53.7667 32.4385 53.6081 32.8213C53.4495 33.2041 53.2171 33.552 52.9241 33.845L48.8389 37.8987L52.9241 41.9525C53.2187 42.2446 53.4524 42.5921 53.612 42.9751C53.7715 43.358 53.8536 43.7688 53.8536 44.1836C53.8536 44.5984 53.7715 45.0092 53.612 45.3921C53.4524 45.775 53.2187 46.1226 52.9241 46.4147C52.632 46.7093 52.2844 46.943 51.9015 47.1026C51.5186 47.2621 51.1078 47.3442 50.693 47.3442C50.2781 47.3442 49.8674 47.2621 49.4845 47.1026C49.1015 46.943 48.754 46.7093 48.4619 46.4147L44.4081 42.3296L40.3544 46.4147C40.0622 46.7093 39.7147 46.943 39.3317 47.1026C38.9488 47.2621 38.5381 47.3442 38.1232 47.3442C37.7084 47.3442 37.2977 47.2621 36.9147 47.1026C36.5318 46.943 36.1842 46.7093 35.8921 46.4147C35.5976 46.1226 35.3638 45.775 35.2043 45.3921C35.0447 45.0092 34.9626 44.5984 34.9626 44.1836C34.9626 43.7688 35.0447 43.358 35.2043 42.9751C35.3638 42.5921 35.5976 42.2446 35.8921 41.9525L39.9773 37.8987L35.8921 33.845C35.5976 33.5528 35.3638 33.2053 35.2043 32.8223C35.0447 32.4394 34.9626 32.0287 34.9626 31.6138C34.9626 31.199 35.0447 30.7883 35.2043 30.4053C35.3638 30.0224 35.5976 29.6748 35.8921 29.3827Z"
+              fill="#545454"
+            />
+          </svg>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center">
+        <!-- <span class="text-zinc-300 text-base font-semibold font-['Inter']">Print Receipt</span> -->
+        <button
+          (click)="payAll()"
+          class="w-[100px] h-[38px] bg-zinc-500 hover:bg-darkGray hover:text-white rounded-[100px]"
+          style="align-items: center"
+        >
+          Pay All
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

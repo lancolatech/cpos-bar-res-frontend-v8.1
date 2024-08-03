@@ -1,0 +1,15 @@
+
+<div class="flex flex-row">
+    <div class="grid grid-cols-4 gap-2">
+        <div *ngFor="let rm of data"
+            class=" relative  space-y-8 h-[150px] w-[200px] bg-[#676676]   rounded overflow-x-hidden overflow-y:hidden text-white border-l-4 border-white-500">
+    
+            <div class="pl-1 relative">{{rm.room}}</div>
+            <div class="pl-1 relative mb-1">
+                <div class=" font-normal height-[16px] leading-5">{{rm.room_status}}</div>
+                <div class=" font-normal height-[16px] leading-5">{{rm.time}}</div>
+            </div>
+        </div>
+    </div>
+    <app-reservation-table-management></app-reservation-table-management>
+</div>

@@ -1,0 +1,145 @@
+<div *ngIf="!loading">
+  <h1 class="text-white text-center mb-3 font-lexend font-bold">
+    Select Items To Tranfer From Store
+  </h1>
+  <div class="flex justify-between mb-3">
+    <div class="relative">
+      <input
+        type="text"
+        (input)="getAllProducts()"
+        [(ngModel)]="query"
+        placeholder="Search products"
+        class="block w-full py-2 pl-10 pr-4 leading-tight bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+      />
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <!-- Search icon -->
+        <svg
+          class="h-5 w-5 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M13.708 12.292a1 1 0 0 1-1.414 1.414l-.793-.793a5.5 5.5 0 1 1 1.414-1.414l.793.793zM15.5 10.5a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <!-- <div class="relative">
+        <select [(ngModel)]="supplierName" class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:ring" id="supplier-select">
+          <option value="" disabled selected>Select Supplier</option>
+          <option *ngFor="let supplier of surpliers"  [value]="supplier.name">{{ supplier.name }}</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M6.293 7.707a1 1 0 1 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 1 1-1.414-1.414L8.586 11H3a1 1 0 1 1 0-2h5.586l-1.293-1.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+       -->
+  </div>
+
+  <div class="flex flex-row justify-between w-full">
+    <!-- Display the filtered products as a scrollable list -->
+    <ul
+      class="text-white overflow-y-auto max-h-[70vh] border rounded mt-2 p-2 w-1/5"
+    >
+      <li *ngFor="let product of products" (click)="onProductClick(product)">
+        {{ product.product_name }}
+      </li>
+      <h1 *ngIf="products.length <= 0" class="text-red items-center">
+        search to select Items
+      </h1>
+    </ul>
+
+    <!-- Table to display selected products -->
+    <div
+      class="mt-2 ml-3 text-white w-4/5"
+      style="height: 70vh; overflow-y: auto"
+    >
+      <div class="flex">
+        <div class="w-1/3 font-bold">Product Name</div>
+        <div class="w-1/3 font-bold">Store Quantity</div>
+        <div class="w-1/3 font-bold flex justify-start ml-3">
+          Quantity To Transfer
+        </div>
+        <div class="w-1/3 font-bold flex justify-start ml-3">Action</div>
+      </div>
+      <div
+        *ngFor="let selectedProduct of selectedProducts; let i = index"
+        class="flex items-center mt-1"
+      >
+        <div class="w-1/3">{{ selectedProduct.product_name }}</div>
+        <div class="w-1/3">{{ selectedProduct.store_quantity }}</div>
+
+        <div class="w-1/3">
+          <input
+            class="text-black ml-3 w-full"
+            type="number"
+            [(ngModel)]="selectedProduct.pax"
+            min="1"
+          />
+        </div>
+        <div class="w-1/3">
+          <button
+            class="bg-red-500 hover:bg-red-700 ml-3 text-white font-bold py-1 px-2 rounded"
+            (click)="removeSelectedProduct(i)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex mt-3 ml-10 justify-between">
+    <button
+      (click)="clearFilters()"
+      class="px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray rounded-lg hover:bg-darkGray focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+    >
+      Cancel
+    </button>
+    <button
+    *ngIf="!posting"
+
+      (click)="transferStock()"
+      class="px-6 mr-10 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+    >
+      Transfer Stoke
+    </button>
+    <button
+        *ngIf="posting"
+        disabled
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+      >
+        <svg
+          aria-hidden="true"
+          role="status"
+          class="inline w-4 h-4 me-3 text-white animate-spin"
+          viewBox="0 0 100 101"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            fill="#E5E7EB"
+          />
+          <path
+            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+            fill="currentColor"
+          />
+        </svg>
+        Posting...
+      </button>
+  </div>
+</div>
+
+<div class="h-screen" *ngIf="loading">
+  <app-pre-loader></app-pre-loader>
+</div>

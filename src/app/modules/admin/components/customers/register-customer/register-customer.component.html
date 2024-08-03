@@ -1,0 +1,89 @@
+<!-- customer-details-form.component.html -->
+
+<div class="max-w-2xl mx-auto mt-10">
+  <form
+    [formGroup]="customerForm"
+    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+  >
+    <!-- Customer Details Section -->
+    <h2 class="text-2xl font-bold mb-4">Register Customer Details</h2>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Customer Name</label
+      >
+      <input
+        formControlName="fullName"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="text"
+        placeholder="Customer Name"
+      />
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Phone Number</label
+      >
+      <input
+        formControlName="phoneNumber"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="text"
+        placeholder="Phone Number"
+      />
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Credit Limit</label
+      >
+      <input
+        formControlName="creditLimit"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="number"
+        placeholder="Credit Limit"
+      />
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+      <div>
+        <label class="inline-flex items-center">
+          <input
+            formControlName="status"
+            class="form-radio text-blue-500"
+            type="radio"
+            value="allowed"
+          />
+          <span class="ml-2">Allowed</span>
+        </label>
+        <label class="inline-flex items-center ml-6">
+          <input
+            formControlName="status"
+            class="form-radio text-red-500"
+            type="radio"
+            value="not_allowed"
+          />
+          <span class="ml-2">Not Allowed</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Credit Sale Details Section -->
+    <!-- <h2 class="text-2xl font-bold mb-4">Credit Sale Details</h2> -->
+    <!-- Add fields for order_id, credit_amount, order_date, etc. -->
+
+    <!-- Buttons Section -->
+    <div class="flex items-center justify-between">
+      <button
+        (click)="submitCustomer()"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="button"
+      >
+        Submit
+      </button>
+      <button
+        (click)="cancelCreditSale()"
+        class="bg-gray hover:bg-darkGray text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

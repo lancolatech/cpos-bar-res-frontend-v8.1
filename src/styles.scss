@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'node_modules/@ngneat/hot-toast/src/styles/styles.scss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.scrollbar-hide::-webkit-scrollbar {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: white;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: darkgray;
+    border-radius: 50px;
+  }
+  
+  // @use 'node_modules/@ngneat/hot-toast/src/styles/styles.scss'

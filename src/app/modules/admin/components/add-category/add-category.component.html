@@ -1,0 +1,60 @@
+<!-- <div class="w-[50%] h-[50vh] bg-neutral-900 flex justify-center">
+  <form class="text-white flex flex-col gap-3" (submit)="onSubmit()" #categoryForm="ngForm">
+  <h1 class="text-white">Add New Category</h1>
+    <div class="form-group">
+      <label for="categoryName">Category Name:</label>
+      <input type="text" id="categoryName" name="categoryName" [(ngModel)]="categoryName" required>
+    </div>
+    <div class="form-group">
+      <label for="categoryIcon">Category Icon:</label>
+      <input type="file" id="categoryIcon" name="categoryIcon" (change)="onFileSelected($event)">
+    </div>
+    <button class="text-white bg-zinc-800 rounded-lg" type="submit">Add Category</button>
+  </form>
+</div> -->
+
+<section
+  class="max-w-4xl p-6 mx-auto bg-darkGray rounded-md shadow-md text-white font-lexend"
+>
+  <h1 class="col-span-2 text-white text-center">Add New Category</h1>
+  <form
+    class="grid grid-cols-2 gap-6r flex justify-center"
+    (submit)="addCategory()"
+    #categoryForm="ngForm"
+  >
+    <div class="inputs col-span-2">
+      <label class="text-white font-lexend" for="categoryName"
+        >Category Name:</label
+      >
+      <input
+        type="text"
+        id="categoryName"
+        placeholder="Name"
+        name="categoryName"
+        class="block w-[50%] px-4 py-2 mt-2 bg-white border-gray rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        [(ngModel)]="categoryName"
+        required
+      />
+    </div>
+
+    <div class="inputs col-span-2">
+      <label class="text-white" for="categoryIcon">Category Icon:</label>
+      <input
+        type="file"
+        id="categoryIcon"
+        name="categoryIcon"
+        class="block w-[50%] px-4 py-2 mt-2 bg-white border border-gray rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+
+    <div class="flex justify-end col-span-2 mt-6">
+      <button
+        class="px-8 py-2.5 text-white bg-gray rounded-md hover:bg-jadedust hover:text-black focus:outline-none focus:bg-gray-600"
+        type="submit"
+      >
+        Add Category
+      </button>
+    </div>
+  </form>
+</section>

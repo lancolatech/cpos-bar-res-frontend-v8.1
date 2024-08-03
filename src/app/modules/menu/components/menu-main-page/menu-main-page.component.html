@@ -1,0 +1,998 @@
+<div class="container font-lexend" *ngIf="orgOptions">
+  <div class="big-screenn flex flex-col">
+    <div class="flex flex-row justify-between">
+      <input
+        (input)="getAllProducts()"
+        type="text"
+        placeholder="Search"
+        [(ngModel)]="query"
+        class="outline-none w-[250px] h-[40px] px-2 rounded-2 text-white bg-darkGray"
+      />
+      <div *ngIf="orgOptions.has_advance_orders">
+        <button
+          class="bg-gray rounded-lg"
+          class="h-10 p-1 mb-1"
+          routerLink="/menu/main-page"
+        >
+          Normal Orders
+        </button>
+      </div>
+      <div class="bg-gray rounded-lg">
+        <button class="h-10 p-1 mb-1" routerLink="/add_petty_cash">
+          Petty Cash
+        </button>
+      </div>
+      <div class="bg-gray rounded-lg" *ngIf="orgOptions.has_advance_orders">
+        <button class="h-10 p-1 mb-1" routerLink="/orders/advance_orders">
+          Advance Orders
+        </button>
+      </div>
+      <div class="bg-gray rounded-lg" *ngIf="orgOptions.has_takeout">
+        <button class="h-10 p-1 mb-1" routerLink="/admin/makeTakeOutSales">
+          Take Outs
+        </button>
+      </div>
+      <div class="w-[30%] h-10 bg-black flex flex-row justify-between px-4">
+        <div>
+          <div *ngIf="!advancedOrderId" class="h-[15px] text-white text-base">
+            {{ selectedTable?.name || "Select Table" }}
+          </div>
+          <div *ngIf="advancedOrderId" class="h-[15px] text-white text-base">
+            advancedOrder#{{ advancedOrderId }}
+          </div>
+          <div
+            class="h-[13px] text-white text-[13px] font-normal mt-2"
+            *ngIf="currentUser$ | async as user"
+          >
+            {{ user.username }}
+          </div>
+        </div>
+        <div>
+          <div *ngIf="!advancedOrderId" class="w-[34px] h-[34px] relative">
+            <div
+              [routerLink]="['/tables']"
+              class="w-[34px] h-[34px] left-0 top-0 absolute cursor-pointer bg-neutral-900 rounded-full border border-white"
+            >
+              <svg
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="17"
+                  cy="17"
+                  r="16.75"
+                  fill="#111315"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M15.1324 21.4566L11.3673 22.117C11.3313 22.1223 11.3004 22.125 11.2726 22.125C11.1417 22.125 11.0171 22.0746 10.9129 21.974C10.8553 21.9168 10.8125 21.8464 10.788 21.7689C10.7635 21.691 10.7582 21.6083 10.7728 21.528L10.7731 21.5265L11.434 17.7582L20.933 8.25922L24.6303 11.9587L15.1324 21.4566ZM24.6489 11.9401L24.6487 11.9403C24.6488 11.9403 24.6488 11.9402 24.6489 11.9401ZM8.71875 24.5117H25.25C25.5095 24.5117 25.7188 24.721 25.7188 24.9805V25.7188H8.25V24.9805C8.25 24.721 8.45926 24.5117 8.71875 24.5117Z"
+                  fill="white"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="big-screenn flex bg-black flex-row">
+      <div class="flex-auto w-full md:w-[70%] pl-3 mt-3">
+        <div
+          *ngIf="!categoryLoading"
+          class="grid grid-cols-1 md:grid-cols-6 sm:grid-cols-3 h-[50px] gap-1"
+          style="height: 30vh; overflow-y: auto; row-gap: 1rem"
+        >
+          <div
+            class="w-full md:w-[100%] rounded-[5px] cursor-pointer"
+            [style.background-color]="category.color"
+            *ngFor="let category of categories"
+            (click)="getCategoriesProducts(category.id)"
+          >
+            <!-- Pass the entire category object -->
+            <app-menu-order-items
+              [category]="category"
+              [numberOfProducts]="getNumberOfProducts(category.id)"
+            ></app-menu-order-items>
+          </div>
+        </div>
+        <div
+          *ngIf="categoryLoading"
+          class="flex items-center justify-center w-full h-[30vh] border border-gray-200 rounded-lg bg-black dark:bg-gray-800 dark:border-gray-700"
+        >
+          <div role="status">
+            <svg
+              aria-hidden="true"
+              class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div
+          class="w-full md:w-[100%] h-[0px] border-2 border-white mt-1"
+        ></div>
+
+        <div>
+          <div
+            class="product-card mt-1"
+            *ngIf="products"
+            style="overflow-y: auto"
+          >
+            <div
+              *ngIf="!productsLoading && products.length > 0"
+              class="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-3 gap-1 h-[100px]"
+              style="height: 47vh; overflow-y: auto"
+            >
+              <!-- Adjust the grid here for product display -->
+              <div
+                [style.width]="'100%'"
+                [style.height]="'23vh'"
+                [style.background]="
+                  product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C'
+                "
+                class="product-item rounded-lg gap-y-1 sm:h-[80px]"
+                *ngFor="let product of products"
+              >
+                <div
+                  [ngStyle]="{
+                    color: product.selectedItems! > 0 ? 'black' : 'white',
+                    'font-size': '12px',
+                    'font-weight': '200',
+                    'word-wrap': 'break-word'
+                  }"
+                  class="flex justify-center"
+                >
+                  Orders -> Kitchen
+                </div>
+                <div
+                  class="product-info ml-2"
+                  [ngStyle]="{ 'color': product.selectedItems! > 0 ? 'black' : 'white',}"
+                >
+                  <div class="product-name">{{ product.product_name }}</div>
+                  <div class="product-price">
+                    Ksh. {{ product.product_price }}
+                  </div>
+                </div>
+                <div class="product-actions mt-1 mr-1">
+                  <button
+                    [ngStyle]="{
+                      background:
+                        product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C',
+                      color: product.selectedItems! > 0 ? 'black' : 'white',
+                      width: '23px',
+                      height: '23px',
+                      'border-radius': '5px',
+                      border: '0.50px white solid',
+                      display: 'flex',
+                      'justify-content': 'center',
+                      'align-items': 'center',
+                      'font-size': 'larger'
+                    }"
+                    (click)="decrementItem(product)"
+                  >
+                    -
+                  </button>
+                  <span
+                    *ngIf="
+                      product.selectedItems !== undefined &&
+                      product.selectedItems > 0
+                    "
+                    >{{ product.selectedItems }}</span
+                  >
+                  <span
+                    [ngStyle]="{ 'color': product.selectedItems! > 0 ? 'black' : 'white',}"
+                    *ngIf="
+                      !product.selectedItems || product.selectedItems === 0
+                    "
+                    >0</span
+                  >
+                  <button
+                    [ngStyle]="{
+                      background:
+                        product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C',
+                      color: product.selectedItems! > 0 ? 'black' : 'white',
+                      width: '23px',
+                      height: '23px',
+                      'border-radius': '5px',
+                      border: '0.50px white solid',
+                      display: 'flex',
+                      'justify-content': 'center',
+                      'align-items': 'center',
+                      'font-size': 'larger'
+                    }"
+                    (click)="incrementItem(product)"
+                  >
+                    +
+                  </button>
+                </div>
+                <!-- <div
+                  *ngIf="
+                    product.specification && product.specification.length > 0
+                  "
+                  class="mt-2"
+                >
+                  <select
+                    id="specificationDropdown"
+                    [(ngModel)]="product.selectedSpecification"
+                    class="bg-gray text-white border-gray-400 rounded px-4 py-2"
+                  >
+                    <option
+                      value=""
+                      disabled
+                      selected
+                      class="bg-gray text-white"
+                    >
+                      Select
+                    </option>
+                    <option
+                      *ngFor="let spec of product.specification"
+                      [value]="spec"
+                      class="bg-gray text-white"
+                    >
+                      {{ spec }}
+                    </option>
+                  </select>
+                </div> -->
+              </div>
+            </div>
+            <div
+              *ngIf="productsLoading"
+              class="flex items-center justify-center w-full h-[47vh] border border-gray-200 rounded-lg bg-black black:bg-black dark:border-gray-700"
+            >
+              <div role="status">
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div
+              *ngIf="products.length === 0 && !productsLoading"
+              class="w-[100%] h-[46vh] bg-black flex justify-center items-center"
+            >
+              <div class="text-white text-base">Category has no products</div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="h-[7.5vh] flex items-end mb-0 pb-0 pt-3">
+          <app-menu-bottom-nav
+            style="margin-bottom: 0px; width: 100%"
+          ></app-menu-bottom-nav>
+        </div> -->
+      </div>
+      <div class="flex-auto w-full md:w-[30%] px-4 h-[60vh]">
+        <div
+          class="w-[100%] relative p-4 mt-3 bg-darkGray text-white border border-gray-200 rounded-lg shadow sm:p-8"
+        >
+          <div class="flex flex-col gap-1 h-[80vh] w-full">
+            <div class="flow-root h-[50vh] overflow-y-auto overflow-x-auto">
+              <ul role="list">
+                <ng-container
+                  class="w-[100%]"
+                  *ngIf="selectedProducts && selectedProducts.length > 0"
+                >
+                  <li
+                    class="my-2 orderItems"
+                    *ngFor="let product of selectedProducts; let ndx = index"
+                  >
+                    <div
+                      class="h-[30px] pl-2 w-[100%] flex items-center flex-row space-x-4 bg-gray"
+                      (mouseenter)="product.showDeleteIcon = true"
+                      (mouseleave)="product.showDeleteIcon = false"
+                      *ngIf="
+                        product.selectedItems !== undefined &&
+                        product.selectedItems > 0
+                      "
+                    >
+                      <a
+                        (click)="deleteItem(product)"
+                        class="Vector"
+                        style="width: 14px; height: 18px"
+                        *ngIf="product.showDeleteIcon"
+                      >
+                        <svg
+                          width="14"
+                          height="18"
+                          viewBox="0 0 14 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z"
+                            fill="#F1C8D0"
+                          />
+                        </svg>
+                      </a>
+                      <div class="flex-shrink-0">
+                        <div
+                          class="w-6 h-6 bg-white text-black text-center rounded-full"
+                        >
+                          {{ ndx + 1 }}
+                        </div>
+                      </div>
+                      <div class="flex-1">
+                        <p
+                          class="text-sm font-light text-white truncate dark-text-white"
+                        >
+                          {{ product.product_name }}
+                          {{
+                            product.selectedSpecification
+                              ? product.selectedSpecification + " ::"
+                              : ""
+                          }}
+                        </p>
+                      </div>
+                      <div class="flex-1">
+                        <p
+                          class="text-sm font-light text-white truncate dark-text-white"
+                        >
+                          x{{ product.selectedItems }}
+                        </p>
+                      </div>
+                      <div
+                        class="inline-flex items-center text-base w- text-white dark-text-white px-2"
+                      >
+                        {{ product.selectedItems * +product.product_price }}
+                      </div>
+                    </div>
+                  </li>
+                </ng-container>
+                <ng-container
+                  class="w-[90%]"
+                  *ngIf="selectedProducts.length === 0"
+                >
+                  <div
+                    class="text-white text-base flex justify-center items-center"
+                  >
+                    No Items Added
+                  </div>
+                </ng-container>
+              </ul>
+            </div>
+            <div class="h-px bg-white border-dotted my-3"></div>
+            <div class="h-[30vh] relative">
+              <div class="flex justify-between">
+                <div class="flex-1">
+                  <p
+                    class="text-sm font-light text-white truncate dark:text-white"
+                  >
+                    Subtotal
+                  </p>
+                </div>
+                <div class="text-base font-light text-white dark:text-white">
+                  Ksh. {{ (calculateTotalPrice() * 0.9).toFixed(2) }}
+                </div>
+              </div>
+              <div class="flex justify-between">
+                <div class="flex-1">
+                  <p
+                    class="text-sm font-light text-white truncate dark:text-white"
+                  >
+                    Tax 10%
+                  </p>
+                </div>
+                <div class="text-base font-light text-white dark:text-white">
+                  Ksh. {{ (calculateTotalPrice() * 0.1).toFixed(2) }}
+                </div>
+              </div>
+              <div class="flex justify-between">
+                <div class="flex-1">
+                  <p
+                    class="text-sm font-medium text-white truncate dark:text-white"
+                  >
+                    Total
+                  </p>
+                </div>
+                <div class="text-base font-medium text-white dark:text-white">
+                  Ksh.{{ calculateTotalPrice() }}
+                </div>
+              </div>
+              <div>
+                <label for="comments">Comments:</label><br />
+                <textarea
+                  id="comments"
+                  name="comments"
+                  rows="4"
+                  cols="50"
+                  class="h-10 w-full bg-gray"
+                  [(ngModel)]="comments"
+                ></textarea
+                ><br /><br />
+              </div>
+            </div>
+            <div class="flex justify-center w-full">
+              <div *ngIf="clicked" class="w-full">
+                <button
+                  disabled
+                  type="button"
+                  class="text-white w-[100%] h-[50px] bg-blue-700 mt-5 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+                >
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    class="inline w-4 h-4 me-3 text-white animate-spin"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="#E5E7EB"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Posting...
+                </button>
+              </div>
+              <!-- <div *ngIf="!selectedTable && !advancedOrderId" class="w-full">
+                <button
+                  type="button"
+                  class="text-black bg-white lexend text-sm w-[100%] h-[50px] text-center"
+                >
+                  Place Order
+                </button>
+              </div> -->
+              <div *ngIf="!advancedOrderId && clicked == false" class="w-full">
+                <button
+                  type="button"
+                  class="text-black bg-white lexend text-sm w-[100%] h-[50px] text-center"
+                  (click)="postSelectedItemsToBackend()"
+                >
+                  Place Order
+                </button>
+              </div>
+              <div *ngIf="advancedOrderId" class="w-full">
+                <button
+                  type="button"
+                  class="text-black bg-white lexend text-sm w-[100%] h-[50px] text-center"
+                  (click)="postAvanceOrderToBackend()"
+                >
+                  Make Advance Order
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="small-screen flex flex-col">
+    <div *ngIf="!showSubmitOrder">
+      <div class="flex flex-col bg-dark">
+        <!-- <div>
+        <button class="h-10 p-1 bg-gray mb-1" routerLink="/menu/main-page">
+          Normal Orders
+        </button>
+      </div> -->
+        <div class="flex flex-row justify-between">
+          <div class="bg-gray rounded-lg">
+            <button class="h-10 p-1 mb-1" routerLink="/add_petty_cash">
+              P.Cash
+            </button>
+          </div>
+          <div class="bg-gray rounded-lg" *ngIf="orgOptions.has_advance_orders">
+            <button class="h-10 p-1 mb-1" routerLink="/orders/advance_orders">
+              A.Orders
+            </button>
+          </div>
+          <div class="bg-gray rounded-lg" *ngIf="orgOptions.has_takeout">
+            <button class="h-10 p-1 mb-1" routerLink="/admin/makeTakeOutSales">
+              T.Outs
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-row justify-between mt-1 p-1">
+          <input
+            (input)="getAllProducts()"
+            type="text"
+            placeholder="Search"
+            [(ngModel)]="query"
+            class="outline-none h-[40px] px-2 rounded-2 text-white w-[70%] bg-darkGray"
+          />
+          <div
+            routerLink="/tables"
+            class="h-[15px] ml-2 w-[30%] text-white text-base"
+          >
+            {{ selectedTable?.name || "Select Table" }}
+          </div>
+        </div>
+        <!-- <div class="w-[30%] h-10 bg-dark flex flex-row justify-between px-4">
+        <div>
+          <div *ngIf="!advancedOrderId" class="h-[15px] text-white text-base">
+            {{ selectedTable?.name || "Table" }}
+          </div>
+          <div *ngIf="advancedOrderId" class="h-[15px] text-white text-base">
+            advancedOrder#{{ advancedOrderId }}
+          </div>
+          <div
+            class="h-[13px] text-white text-[13px] font-normal mt-2"
+            *ngIf="currentUser$ | async as user"
+          >
+            {{ user.username }}
+          </div>
+        </div>
+        <div>
+          <div *ngIf="!advancedOrderId" class="w-[34px] h-[34px] relative">
+            <div
+              [routerLink]="['/tables']"
+              class="w-[34px] h-[34px] left-0 top-0 absolute cursor-pointer bg-neutral-900 rounded-full border border-white"
+            >
+              <svg
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="17"
+                  cy="17"
+                  r="16.75"
+                  fill="#111315"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M15.1324 21.4566L11.3673 22.117C11.3313 22.1223 11.3004 22.125 11.2726 22.125C11.1417 22.125 11.0171 22.0746 10.9129 21.974C10.8553 21.9168 10.8125 21.8464 10.788 21.7689C10.7635 21.691 10.7582 21.6083 10.7728 21.528L10.7731 21.5265L11.434 17.7582L20.933 8.25922L24.6303 11.9587L15.1324 21.4566ZM24.6489 11.9401L24.6487 11.9403C24.6488 11.9403 24.6488 11.9402 24.6489 11.9401ZM8.71875 24.5117H25.25C25.5095 24.5117 25.7188 24.721 25.7188 24.9805V25.7188H8.25V24.9805C8.25 24.721 8.45926 24.5117 8.71875 24.5117Z"
+                  fill="white"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      </div>
+      <div class="flex-auto w-full">
+        <div
+          *ngIf="!categoryLoading"
+          class="grid grid-cols-1 md:grid-cols-6 sm:grid-cols-3 h-[50px] gap-1"
+          style="height: 17vh; overflow-y: auto; row-gap: 1rem"
+        >
+          <div
+            class="w-full md:w-[100%] rounded-[5px] cursor-pointer"
+            [style.background-color]="category.color"
+            *ngFor="let category of categories"
+            (click)="getCategoriesProducts(category.id)"
+          >
+            <!-- Pass the entire category object -->
+            <app-menu-order-items
+              [category]="category"
+              [numberOfProducts]="getNumberOfProducts(category.id)"
+            ></app-menu-order-items>
+          </div>
+        </div>
+        <div
+          *ngIf="categoryLoading"
+          class="flex items-center justify-center w-full h-[17vh] border border-gray-200 rounded-lg bg-gray-50 dark:bg-black dark:border-gray-700"
+        >
+          <div role="status">
+            <svg
+              aria-hidden="true"
+              class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div
+          class="w-full md:w-[100%] h-[0px] border-2 border-white mt-3"
+        ></div>
+
+        <div
+          class="product-card bg-black mt-3"
+          *ngIf="products"
+          style="overflow-y: auto"
+        >
+          <div
+            *ngIf="!productsLoading && products.length > 0"
+            class="grid grid-cols-2 md:grid-cols-6 sm:grid-cols-2 gap-2 h-[100px]"
+            style="height: 48vh; overflow-y: auto"
+          >
+            <!-- Adjust the grid here for product display -->
+            <div
+              [style.width]="'100%'"
+              [style.height]="'23vh'"
+              [style.background]="
+                product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C'
+              "
+              class="product-item rounded-lg gap-y-1 sm:h-[80px]"
+              *ngFor="let product of products"
+            >
+              <div
+                [ngStyle]="{
+                  color: product.selectedItems! > 0 ? 'black' : 'white',
+                  'font-size': '14px',
+                  'font-family': 'Inter',
+                  'font-weight': '400',
+                  'word-wrap': 'break-word'
+                }"
+                class="flex justify-center"
+              ></div>
+              <div
+                class="product-info ml-2"
+                [ngStyle]="{ 'color': product.selectedItems! > 0 ? 'black' : 'white',}"
+              >
+                <div class="product-name">{{ product.product_name }}</div>
+                <div class="product-price">
+                  Ksh. {{ product.product_price }}
+                </div>
+              </div>
+              <div class="product-actions mt-1 mr-1">
+                <button
+                  [ngStyle]="{
+                    background:
+                      product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C',
+                    color: product.selectedItems! > 0 ? 'black' : 'white',
+                    width: '23px',
+                    height: '23px',
+                    'border-radius': '5px',
+                    border: '0.50px white solid',
+                    display: 'flex',
+                    'justify-content': 'center',
+                    'align-items': 'center',
+                    'font-size': 'larger'
+                  }"
+                  (click)="decrementItem(product)"
+                >
+                  -
+                </button>
+                <span
+                  *ngIf="
+                    product.selectedItems !== undefined &&
+                    product.selectedItems > 0
+                  "
+                  >{{ product.selectedItems }}</span
+                >
+                <span
+                  [ngStyle]="{ 'color': product.selectedItems! > 0 ? 'black' : 'white',}"
+                  *ngIf="!product.selectedItems || product.selectedItems === 0"
+                  >0</span
+                >
+                <button
+                  [ngStyle]="{
+                    background:
+                      product.selectedItems! > 0 ? '#F1C8D0' : '#292D2C',
+                    color: product.selectedItems! > 0 ? 'black' : 'white',
+                    width: '23px',
+                    height: '23px',
+                    'border-radius': '5px',
+                    border: '0.50px white solid',
+                    display: 'flex',
+                    'justify-content': 'center',
+                    'align-items': 'center',
+                    'font-size': 'larger'
+                  }"
+                  (click)="incrementItem(product)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="productsLoading"
+            class="flex items-center justify-center w-full h-[50vh] border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+          >
+            <div role="status">
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="products.length === 0 && !productsLoading"
+          class="w-[100%] h-[55vh] bg-neutral-900 flex justify-center items-center"
+        >
+          <div class="text-white text-base">Category has no products</div>
+        </div>
+        <!-- <div class="w-full md:w-[100%] h-[0px] border-2 border-white mt-3"></div> -->
+
+        <!-- <app-menu-bottom-nav
+        style="margin-top: 10px; width: 100%"
+      ></app-menu-bottom-nav> -->
+      </div>
+      <div class="mb-3 mt-3">
+        <button
+          (click)="showOrderdItems()"
+          class="text-black bg-white rounded-full text-sm h-[50px] mb-3 w-[100%] text-center"
+        >
+          Add Order
+        </button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="showSubmitOrder"
+      class="flex-auto h-[90vh] mt-3 w-full md:w-full"
+    >
+      <div class="w-[100%] h-10 bg-neutral-900 flex flex-row justify-between">
+        <div>
+          <div class="h-[15px] text-white text-base">
+            {{ selectedTable?.name || "Select Table" }}
+          </div>
+          <div
+            class="h-[13px] text-white text-[13px] font-normal mt-2"
+            *ngIf="currentUser$ | async as user"
+          >
+            {{ user.username }}
+          </div>
+        </div>
+        <div>
+          <div class="w-[34px] h-[34px] relative">
+            <div
+              [routerLink]="['/tables']"
+              class="w-[34px] h-[34px] left-0 top-0 absolute cursor-pointer bg-neutral-900 rounded-full border border-white"
+            >
+              <svg
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="17"
+                  cy="17"
+                  r="16.75"
+                  fill="#111315"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M15.1324 21.4566L11.3673 22.117C11.3313 22.1223 11.3004 22.125 11.2726 22.125C11.1417 22.125 11.0171 22.0746 10.9129 21.974C10.8553 21.9168 10.8125 21.8464 10.788 21.7689C10.7635 21.691 10.7582 21.6083 10.7728 21.528L10.7731 21.5265L11.434 17.7582L20.933 8.25922L24.6303 11.9587L15.1324 21.4566ZM24.6489 11.9401L24.6487 11.9403C24.6488 11.9403 24.6488 11.9402 24.6489 11.9401ZM8.71875 24.5117H25.25C25.5095 24.5117 25.7188 24.721 25.7188 24.9805V25.7188H8.25V24.9805C8.25 24.721 8.45926 24.5117 8.71875 24.5117Z"
+                  fill="white"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-[100%] relative p-4 mt-4 h-[84vh] text-white border border-gray-200 rounded-lg shadow sm:p-8"
+      >
+        <div class="flex flex-col h-[65vh] gap-1">
+          <div class="flow-root h-[50vh] overflow-y-auto overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="text-white text-sm font-medium">
+                  <th class="py-2 px-4 text-left">#</th>
+                  <th class="py-2 px-4 text-left">Product</th>
+                  <th class="py-2 px-4 text-center">Quantity</th>
+                  <th class="py-2 px-4 text-right">Total</th>
+                  <th class="py-2 px-4"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngIf="selectedProducts && selectedProducts.length > 0"
+                >
+                  <tr
+                    class="text-white hover:bg-gray-700"
+                    *ngFor="let product of selectedProducts; let ndx = index"
+                  >
+                    <td class="py-2 px-4">
+                      <div
+                        class="w-6 h-6 bg-white text-black text-center rounded-full"
+                      >
+                        {{ ndx + 1 }}
+                      </div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <p class="text-sm font-light truncate">
+                        {{ product.product_name }}
+                        {{
+                          product.selectedSpecification
+                            ? product.selectedSpecification + " ::"
+                            : ""
+                        }}
+                      </p>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="flex items-center justify-center">
+                        <button
+                          (click)="decrementItem(product)"
+                          class="text-black bg-white rounded-full w-6 h-6 flex items-center justify-center"
+                        >
+                          -
+                        </button>
+                        <input
+                          [(ngModel)]="product.selectedItems"
+                          type="number"
+                          class="bg-gray-50 w-14 text-black text-sm rounded-lg px-2.5 py-1 mx-2 text-center"
+                          placeholder="1"
+                          required
+                        />
+                        <button
+                          (click)="incrementItem(product)"
+                          class="text-black bg-white rounded-full w-6 h-6 flex items-center justify-center"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td class="py-2 px-4 text-right">
+                      {{ product.selectedItems! * +product.product_price }}
+                    </td>
+                    <td class="py-2 px-4">
+                      <button
+                        (click)="deleteItem(product)"
+                        class="text-red-400 hover:text-red-600"
+                      >
+                        <svg
+                          width="14"
+                          height="18"
+                          viewBox="0 0 14 18"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M14 1H10.5L9.5 0H4.5L3.5 1H0V3H14M1 16C1 16.5304 1.21071 17.0391 1.58579 17.4142C1.96086 17.7893 2.46957 18 3 18H11C11.5304 18 12.0391 17.7893 12.4142 17.4142C12.7893 17.0391 13 16.5304 13 16V4H1V16Z"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+            <div
+              *ngIf="selectedProducts.length === 0"
+              class="text-white text-base flex justify-center items-center h-full"
+            >
+              No Items Added
+            </div>
+          </div>
+          <div class="flex justify-center items-center mb-3">
+            <button
+              type="button"
+              class="text-black bg-white rounded-full text-sm px-8 py-2.5 w-64 text-center"
+              (click)="UnshowOrderdItems()"
+            >
+              Add more Products
+            </button>
+          </div>
+          <div class="h-px bg-white border-dotted my-3"></div>
+          <div class="relative">
+            <div class="flex justify-between">
+              <div class="flex-1">
+                <p
+                  class="text-sm font-light text-white truncate dark:text-white"
+                >
+                  Subtotal
+                </p>
+              </div>
+              <div class="text-base font-light text-white dark:text-white">
+                Ksh. {{ (calculateTotalPrice() * 0.9).toFixed(2) }}
+              </div>
+            </div>
+            <div class="flex justify-between">
+              <div class="flex-1">
+                <p
+                  class="text-sm font-light text-white truncate dark:text-white"
+                >
+                  Tax 10%
+                </p>
+              </div>
+              <div class="text-base font-light text-white dark:text-white">
+                Ksh. {{ (calculateTotalPrice() * 0.1).toFixed(2) }}
+              </div>
+            </div>
+            <div class="flex justify-between">
+              <div class="flex-1">
+                <p
+                  class="text-sm font-medium text-white truncate dark:text-white"
+                >
+                  Total
+                </p>
+              </div>
+              <div class="text-base font-medium text-white dark:text-white">
+                Ksh. {{ calculateTotalPrice() }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showSubmitOrder" class="flex justify-center">
+          <div *ngIf="!clicked">
+            <button
+              type="button"
+              class="text-black bg-white rounded-full text-sm w-64 h-[50px] text-center"
+              (click)="postSelectedItemsToBackend()"
+            >
+              Place Order
+            </button>
+          </div>
+          <div *ngIf="clicked" class="w-full">
+            <button
+              disabled
+              type="button"
+              class="text-white w-64 h-[50px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+            >
+              <svg
+                aria-hidden="true"
+                role="status"
+                class="inline w-4 h-4 me-3 text-white animate-spin"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="#E5E7EB"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentColor"
+                />
+              </svg>
+              Posting...
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

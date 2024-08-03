@@ -1,0 +1,137 @@
+<div class="flex mx-auto bg-black font-lexend">
+  <aside
+    class="bg-black w-[240px] h-screen fixed z-50 lg:left-0"
+    [class.menu-transition]="true"
+    [style.left]="isMenuOpen ? '0' : '-100%'"
+  >
+    <div class="links py-2.5">
+      <div class="w-full h-fit flex items-center justify-between">
+        <button class="pt-[30px] px-[25px]">
+          <img
+            src="../../../assets/cpos-logo.png"
+            alt="cosypos logo"
+            class="w-fit h-[25px]"
+          />
+        </button>
+        <div
+          class="w-[34px] pt-8 text-white lg:hidden block"
+          (click)="toggleMenu()"
+        >
+          <!-- <fa-icon [icon]="faTimes"></fa-icon> -->
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+      </div>
+      <ul
+        class="list-none pl-[23px] mt-8 pr-[30px] xl:h-[50vh] h-[50vh] overflow-y-auto"
+      >
+        <li class="relative" *ngFor="let navLink of navLinks">
+          <a
+            [routerLink]="[navLink.navLink]"
+            (click)="toggleSublinks(navLink)"
+            class="flex cursor-pointer items-center truncate h-[40px] rounded-[5px] px-[10px] py-[10px] text-[16px] text-white font-intel outline-none transition duration-300 ease-linear hover:bg-darkGray hover:text-white hover:outline-none focus:bg-darkGray focus:text-white focus:outline-none active:bg-darkGray active:text-white active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-white dark:hover:bg-darkGray dark:focus:bg-darkGray dark:active:bg-darkGray"
+            [class.active]="activeNavLinks[navLink.navName]"
+          >
+            <i [class]="navLink.icon + ' mr-2'"></i>
+            <span>{{ navLink.navName }}</span>
+            <span
+              *ngIf="navLink.orders"
+              class="w-5 h-5 bg-blue-400 rounded-full ml-3 flex justify-center items-center"
+              >{{ navLink.orders }}</span
+            >
+            <i
+              *ngIf="navLink.hasDropdown"
+              [class]="
+                activeNavLinks[navLink.navName]
+                  ? 'fas fa-chevron-up ml-auto'
+                  : 'fas fa-chevron-down ml-auto'
+              "
+            ></i>
+          </a>
+          <ul
+            *ngIf="navLink.sublinks && activeNavLinks[navLink.navName]"
+            class="list-none"
+          >
+            <li class="pl-6" *ngFor="let sublink of navLink.sublinks">
+              <a
+                [routerLink]="[sublink.navLink]"
+                class="flex cursor-pointer items-center truncate rounded-[5px] px-[10px] py-[10px] text-[15px] text-white hover:text-darkGray font-bold outline-none transition duration-500 ease-linear hover:outline-none focus:bg-darkGray focus:text-white focus:outline-none active:bg-darkGray active.text-white active.outline-none data-[te-sidenav-state-active].text-inherit data-[te-sidenav-state-focus].outline-none motion-reduce:transition-none dark.text-white dark.hover.bg-darkGray dark.focus.bg-darkGray dark.active.bg-zinc-800"
+                data-te-sidenav-link-ref
+              >
+                <span>{{ sublink.navName }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="currentUser.role === 'ADMIN' || currentUser.role === 'SALES'">
+      <button
+        *ngIf="!currentShift"
+        routerLink="/shifts"
+        type="button"
+        class="py-2.5 ml-6 px-5 me-2 mt-3 mb-2 text-sm font-medium text-white focus:outline-none bg-darkGray rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
+      >
+        Start Shift
+      </button>
+      <button
+        *ngIf="currentShift"
+        routerLink="/shifts"
+        type="button"
+        class="py-2.5 ml-6 px-5 me-2 mt-3 mb-2 text-sm font-medium text-white focus:outline-none bg-darkGray rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
+      >
+        End Shift
+      </button>
+    </div>
+
+    <div class="flex items-center gap-x-2 mt-1 pl-[23px]">
+      <img
+        class="object-cover w-12 h-12 rounded-full"
+        src="../../../assets/user.jpg"
+        alt=""
+      />
+
+      <div>
+        <h1 class="text-lg font-semibold text-gray dark:text-white">
+          {{ currentUser.username }}
+        </h1>
+      </div>
+    </div>
+
+    <app-logout class="ml-6"></app-logout>
+
+    <!-- <div class="shift-tags py-4 xl:mt-5 lg:mt-3 mt-2">
+    <app-logout class="ml-6 mt-2"></app-logout>
+     <div class="w-full flex justify-between items-center cursor-pointer px-[23px]" (click)="toggleShiftDropdown() ">
+       <div class="w-full h-fit flex justify-between items-center">
+          <h5 class="cursor-pointer" style="color: white;">Shifts</h5>
+          
+          <i [ngClass]="{'fa': true, 'fa-caret-up': isShiftDropdownOpen, 'fa-caret-down': !isShiftDropdownOpen}"
+          aria-hidden="true"
+          class="w-[34px] text-white">
+       </i>
+                 </div>
+     </div>
+     <ul *ngIf="isShiftDropdownOpen" class="my-2 overflow-y-auto px-[23px] xl:h-[20vh] md:h-[100px] h-[16vh] overflow-hidden py-2">
+       <li class="" *ngFor="let shift of shiftTags">
+         <app-shift-tag [shift]="shift"></app-shift-tag>
+       </li>
+     </ul>
+   </div> -->
+    <app-footer></app-footer>
+  </aside>
+  <div
+    class="flex-1 w-[100%] h-screen lg:ml-[240px] ml-0 bg-black pt-[23px] overflow-y-hidden relative"
+  >
+    <div class="pt-[4px] lg:pb-[23px] pb-2 pl-6 flex">
+      <div class="w-[34px] text-white lg:hidden block" (click)="toggleMenu()">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="w-full px-4 bg-black" style="max-height: calc(100vh)">
+      <div class="h-screen overflow-y-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="flex flex-wrap font-lexend">
+    <div *ngFor="let order of orders" class="bg-white shadow-lg rounded-md p-6 max-w-md mx-4 my-4">
+    <div class="flex flex-row justify-between">
+        <h2 class="text-2xl font-semibold mb-4">AdvancedOrder#{{order.id}} </h2>
+        <div class="flex text-2xl justify-between">
+            <span class="font-bold">Total:</span>
+            <span>{{ order.Total }}</span>
+        </div>
+
+    </div>
+    <div class="flex flex-col space-y-2">
+       
+
+        <!-- Amount Paid -->
+        <div class="flex justify-between">
+            <span class="font-bold">Amount Paid:</span>
+            <span>sh.{{ order.amount_paid||0.00 }}</span>
+        </div>
+
+        <!-- Balance -->
+        <div class="flex justify-between">
+            <span class="font-bold">Balance:</span>
+            <span>sh.{{ +order.balance||0.00 }}</span>
+        </div>
+
+        <!-- Items -->
+        <!-- Items -->
+        <div class="flex flex-col space-y-1">
+            <span class="font-bold">Selected Items:</span>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of parseOrderItems(order.items)">
+                  <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.selectedItems }}</td>
+                    <td>sh.{{ item.price  }}</td>
+                    <td>sh.{{ item.price * item.selectedItems  }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          
+
+
+        <!-- Order Date -->
+        <div class="flex justify-between">
+            <span class="font-bold">Ordered Date:</span>
+            <span>{{ order.ordered_date }}</span>
+        </div>
+
+        <!-- Customer Details -->
+        <div class="flex flex-col space-y-1">
+            <span class="font-bold">Customer Details:</span>
+            <div class="flex flex-row gap-1 ml-2">
+                <p ><i class="font-semibold">Name:</i> {{ order.full_name }}</p>
+            <p><i  class="font-semibold">Phone:</i> {{ order.phone_number }}</p>
+            </div>
+        </div>
+
+        <!-- Pickup Date & Time -->
+        <div class="flex justify-between">
+            <span class="font-bold">Pickup Date & Time:</span>
+            <span>{{ order.pickup_date_time }}</span>
+        </div>
+
+        <!-- Waiter's Name -->
+        <div class="flex justify-between">
+            <span class="font-bold">Waiter's Name:</span>
+            <span>{{ order.waiters_name }}</span>
+        </div>
+
+        <!-- Actions: Payment, Edit, Delete -->
+        <div class="flex justify-end mt-4">
+            <button *ngIf="+order.balance  < 0" (click)="startToPayAdvanceOrder(order.id)" class="bg-jadedust rounded-full text-black px-4 py-2 mr-2">
+                <i class="fas fa-dollar-sign mr-1"></i> Payment
+              </button>
+              <button *ngIf="+order.balance > 0 || +order.balance  ===0.00 " (click)="completeOrder(order.id,order.balance)" class="bg-jadedust rounded-full text-black px-4 py-2 mr-2">
+                <i class="fas fa-dollar-sign mr-1"></i> Deliver
+              </button>
+              
+            <button class="bg-yellow-200 rounded-full text-black px-4 py-2 mr-2">
+                <i class="fas fa-edit mr-1"></i> Edit
+            </button>
+            <button (click)="deleteOrder(order.id)" class="bg-red rounded-full text-white px-4 py-2">
+                <i class="fas fa-trash-alt mr-1"></i> Void
+            </button>
+            
+        </div>
+        <div class="flex justify-end mt-4">
+            <button (click)="trackPayments(order.id)" class="bg-blue-200 rounded-full text-white px-4 py-2">
+                <i class="fas fa-trash-alt mr-1"></i> Track Payments
+            </button>
+        </div>
+    </div>
+</div>
+</div>

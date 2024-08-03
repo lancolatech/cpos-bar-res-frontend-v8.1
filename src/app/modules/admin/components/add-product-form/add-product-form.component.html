@@ -1,0 +1,266 @@
+<!-- <form class="form-container">
+  <h2 class="text-xl font-semibold text-white mb-4">Add Product</h2>
+
+  <div class="roww">
+  <div class="inputs" style="margin-bottom: 1rem;">
+      <label for="product_name" class="label">Product Name</label>
+      <input type="text" id="product_name" class="input" [(ngModel)]="menuItem.product_name" name="product_name">
+    </div>
+      <div class="inputs" style="margin-bottom: 1rem;">
+          <label for="category" class="label">Category</label>
+          <select id="category" class="input" [(ngModel)]="menuItem.category" name="category">
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+          </div>
+
+
+  </div>
+
+  <div class="roww">
+   
+  <div class="inputs" style="margin-bottom: 1rem;">
+      <label for="sale_price" class="label">Sale Price</label>
+      <input type="text" id="sale_price" class="input" [(ngModel)]="menuItem.sale_price" name="sale_price">
+    </div>
+     
+  <div class="inputs" style="margin-bottom: 1rem;">
+    <label for="unit_of_measure" class="label">Unit of Measure</label>
+    <input type="text" id="unit_of_measure" class="input" [(ngModel)]="menuItem.unit_of_measure" name="unit_of_measure">
+  </div>
+
+
+
+  </div>
+
+  <div class="roww">
+
+      <div class="inputs" style="margin-bottom: 1rem;">
+          <label class="label">Vatable</label>
+          <input type="checkbox" id="vatable" [(ngModel)]="menuItem.vatable" name="vatable">
+      </div>
+
+
+   <div class="inputs" style="margin-bottom: 1rem;">
+      <label class="label">Is Service</label>
+      <input type="checkbox" id="is_service" [(ngModel)]="menuItem.is_service" name="is_service">
+  </div>
+  </div>
+  <div class="roww">
+      <div class="inputs" style="margin-bottom: 1rem;">
+          <label for="description" class="label">Description</label>
+          <textarea id="description" class="input" [(ngModel)]="menuItem.description" name="description"></textarea>
+      </div>
+  <div class="inputs" style="margin-bottom: 1rem;">
+      <label for="picture" class="label">Picture</label>
+      <input type="file" id="picture" (change)="handleFileInput($event)" accept="image/*">
+  </div>
+  </div>
+
+  <div class="inputs" style="margin-top: 1rem; display: flex; justify-content: center;">
+    <button type="button" style="width: 60%;" class="button" (click)="addProduct()">Add Product</button>
+    <a href="">Back</a>
+  </div>
+</form> -->
+
+<!-- <main>
+  <div class="heading">
+
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="userForm" (ngSubmit)="submit()">
+
+      <div class="form-control">
+        <span>Product Name</span>
+        <input type="text" formControlName="name">
+      </div>
+
+      <div class="form-control">
+        <span>Product Price</span>
+        <input type="text" formControlName="username">
+      </div>
+
+      <div class="form-control">
+        <span>Quantity</span>
+        <input type="text" formControlName="email">
+      </div>
+
+      <div class="form-control">
+        <span>Vatable</span>
+        <input type="text" formControlName="phone">
+      </div>
+
+      <div class="form-control">
+        <span>Product Category</span>
+
+        <div class="role" *ngFor="let category of getProductCategory()">
+          <input type="checkbox" [value]="category" [checked]="userForm.value.role === category" (click)=" setPoductCategory(category)">
+          <span>{{category}}</span>
+        </div>
+
+      </div>
+
+
+      <div class="form-control">
+        <button>Submit</button>
+      </div>
+
+    </form>
+  </div>
+</main> -->
+
+<!-- <div class="w-[50%] h-[50vh] bg-neutral-900 flex justify-center">
+  <form class="text-white flex flex-col gap-3" (submit)="onSubmit()" #productForm="ngForm">
+    <h1>Add New Product</h1>
+    <div class="form-group">
+      <label for="productName">Product Name:</label>
+      <input type="text" class="text-neutral-950" id="productName" name="productName" [(ngModel)]="productName" required>
+    </div>
+    <div class="form-group">
+      <label for="productPrice">Product Price:</label>
+      <input class="text-neutral-950" type="number" id="productPrice" name="productPrice" [(ngModel)]="productPrice" required>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="isService" name="isService" [(ngModel)]="is_service">
+      <label for="isService"> isService</label>
+    </div>
+    <div class="form-group" *ngIf="!is_service">
+      <label for="productQuantity">Product Quantity:</label>
+      <input class="text-neutral-950" type="number" id="productQuantity" name="productQuantity" [(ngModel)]="productQuantity" required>
+    </div>
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <select id="category" name="category" [(ngModel)]="selectedCategory" required>
+        <option [ngValue]="0">Select a Category</option>
+        <option class="text-neutral-950" *ngFor="let category of categories" [ngValue]="category.id">{{ category.category_name }}</option>
+      </select>
+    </div>
+    <button class="text-white h-9 bg-zinc-800 rounded-lg" type="submit">Add Product</button>
+  </form>
+</div> -->
+
+<section
+  class="max-w-4xl p-6 mx-auto bg-darkGray rounded-md shadow-md text-white"
+>
+  <h2 class="text-lg font-semibold text-white capitalize flex justify-center">
+    Add New Product
+  </h2>
+
+  <form class="grid grid-cols-2 gap-6 mt-4 sm:grid-cols-2">
+    <div class="inputs">
+      <label class="text-gray-700" for="productName">Product Name:</label>
+      <input
+        type="text"
+        id="productName"
+        placeholder="Name"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="productName"
+        [(ngModel)]="productName"
+        required
+      />
+    </div>
+
+    <div class="inputs">
+      <label class="text-gray-700" for="productPrice">Product Price:</label>
+      <input
+        type="number"
+        id="productPrice"
+        placeholder="Price"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="productPrice"
+        [(ngModel)]="productPrice"
+        required
+      />
+    </div>
+
+    <div class="inputs">
+      <label class="text-gray-700" for="category">Category:</label>
+      <select
+        id="category"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="category"
+        [(ngModel)]="selectedCategory"
+        required
+      >
+        <option [ngValue]="0">Select a Category</option>
+        <option
+          class="text-gray-700"
+          *ngFor="let category of categories"
+          [ngValue]="category.id"
+        >
+          {{ category.category_name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="inputs" *ngIf="!is_service">
+      <label class="text-gray-700" for="productQuantity"
+        >Product Quantity:</label
+      >
+      <input
+        type="number"
+        id="productStoreQuantity"
+        placeholder="Store Quantity"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="productQuantity"
+        [(ngModel)]="productQuantity"
+        required
+      />
+    </div>
+    <div class="inputs" *ngIf="!is_service">
+      <label class="text-gray-700" for="productQuantity">Store Quantity:</label>
+      <input
+        type="number"
+        id="productQuantity"
+        placeholder="Quantity"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="productQuantity"
+        [(ngModel)]="productStoreQuantity"
+        required
+      />
+    </div>
+
+    <div class="inputs">
+      <label class="text-gray-700" for="isService">Kitchen Product?:</label>
+      <input
+        type="checkbox"
+        id="isKitchen"
+        class="mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="isKitchen"
+        [(ngModel)]="is_kitchen_product"
+      />
+    </div>
+    <div class="inputs">
+      <label class="text-gray-700" for="isService">Is Service:</label>
+      <input
+        type="checkbox"
+        id="isService"
+        class="mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="isService"
+        [(ngModel)]="is_service"
+      />
+    </div>
+    <div class="inputs">
+      <label class="text-gray-700" for="specification">Specifications:</label>
+      <input
+        type="text"
+        id="specification"
+        placeholder="Specifications (e.g., cold, warm, hot)"
+        class="block w-full px-4 py-2 mt-2 bg-gray-800 border border-gray-200 rounded-md text-black focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+        name="specification"
+        [(ngModel)]="specificationArray"
+        required
+      />
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <button
+        (click)="onSubmit()"
+        class="px-8 py-2.5 leading-5 bg-gray rounded-md hover:bg-jadedust focus:outline-none focus:bg-gray"
+        type="submit"
+      >
+        Add Product
+      </button>
+    </div>
+  </form>
+</section>

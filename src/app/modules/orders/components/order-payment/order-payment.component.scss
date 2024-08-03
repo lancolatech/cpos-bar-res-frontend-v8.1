@@ -1,0 +1,29 @@
+
+@media (max-width: 640px) {
+    /* Adjust the breakpoint for small screens here */
+    .sm\:grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+/* Default styles */
+.big-screenn {
+  display: flex; /* Show by default */
+  width: 100%;
+}
+.small-screen {
+  display: none; /* Hide by default */
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 640px) {
+  .big-screenn {
+    display: none; /* Hide on small screens */
+  }
+  .small-screen {
+    display: block; /* Show on small screens */
+  }
+}
+
+  
+  

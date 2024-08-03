@@ -1,0 +1,63 @@
+<!-- advanced-orders.component.html -->
+
+<div class="container mx-auto mt-8 font-lexend">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  
+      <!-- Order Details Section -->
+      <div class="mb-6">
+        <h2 class="text-xl font-bold mb-4">Order Details</h2>
+        
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="orderedDate">Ordered Date</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="orderedDate" type="text" placeholder="YYYY-MM-DD" disabled>
+          </div>
+          
+          <div class="w-1/2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="pickupDateTime">Pickup Date & Time</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pickupDateTime" type="datetime-local">
+          </div>
+        </div>
+  
+        <div class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="waitersName">Waiter's Name</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="waitersName" type="text" placeholder="Enter waiter's name">
+        </div>
+      </div>
+  
+      <!-- Customer Details Section -->
+      <div class="mb-6">
+        <h2 class="text-xl font-bold mb-4">Customer Details</h2>
+  
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="fullName">Full Name</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fullName" type="text" placeholder="Enter full name">
+          </div>
+  
+          <div class="w-1/2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="phoneNumber">Phone Number</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phoneNumber" type="tel" placeholder="Enter phone number">
+          </div>
+        </div>
+  
+        <div class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="nationalId">National ID</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nationalId" type="text" placeholder="Enter national ID">
+        </div>
+      </div>
+  
+      <!-- Order Remarks Section -->
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="orderRemarks">Order Remarks</label>
+        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="orderRemarks" placeholder="Enter order remarks"></textarea>
+      </div>
+  
+      <!-- Proceed Button -->
+      <div class="flex items-center justify-end">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" (click)="onSubmit()">Proceed to Select Items</button>
+      </div>
+  
+    </form>
+  </div>
+  

@@ -1,0 +1,18 @@
+<div class="main-content">
+  <div class="" *ngIf="organizationData">
+    <!-- <div class="unselect">
+      <div class="header">
+        <p>
+          {{organizationData.shortName}}
+        </p>
+
+        <mat-icon (click)="unselectOrganization()">delete_forever</mat-icon>
+      </div>
+    </div> -->
+    <router-outlet></router-outlet>
+  </div>
+  <div class="" *ngIf="!organizationData">
+    <app-select-organization></app-select-organization>
+  </div>
+
+</div>

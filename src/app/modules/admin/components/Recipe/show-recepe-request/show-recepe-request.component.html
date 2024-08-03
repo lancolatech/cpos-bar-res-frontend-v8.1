@@ -1,0 +1,115 @@
+<div *ngIf="!addProducts" class="min-h-screen bg-dark text-white p-8">
+  <div class="flex flex-row justify-between">
+    <h1 class="text-3xl font-bold mb-6">Recipe Requests</h1>
+    <button
+      (click)="getAllIncredientsRequest('pending')"
+      class="inline-flex items-center px-3 py-2 mb-8 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-100 bg-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Pending Request
+    </button>
+    <button
+      (click)="getAllIncredientsRequest('complete')"
+      class="inline-flex items-center px-3 py-2 mb-8 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-100 bg-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Completed Requests
+    </button>
+    <button
+      routerLink="/admin/add-ingredients-request"
+      class="inline-flex items-center px-3 py-2 mb-8 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-100 bg-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Create New Recipe Requests
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      *ngFor="let request of incredientsRequest"
+      class="bg-darkGray rounded-lg shadow-lg p-6"
+    >
+      <h2 class="text-xl font-semibold mb-2">{{ request.recipe_name }}</h2>
+      <p class="text-sm text-gray mb-4">ID: {{ request.id }}</p>
+
+      <div class="mb-4">
+        <p class="text-sm font-medium text-gray">Status</p>
+        <p
+          [ngClass]="{
+            'text-green-400': request.status === 'Completed',
+            'text-yellow-400': request.status === 'Pending'
+          }"
+        >
+          {{ request.status }}
+        </p>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-sm font-medium text-gray">Requested Quantity</p>
+        <p>{{ request.requested_quantity }}</p>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-sm font-medium text-gray">Created At</p>
+        <p>{{ request.created_at._seconds | date : "medium" }}</p>
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-gray mb-2">Ingredients</p>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let ingredient of request.ingredients" class="text-sm">
+            {{ ingredient.quantity }} {{ ingredient.unit }} (
+            {{ getIngredientNameById(ingredient.ingredient_id) }})
+          </li>
+        </ul>
+      </div>
+
+      <button
+        (click)="openAddProductsModal(request)"
+        class="inline-flex items-center px-3 py-2 mb-8 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-100 bg-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Record Production
+      </button>
+    </div>
+  </div>
+</div>
+<form
+  *ngIf="addProducts"
+  [formGroup]="productionForm"
+  (ngSubmit)="onProductionSubmit()"
+  class="mt-6 space-y-6 bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6"
+>
+  <h1 class="text-black text-center">
+    Record production of the {{ currentRequest.recipe_name }}
+  </h1>
+  <h1 class="text-black text-center">
+    Estimated amount to be produced :: {{ currentRequest.requested_quantity }}
+  </h1>
+
+  <div>
+    <label
+      for="producedQuantity"
+      class="block text-sm font-medium text-gray-700"
+      >Actual Produced Quantity</label
+    >
+    <input
+      type="number"
+      formControlName="producedQuantity"
+      id="producedQuantity"
+      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+    />
+  </div>
+
+  <div class="flex flex-row justify-between">
+    <button
+      (click)="closeAddProductsModal()"
+      class="w-[20%] inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray hover:bg-darkGray focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      [disabled]="!productionForm.valid"
+      class="w-[20%] inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+    >
+      Record Production
+    </button>
+  </div>
+</form>

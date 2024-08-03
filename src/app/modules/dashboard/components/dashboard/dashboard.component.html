@@ -1,0 +1,54 @@
+<!-- First main for large and medium screens -->
+<main class="first-main md:flex md:flex-wrap font-lexend">
+  <div class="md:w-full hidden sm:block">
+    <!-- Content for large and medium screens -->
+    <div class="md:w-full flex justify-between">
+      <span class="text-white text-xl font-normal">Dashboard</span>
+      <select (change)="onShiftSelectionChange()" [(ngModel)]="selectedShiftId">
+        <option *ngFor="let shift of shifts" [value]="shift.id">
+          {{ shift.shiftName }}
+        </option>
+      </select>
+    </div>
+    <div class="md:w-full">
+      <div class="flex-initial card-item w-full">
+        <app-dasboard-card
+          [selectedShiftId]="selectedShiftId"
+          class="px-4"
+        ></app-dasboard-card>
+      </div>
+      <div class="display flex flex-row gap-3">
+        <app-day-upsale-card
+          [selectedShiftId]="selectedShiftId"
+          class="w-[25%]"
+        ></app-day-upsale-card>
+        <app-graph-card class="w-[75%]"></app-graph-card>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Second main for small screens -->
+<main class="second-main md:flex md:flex-wrap font-lexend">
+  <div class="md:w-full block sm:hidden">
+    <!-- Content for small screens -->
+    <div class="md:w-full flex justify-between">
+      <span class="text-white text-xl font-normal">Dashboard</span>
+      <select
+        class="w-[152px] h-10 bg-zinc-800 rounded-[5px] text-white text-xl font-normal"
+        [(ngModel)]="selectedDay"
+      >
+        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+      </select>
+    </div>
+    <div class="md:w-full">
+      <div class="flex-initial card-item w-full">
+        <app-dasboard-card class="px-4"></app-dasboard-card>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-3">
+        <app-day-upsale-card></app-day-upsale-card>
+        <app-graph-card></app-graph-card>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,118 @@
+
+
+<div class="w-[180px] h-[150px] relative"  *ngIf="category">
+  <div class="w-[210px] h-[150px] left-0 top-0 absolute" *ngFor="let product of category.products">
+    <div class="w-[200px] h-[150px] left-0 top-0 absolute">
+      <div class="w-[200px] h-[150px] left-0 top-0 absolute">
+        <div class="w-[115px] h-[41px] left-[19px] top-[43px] absolute">
+          <div
+            class="left-0 top-[24px] absolute text-white text-sm font-normal"
+          >
+           {{ product.product_name }}
+          </div>
+          <div class="left-0 top-0 absolute text-white text-base font-bold">
+            {{ product.product_price }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-[5px] h-[150px] left-0 top-0 absolute bg-rose-200 rounded-tl-[5px] rounded-bl-[5px]"
+      ></div>
+    </div>
+    <div class="w-[79px] h-[23px] left-[80px] top-[108px] absolute">
+      <div class="w-[79px] h-[23px] left-0 top-0 absolute">
+        <div class="w-[79px] h-[23px] left-0 top-0 absolute">
+          <div class="w-[79px] h-[23px] left-0 top-0 absolute bg-zinc-800"></div>
+          <div class="w-[33px] h-[23px] left-[23px] top-0 absolute">
+            <div
+              class="w-[33px] h-[23px] left-0 top-0 absolute bg-zinc-800"
+            ></div>
+            <div
+              class="left-[12px] top-[2px] absolute text-white text-base font-normal"
+            >
+              4
+            </div>
+          </div>
+        </div>
+        <div class="w-[23px] h-[23px] left-0 top-0 absolute">
+          <!-- <button (click)="increaseOrIncreaseOrder('decrease', menu.product_no)" -->
+            <button
+            class="w-[23px] h-[23px] left-0 top-0 absolute bg-zinc-800 rounded-[5px] border border-white flex justify-center items-center"
+          >
+            <svg
+              width="23"
+              height="23"
+              viewBox="0 0 23 23"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!-- Your SVG icon code here -->
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="w-[23px] h-[23px] left-[56px] top-0 absolute">
+        <!-- <button (click)="increaseOrIncreaseOrder('increase', menu.product_no)" -->
+          <button 
+          class="w-[23px] h-[23px] left-0 top-0 absolute bg-zinc-800 rounded-[5px] border border-white flex justify-center items-center"
+        >
+          <svg
+            width="23"
+            height="23"
+            viewBox="0 0 23 23"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Your SVG icon code here -->
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="w-32 h-[17px] left-[13px] top-[11px] absolute">
+      <div class="w-32 h-4 left-0 top-[1px] absolute bg-zinc-800"></div>
+      <div class="left-[5px] top-0 absolute text-white text-sm font-normal">
+        Orders -> kitchen
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- <div class="w-[180px] h-[150px] justify-center items-center inline-flex " *ngIf="category">
+  <div class="w-[180px] h-[150px] relative" *ngFor="let product of category.products">
+    <div class="w-[180px] h-[150px] left-0 top-0 absolute">
+      <div class="w-[180px] h-[150px] left-0 top-0 absolute">
+        <div class="w-[180px] h-[150px] left-0 top-0 absolute bg-zinc-800 rounded-[5px]"></div>
+        <div class="w-[115px] h-[41px] left-[19px] top-[43px] absolute">
+          <div class="left-0 top-[24px] absolute text-white text-sm font-normal font-['Inter']">{{ product.product_price }}</div>
+          <div class="left-0 top-0 absolute text-white text-base font-bold font-['Inter']">{{ product.product_name }}</div>
+        </div>
+      </div>
+      <div class="w-[5px] h-[150px] left-0 top-0 absolute bg-rose-200 rounded-tl-[5px] rounded-bl-[5px]"></div>
+    </div>
+    <div class="w-[79px] h-[23px] left-[80px] top-[108px] absolute">
+      <div class="w-[79px] h-[23px] left-0 top-0 absolute">
+        <div class="w-[79px] h-[23px] left-0 top-0 absolute">
+          <div class="w-[79px] h-[23px] left-0 top-0 absolute bg-zinc-800"></div>
+          <div class="w-[33px] h-[23px] left-[23px] top-0 absolute">
+            <div class="w-[33px] h-[23px] left-0 top-0 absolute bg-zinc-800"></div>
+            <div class="left-[12px] top-[2px] absolute text-white text-base font-normal font-['Inter']">0</div>
+          </div>
+        </div>
+        <div class="w-[23px] h-[23px] left-0 top-0 absolute">
+          <div class="w-[23px] h-[23px] left-0 top-0 absolute bg-zinc-800 rounded-[5px] border border-white"></div>
+        </div>
+      </div>
+      <div class="w-[23px] h-[23px] left-[56px] top-0 absolute">
+        <div class="w-[23px] h-[23px] left-0 top-0 absolute bg-zinc-800 rounded-[5px] border border-white"></div>
+      </div>
+    </div>
+    <div class="w-32 h-[17px] left-[13px] top-[11px] absolute">
+      <div class="w-32 h-4 left-0 top-[1px] absolute bg-zinc-800"></div>
+      <div class="left-[5px] top-0 absolute text-white text-sm font-normal font-['Inter']">Orders -> Kitchen</div>
+    </div>
+  </div>
+</div> -->

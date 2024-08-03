@@ -1,0 +1,58 @@
+
+
+<div class="card bg-neutral-900">
+    <div class="card-header" style="display: flex; justify-content: end; align-items: center;">
+        <button class="btn btn-secondary px-2 mx-2" [routerLink]='["Admin/add"]'>Add new Reservation</button>
+    </div>
+      <div class="card-body">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 bg-zinc-500 text-white">
+            <thead>
+              <tr>
+  
+                <th scope="col" class="px-6 py-3  text-left text-xs font-medium  uppercase tracking-wider">
+                 Table
+                </th>
+                <th scope="col" class="px-6 py-3 0 text-left text-xs font-medium  uppercase tracking-wider">
+                  Time
+  
+                </th>
+                <th scope="col" class="px-6 py-3  text-left text-xs font-medium  uppercase tracking-wider">
+                  Floor
+                </th>
+                <th scope="col" class="px-6 py-3  text-left text-xs font-medium  uppercase tracking-wider">
+                  Progress
+                </th>
+                <th scope="col" class="px-6 py-3  text-left text-xs font-medium  uppercase tracking-wider">
+                  Options
+                </th>
+              </tr>
+            </thead>
+            <tbody class=" bg-zinc-500 divide-y divide-gray-200">
+              <!-- Row 1 -->
+              <tr>
+                <!-- *ngFor="let user of users -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                T1
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                 7pm
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  3rd Floor
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  Checked In
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button style="background: rgba(179, 197, 169, 0.727); border-radius: 5px;">Update</button>
+                  <button style="background: rgb(128, 0, 0); margin-left: 5px; border-radius: 5px;">Delete</button>
+                 </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+      </div>
+    </div>
+  

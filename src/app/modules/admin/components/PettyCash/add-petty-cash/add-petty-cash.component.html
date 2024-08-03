@@ -1,0 +1,323 @@
+<section
+  *ngIf="isOpen"
+  class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800"
+>
+  <h2 class="text-lg font-semibold text-dark capitalize dark:text-dark">
+    Petty Cash Spending
+  </h2>
+
+  <form #pettyCashForm="ngForm">
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+      <div>
+        <label class="text-gray-700 dark:text-gray-200" for="spending"
+          >What is the spending?</label
+        >
+        <input
+          id="spending"
+          name="spending"
+          [(ngModel)]="createPettyCashForm.spending"
+          type="text"
+          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+          required
+        />
+        <div
+          *ngIf="
+            pettyCashForm.controls['spending'].touched &&
+            pettyCashForm.controls['spending'].hasError('required')
+          "
+          class="text-red"
+        >
+          Spending is required.
+        </div>
+      </div>
+
+      <div>
+        <label class="text-gray-700 dark:text-gray-200" for="amount"
+          >Amount</label
+        >
+        <input
+          id="amount"
+          name="amount"
+          [(ngModel)]="createPettyCashForm.amount"
+          type="number"
+          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+        />
+      </div>
+      <div>
+        <label class="text-gray-700 dark:text-gray-200" for="madeBy"
+          >Made By</label
+        >
+        <select
+          select
+          [(ngModel)]="createPettyCashForm.madeBy"
+          name="selectedUser"
+          (change)="onUserSelectionChange()"
+          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+        >
+          <option value="" disabled selected>Select a User</option>
+          <option
+            class="text-black"
+            *ngFor="let user of users"
+            [value]="user.fullName"
+          >
+            {{ user.fullName }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-gray-700 dark:text-gray-200" for="paymentMode"
+          >Payment Mode</label
+        >
+        <select
+          id="paymentMode"
+          name="paymentMode"
+          [(ngModel)]="createPettyCashForm.paymentMode"
+          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+        >
+          <option value="" disabled selected>Select a payment mode</option>
+          <option value="Cash">Cash</option>
+          <option value="Mpesa">Mpesa</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <button
+        (click)="isOpen = false"
+        class="w-full px-4 bg-gray py-2 mt-2 text-sm font-medium tracking-wide text-black capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-black dark:border-gray-700 dark:hover:bg-gray hover:bg-darkGray focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+      >
+        Cancel
+      </button>
+      <button
+        *ngIf="!isClicked"
+        type="button"
+        (click)="createPettyCash()"
+        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-darkGray rounded-md hover:bg-gray focus:outline-none focus:bg-gray"
+      >
+        Submit
+      </button>
+      <button
+        *ngIf="isClicked"
+        type="button"
+        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray rounded-md hover:bg-gray focus:outline-none focus:bg-gray"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</section>
+
+<section *ngIf="!isOpen" class="container px-4 mx-auto">
+  <div class="flex flex-row justify-between">
+    <select (change)="onShiftSelectionChange()" [(ngModel)]="selectedShiftId">
+      <option *ngFor="let shift of shifts" [value]="shift.id">
+        {{ shift.shiftName }}
+      </option>
+    </select>
+    <div>
+      <label for="startDate" class="block text-sm text-white">Start Day</label>
+      <input
+        [(ngModel)]="startDate"
+        (ngModelChange)="onDateChange('start', $event)"
+        type="date"
+      />
+    </div>
+
+    <div>
+      <label for="endDate" class="block text-sm text-white">End Day</label>
+      <input
+        [(ngModel)]="endDate"
+        (ngModelChange)="onDateChange('end', $event)"
+        type="date"
+      />
+    </div>
+  </div>
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <!-- <h2 class="text-lg font-medium text-gray-800 dark:text-white">Petty Cash Reports</h2> -->
+    <div>
+      <div class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-white dark:text-white">
+          Petty Cash
+        </h2>
+
+        <span
+          class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-800"
+          >Ksh. {{ totalPetyCashAmountCash }}</span
+        >
+      </div>
+      <div *ngIf="totalPetyCashAmountMpesa" class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-white dark:text-white">
+          Petty Cash Paid With Mpesa
+        </h2>
+
+        <span
+          class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-800"
+          >Ksh. {{ totalPetyCashAmountMpesa }}</span
+        >
+      </div>
+      <div *ngIf="totalPetyCashAmountMpesa" class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-white dark:text-white">
+          Total Petty Cash
+        </h2>
+
+        <span
+          class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-800"
+          >Ksh. {{ totalPetyCashAmount }}</span
+        >
+      </div>
+    </div>
+
+    <div class="flex items-center mt-4 gap-x-3">
+      <!-- <button class="w-1/2 px-5 py-2 text-sm text-gray-800 transition-colors duration-200 bg-white border rounded-lg sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-white dark:border-gray-700">
+              Download all
+          </button> -->
+
+      <button
+        (click)="openModal()"
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_3098_154395)">
+            <path
+              d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832"
+              stroke="currentColor"
+              stroke-width="1.67"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3098_154395">
+              <rect width="20" height="20" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        <span>Add New Spending</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-col mt-6">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div
+          class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+        >
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            <thead class="bg-white dark:bg-gray-800">
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  <div class="flex items-center gap-x-3">
+                    <input
+                      type="checkbox"
+                      class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                    />
+                    <span>Spent On</span>
+                  </div>
+                </th>
+
+                <th
+                  scope="col"
+                  class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  Amount
+                </th>
+
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  Date
+                </th>
+
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  Made by
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
+            >
+              <tr *ngFor="let petty of pettyCash">
+                <td
+                  class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap"
+                >
+                  <div class="inline-flex items-center gap-x-3">
+                    <input
+                      type="checkbox"
+                      class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                    />
+
+                    <div class="flex items-center gap-x-2">
+                      <div
+                        class="flex items-center justify-center w-8 h-8 text-blue-500 bg-blue-100 rounded-full dark:bg-gray-800"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-5 h-5"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                          />
+                        </svg>
+                      </div>
+
+                      <div>
+                        <h2 class="font-normal text-darkGray">
+                          {{ petty.spending }}
+                        </h2>
+                        <p
+                          class="text-xs font-normal text-gray-500 dark:text-gray-400"
+                        >
+                          {{ petty.createdAt | date : "yyyy-MM-dd HH:mm:ss" }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="px-12 py-4 text-sm font-normal text-gray-700 whitespace-nowrap"
+                >
+                  {{ petty.amount }}
+                </td>
+                <td
+                  class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap"
+                >
+                  {{ petty.createdAt | date : "yyyy-MM-dd HH:mm:ss" }}
+                </td>
+
+                <td
+                  class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap"
+                >
+                  {{ petty.madeBy }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

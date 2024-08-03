@@ -1,0 +1,75 @@
+
+.flex-grow {
+  width: 24vw;
+  flex-grow: 1;
+  margin-top: 14vh;
+}
+/* Initial state when the modal is hidden */
+#slide-over {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 3s ease, transform 3s ease;
+}
+
+/* Active state when the modal is shown */
+#slide-over:not(.hidden) {
+  opacity: 1;
+  transform: translateX(0);
+}
+.tab-item {
+  padding: 10px 20px;
+  height: auto;
+  width: 20px;
+  border: 2px solid transparent;
+  border-bottom-width: 0;
+  cursor: pointer;
+}
+
+.tab-item.active {
+  background-color: #4299E1;
+  color: #FFFFFF;
+  border-color: #4299E1;
+}
+
+
+
+.orders-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.order-card {
+  /* Set width for desktop - 25% to show 4 cards in a row */
+  width: 25%;
+  /* Additional styling */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Media query for mobile */
+@media screen and (max-width: 768px) {
+  .order-card {
+    /* Set width for mobile - 50% to show 2 cards in a row */
+    width: 100%;
+  }
+}
+
+
+.big-screenn {
+  display: flex; /* Show by default */
+}
+.small-screen {
+  display: none; /* Hide by default */
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 640px) {
+  .big-screenn {
+    display: none; /* Hide on small screens */
+  }
+  .small-screen {
+    display: block; /* Show on small screens */
+  }
+}
+

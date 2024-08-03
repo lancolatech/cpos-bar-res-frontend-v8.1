@@ -1,0 +1,75 @@
+<!-- ingredient.component.html -->
+
+<div
+  class="text-white max-w-md mx-auto mt-8 p-4 bg-gray-800 rounded-lg shadow-lg"
+>
+  <h2 class="text-2xl font-bold mb-4">Add New Ingredient</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label
+        for="ingredientName"
+        class="block text-sm font-medium text-gray-300"
+        >Ingredient Name:</label
+      >
+      <input
+        type="text"
+        id="ingredientName"
+        name="ingredientName"
+        [(ngModel)]="newIngredient.name"
+        required
+        class="mt-1 p-2 text-black w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="unitOfMeasurement"
+        class="block text-sm font-medium text-gray-300"
+        >Unit of Measurement:</label
+      >
+      <input
+        type="text"
+        id="unitOfMeasurement"
+        name="unitOfMeasurement"
+        [(ngModel)]="newIngredient.unitOfMeasurement"
+        required
+        class="mt-1 p-2 text-black w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="quantity" class="block text-sm font-medium text-gray-300"
+        >Quantity:</label
+      >
+      <input
+        type="number"
+        id="quantity"
+        name="quantity"
+        [(ngModel)]="newIngredient.quantity"
+        required
+        class="mt-1 p-2 text-black w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="price" class="block text-sm font-medium text-gray-300"
+        >Price:</label
+      >
+      <input
+        type="number"
+        id="price"
+        name="price"
+        [(ngModel)]="newIngredient.price"
+        required
+        class="mt-1 p-2 text-black w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="mt-6 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+    >
+      Add Ingredient
+    </button>
+  </form>
+</div>

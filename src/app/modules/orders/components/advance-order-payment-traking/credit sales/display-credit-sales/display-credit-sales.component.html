@@ -1,0 +1,158 @@
+<!-- credit-sales-list.component.html -->
+<div class="flex justify-between">
+  <h1 class="text-white text-lg">Credit Sales</h1>
+  <button class="h-10 bg-gray rounded-lg text-white p-2">
+    See Paid Credit Sales
+  </button>
+</div>
+
+<div
+  *ngIf="!isOpen && !isOrderModalOpen"
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 pr-2"
+>
+  <!-- Loop through orders and display a card for each -->
+  <div
+    *ngFor="let order of orders"
+    class="bg-white rounded-lg shadow-lg p-6 mb-4"
+  >
+    <!-- Order ID -->
+    <div class="mb-4 flex justify-between">
+      <h2 class="text-md font-bold mb-4">Credit-Sale</h2>
+      <span class="text-green-600 text-sm font-small"
+        >#{{ order.order_id }}</span
+      >
+    </div>
+
+    <!-- Customer Name -->
+    <div class="mb-4 flex justify-between">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Customer Name</label
+      >
+      <span class="text-gray-800 font-medium">{{ order.customer_name }}</span>
+    </div>
+
+    <!-- Credit Amount -->
+    <div class="mb-4 flex justify-between">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Credit Amount</label
+      >
+      <span class="text-green-600 font-bold"
+        >Ksh.{{ order.credit_amount }}</span
+      >
+    </div>
+
+    <!-- Payment Day -->
+    <div class="mb-4 flex justify-between">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Payment Day</label
+      >
+      <span class="text-gray-800">{{
+        order.payment_date | date : "shortDate"
+      }}</span>
+    </div>
+
+    <!-- Fully Paid Status -->
+    <div class="mb-4 flex justify-between">
+      <label class="block text-gray-700 text-sm font-bold mb-2"
+        >Fully Paid</label
+      >
+      <span
+        class="text-green-600 font-bold"
+        *ngIf="order.fully_paid; else notFullyPaid"
+      >
+        Yes
+      </span>
+      <ng-template #notFullyPaid>
+        <span class="text-red-600 font-bold">No</span>
+      </ng-template>
+    </div>
+
+    <div class="flex justify-between">
+      <button
+        (click)="openModal(order.id)"
+        class="bg-gray text-white hover:bg-darkGray h-10 rounded-lg p-1"
+      >
+        Make Payments
+      </button>
+      <button
+        (click)="openOrderDetailsModal(order.order_id)"
+        class="bg-gray text-white hover:bg-darkGray h-10 rounded p-1"
+      >
+        See Order Details
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="isOpen">
+  <!-- Pass the selected credit sale ID to the payment component -->
+  <app-credit-sales-payment
+    (onCancel)="closeModal()"
+    [creditSaleId]="selectedCreditSaleId"
+  ></app-credit-sales-payment>
+</div>
+
+<div *ngIf="isOrderModalOpen">
+  <div
+    class="bg-white rounded-lg shadow-lg p-6 w-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <button
+      class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+      (click)="closeOrderDetailsModal()"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        ></path>
+      </svg>
+    </button>
+
+    <div class="text-lg font-semibold mb-4">Order Details</div>
+
+    <div>
+      <div class="flex justify-between mb-2">
+        <span>Shift ID:</span>
+        <span>{{ normalOrder.ShiftID }}</span>
+      </div>
+
+      <div class="flex justify-between mb-2">
+        <span>Table Name:</span>
+        <span>{{ normalOrder.TableName }}</span>
+      </div>
+
+      <div class="flex justify-between mb-2">
+        <span>Time:</span>
+        <span>{{ normalOrder.Time }}</span>
+      </div>
+
+      <div class="flex justify-between mb-2">
+        <span>Total Amount:</span>
+        <span>{{ normalOrder.Total }}</span>
+      </div>
+
+      <!-- Add more fields as needed -->
+
+      <!-- Example: Displaying items array -->
+      <div class="mb-4">
+        <span>Items:</span>
+        <ul>
+          <li *ngFor="let item of itemsArray">
+            {{ item.name }} - {{ item.price }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="flex justify-end">
+          <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" >Confirm Payment</button>
+        </div> -->
+    </div>
+  </div>
+</div>

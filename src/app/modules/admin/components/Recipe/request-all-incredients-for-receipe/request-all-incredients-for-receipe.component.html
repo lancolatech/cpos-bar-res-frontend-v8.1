@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-extrabold text-white text-center mb-8">
+      Request Ingredients for Recipe
+    </h2>
+
+    <form
+      [formGroup]="requestForm"
+      (ngSubmit)="onRequestSubmit()"
+      class="space-y-6 bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6"
+    >
+      <div>
+        <label for="recipeId" class="block text-sm font-medium text-gray-700"
+          >Select Recipe</label
+        >
+        <select
+          formControlName="recipeId"
+          id="recipeId"
+          class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        >
+          <option value="">Select a recipe</option>
+          <option *ngFor="let recipe of recipes" [value]="recipe.id">
+            {{ recipe.product_name }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label for="quantity" class="block text-sm font-medium text-gray-700"
+          >Quantity to Produce</label
+        >
+        <input
+          type="number"
+          formControlName="quantity"
+          id="quantity"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        />
+      </div>
+
+      <div>
+        <button
+          *ngIf="!buttonLoading"
+          type="submit"
+          [disabled]="!requestForm.valid"
+          class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Request Ingredients
+        </button>
+        <button
+          *ngIf="buttonLoading"
+          class="w-full inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Submiting Request
+          <span class="ml-3"><app-button-loader></app-button-loader></span>
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="currentRequest" class="mt-8">
+      <h3 class="text-lg font-medium text-gray-900">Current Request</h3>
+      <div class="mt-2 bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Recipe</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {{ currentRequest.recipe_name }}
+              </dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Requested Quantity
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {{ currentRequest.requested_quantity }}
+              </dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Status</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {{ currentRequest.status }}
+              </dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Date Created</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {{ currentRequest.created_at | date : "medium" }}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <form
+        [formGroup]="productionForm"
+        (ngSubmit)="onProductionSubmit()"
+        class="mt-6 space-y-6 bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6"
+      >
+        <div>
+          <label
+            for="producedQuantity"
+            class="block text-sm font-medium text-gray-700"
+            >Actual Produced Quantity</label
+          >
+          <input
+            type="number"
+            formControlName="producedQuantity"
+            id="producedQuantity"
+            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            [disabled]="!productionForm.valid"
+            class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Record Production
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

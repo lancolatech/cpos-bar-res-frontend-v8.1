@@ -1,0 +1,12 @@
+<div>
+  <h1>Table List</h1>
+  <div class="table-container" >
+    <button routerLink="/menu/main-page" (click)="selectTable(table)" class="table-card" *ngFor="let table of tables" >
+      <!-- [disabled]="table.isOccupied -->
+      <div [ngClass]="{'occupied': table.isOccupied, 'free': !table.isOccupied}">
+        <h2>Table {{ table.name }}</h2>
+        <p>{{ table.isOccupied ? 'Occupied' : 'Free' }}</p>
+      </div>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,817 @@
+<!-- bookings.component.html -->
+
+<section
+  *ngIf="!isOpen && !isRoomSalesModalOpen && !isPaymentOpen"
+  class="container px-4 mx-auto"
+>
+  <div class="mt-6 flex justify-between mb-3">
+    <button
+      (click)="OpenRoomSales()"
+      type="submit"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-indigo-200 hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Open Bookings
+    </button>
+    <button
+      (click)="closedRoomSales()"
+      type="submit"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-400 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Closed Bookings
+    </button>
+    <button
+      routerLink="/admin/Rooms"
+      type="submit"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-400 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Rooms
+    </button>
+    <button
+      (click)="openModal()"
+      type="submit"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-4 h-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+        />
+      </svg>
+
+      <span class="mx-2">Add Booking</span>
+    </button>
+  </div>
+  <div class="flex flex-col">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div
+          class="overflow-hidden border border-gray-700 dark:border-gray-500 md:rounded-lg"
+        >
+          <table
+            class="min-w-full divide-y divide-gray-700 dark:divide-gray-500"
+          >
+            <thead class="bg-gray-800 dark:bg-gray-900 text-white">
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white dark:text-white"
+                >
+                  <div class="flex items-center gap-x-3">
+                    <input
+                      type="checkbox"
+                      class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                    />
+                    <button class="flex items-center gap-x-2">
+                      <span class="text-gray-300">Bookings</span>
+                      <svg
+                        class="h-3 text-gray-300"
+                        viewBox="0 0 10 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.1"
+                        />
+                        <path
+                          d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="0.3"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-300 dark:text-gray-400"
+                >
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-300 dark:text-gray-400"
+                >
+                  Status
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-300 dark:text-gray-400"
+                >
+                  Customer
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-300 dark:text-gray-400"
+                >
+                  Orders Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-gray-900 divide-y divide-gray dark:divide-gray text-white"
+            >
+              <tr *ngFor="let booking of roomsBookings">
+                <td
+                  class="px-4 py-4 text-sm font-medium text-white dark:text-white whitespace-nowrap"
+                >
+                  <div class="inline-flex items-center gap-x-3">
+                    <input
+                      type="checkbox"
+                      class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                    />
+                    <span class="text-gray-300">#{{ booking.id }}</span>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm text-white whitespace-nowrap">
+                  {{ booking.checkin_date }}
+                </td>
+                <td
+                  class="px-4 py-4 text-sm font-medium text-emerald-500 whitespace-nowrap"
+                >
+                  <div
+                    class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="0.1"
+                      />
+                      <path
+                        d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="0.1"
+                      />
+                      <path
+                        d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="0.3"
+                      />
+                    </svg>
+                    <h2 class="text-sm font-normal text-emerald-800">
+                      {{ booking.room_number }}
+                    </h2>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm text-white whitespace-nowrap">
+                  <div class="flex items-center gap-x-2">
+                    <img
+                      class="object-cover w-8 h-8 rounded-full"
+                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                      alt=""
+                    />
+                    <div>
+                      <h2 class="text-sm font-medium text-white">
+                        {{ booking.customer_name }}
+                      </h2>
+                      <p class="text-xs font-normal text-white">
+                        {{ booking.phone }}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                  <div class="flex items-center gap-x-6">
+                    <button
+                      (click)="openPlaceOrderModal(booking.room_number)"
+                      class="bg-emerald-300 rounded-lg h-8 p-2 text-white transition-colors duration-200 hover:text-indigo-500 focus:outline-none"
+                    >
+                      Place Order
+                    </button>
+                    <button
+                      (click)="
+                        openRoomSalesModal(
+                          booking.room_number,
+                          booking.customer_name
+                        )
+                      "
+                      class="bg-emerald-400 rounded-lg p-2 h-8 text-white transition-colors duration-200 hover:text-indigo-500 focus:outline-none"
+                    >
+                      See Orders
+                    </button>
+                    <button
+                      (click)="openPaymentModal(booking.id)"
+                      class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none"
+                    >
+                      Make Payments
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="isOpen" class="container mx-auto mt-8">
+  <div class="max-w-md mx-auto bg-white p-8 border rounded shadow">
+    <h2 class="text-2xl font-bold mb-6">Add New Booking</h2>
+
+    <form>
+      <div class="mb-4">
+        <label
+          for="customerName"
+          class="block text-gray-600 text-sm font-medium mb-2"
+          >Customer Name:</label
+        >
+        <input
+          type="text"
+          [(ngModel)]="newRoomBooking.customer_name"
+          id="customerName"
+          placeholder="Customer Name"
+          name="customerName"
+          class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="phone" class="block text-gray-600 text-sm font-medium mb-2"
+          >Phone:</label
+        >
+        <input
+          type="text"
+          [(ngModel)]="newRoomBooking.phone"
+          id="phone"
+          placeholder="Phone Number"
+          name="phone"
+          class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="checkinDate"
+          class="block text-gray-600 text-sm font-medium mb-2"
+          >Check-in Date:</label
+        >
+        <input
+          type="date"
+          [(ngModel)]="newRoomBooking.checkin_date"
+          id="checkinDate"
+          name="checkinDate"
+          class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+
+      <div class="mb-4" *ngIf="rooms && rooms.length > 0">
+        <label
+          for="roomNumber"
+          class="block text-gray-600 text-sm font-medium mb-2"
+          >Room Number:</label
+        >
+        <select
+          id="roomNumber"
+          name="roomNumber"
+          [(ngModel)]="roomNumber"
+          (change)="updateNewRoomBooking()"
+          class="form-control"
+        >
+          <option *ngFor="let room of rooms" [value]="room.room_number">
+            {{ room.room_number }}
+          </option>
+        </select>
+      </div>
+
+      <!-- <div class="mb-4">
+          <label for="costPerDay" class="block text-gray-600 text-sm font-medium mb-2">Cost Per Day:</label>
+          <input type="number" id="costPerDay" name="costPerDay" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div> -->
+
+      <div class="mt-6 flex justify-between">
+        <button
+          (click)="submitRoomBooking()"
+          type="submit"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Add Booking
+        </button>
+        <button
+          (click)="closeModal()"
+          type="submit"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div x-data="{ isOpen: true }" class="relative flex justify-center">
+  <!-- <button  class="px-6 py-2 mx-auto tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+        Open Modal
+    </button> -->
+
+  <div
+    *ngIf="isPlaceOrderModalOpen"
+    x-show="isOpen"
+    x-transition:enter="transition duration-300 ease-out"
+    x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+    x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
+    x-transition:leave="transition duration-150 ease-in"
+    x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+    x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+    class="fixed inset-0 z-10 overflow-y-auto"
+    aria-labelledby="modal-title"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0"
+    >
+      <span
+        class="hidden sm:inline-block sm:h-screen sm:align-middle"
+        aria-hidden="true"
+        >&#8203;</span
+      >
+
+      <div
+        class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle"
+      >
+        <h3
+          class="text-lg font-medium leading-6 text-gray-800 capitalize"
+          id="modal-title"
+        >
+          Make Orders For Room {{ roomNumber }}
+        </h3>
+        <div>
+          <label
+            for="email"
+            class="block text-sm text-gray-500 dark:text-gray-300"
+            >Seach Products</label
+          >
+
+          <div class="relative flex items-center mt-2">
+            <span class="absolute">
+              <i class="ml-3 fa-solid fa-magnifying-glass"></i>
+            </span>
+
+            <input
+              (input)="getAllProducts()"
+              [(ngModel)]="query"
+              type="email"
+              placeholder="Search"
+              class="block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg pl-11 pr-5 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
+        </div>
+        <div class="h-[130px]">
+          <!-- Display the filtered products as a scrollable list -->
+          <ul
+            class="text-black overflow-y-auto max-h-[130px] border rounded mt-2 p-2"
+          >
+            <li
+              *ngFor="let product of filteredProducts"
+              (click)="onProductClick(product)"
+            >
+              {{ product.product_name }}
+            </li>
+            <h1
+              *ngIf="filteredProducts.length <= 0"
+              class="text-black flex justify-center items-center"
+            >
+              search to select Items
+            </h1>
+          </ul>
+        </div>
+        <div class="h-[150px]">
+          <div
+            class="text-black flex justify-center items-center"
+            *ngIf="selectedProducts.length <= 0"
+          >
+            <h1>No Selected Items</h1>
+          </div>
+          <table
+            *ngIf="selectedProducts.length > 0"
+            class="mt-2 text-black"
+            style="height: 150px; overflow-y: auto"
+          >
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let selectedProduct of selectedProducts; let i = index"
+                class="text-black"
+              >
+                <td>{{ selectedProduct.product_name }}</td>
+                <td class="text-white">
+                  <input
+                    class="text-black bg-indigo-200 pl-4"
+                    type="number"
+                    [(ngModel)]="selectedProduct.pax"
+                    min="1"
+                  />
+                </td>
+                <td>
+                  <button (click)="removeSelectedProduct(i)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <form class="mt-4" action="#">
+                        <label for="emails-list" class="text-sm text-gray-700 dark:text-gray-200">
+                            Email address
+                        </label>
+
+                        <label class="block mt-3" for="email">
+                            <input type="email" name="email" id="email" placeholder="user@email.xyz" value="devdhaif@gmail.com" class="block w-full px-4 py-3 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300" />
+                        </label>
+
+                        <label class="block mt-3" for="email">
+                            <input type="email" name="email" id="email" placeholder="user@email.xyz" class="block w-full px-4 py-3 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300" />
+                        </label>
+
+                        <label class="block mt-3" for="email">
+                            <input type="email" name="email" id="email" placeholder="user@email.xyz" class="block w-full px-4 py-3 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300" />
+                        </label>
+
+                       
+                    </form> -->
+
+        <!-- <button type="button" class="mt-2 flex items-center rounded py-1.5 px-2 text-sm text-blue-600 transition-colors duration-300 hover:text-blue-400 focus:outline-none dark:text-blue-400 dark:hover:text-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <span class="mx-2">Add another</span>
+                    </button> -->
+
+        <div class="mt-4 sm:flex sm:items-center sm:-mx-2">
+          <button
+            type="button"
+            (click)="closePlaceOrderModal()"
+            class="w-full px-4 py-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+          >
+            Cancel
+          </button>
+
+          <button
+            (click)="makeTakeOutOrder()"
+            type="button"
+            class="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isRoomSalesModalOpen">
+  <div *ngIf="isRoomSalesModalOpen">
+    <app-booking-orders
+      [roomSales]="roomSales"
+      (onCancel)="closeRoomSalesModal()"
+    ></app-booking-orders>
+  </div>
+</div>
+
+<div *ngIf="isPaymentOpen">
+  <div class="flex flex-row justify-between overflow-y-auto">
+    <div
+      class="max-w-md mx-auto bg-white font-lexend mt-3 p-8 rounded-[20px] shadow-md"
+      style="max-height: 100vh; overflow-y: auto"
+    >
+      <h2 class="text-2xl font-semibold mb-1">Payment Details</h2>
+      <div class="flex flex-row gap-1">
+        <div
+          class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+        >
+          Booking #{{ selectedOrderDetails.id }}
+        </div>
+        <div
+          class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+        >
+          Total:Ksh.{{
+            selectedOrderDetails.cost_per_day * daySpent + roomTotalOrdersCost
+          }}
+        </div>
+        <!-- <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60">
+                By:{{ selectedOrderDetails.waiters_name }}
+              </div> -->
+        <!-- <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60">
+                Bal:Ksh.{{selectedOrderDetails.total}}
+              </div> -->
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600"
+          >Days spent
+        </label>
+        <input
+          [(ngModel)]="daySpent"
+          type="number"
+          id="1"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+
+      <div
+        class="inline px-3 mb-2 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        Room Cost:Ksh.{{ selectedOrderDetails.cost_per_day * daySpent }}
+      </div>
+      <div
+        class="inline ml-1 mb-2 px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+      >
+        Orders Cost :Ksh.{{ roomTotalOrdersCost }}
+      </div>
+
+      <!-- Payment Modes -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-black"
+          >Payment Modes</label
+        >
+        <div>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              [(ngModel)]="selectedPaymentMode"
+              [value]="'cash'"
+              class="form-radio h-5 w-5 text-blue-600"
+              (change)="onPaymentModeChange()"
+            />
+            <span class="ml-2">Cash</span>
+          </label>
+
+          <label class="inline-flex items-center ml-4">
+            <input
+              type="radio"
+              [(ngModel)]="selectedPaymentMode"
+              [value]="'mpesa'"
+              class="form-radio h-5 w-5 text-blue-600"
+              (change)="onPaymentModeChange()"
+            />
+            <span class="ml-2">Mpesa</span>
+          </label>
+
+          <label class="inline-flex items-center ml-4">
+            <input
+              type="radio"
+              [(ngModel)]="selectedPaymentMode"
+              [value]="'bank'"
+              class="form-radio bg-gray h-5 w-5 text-blue-600"
+              (change)="onPaymentModeChange()"
+            />
+            <span class="ml-2">Bank</span>
+          </label>
+          <label class="inline-flex items-center ml-4">
+            <input
+              type="radio"
+              [(ngModel)]="selectedPaymentMode"
+              [value]="'Voucher'"
+              class="form-radio bg-gray h-5 w-5 text-blue-600"
+              (change)="onPaymentModeChange()"
+            />
+            <span class="ml-2">Voucher</span>
+          </label>
+          <label class="inline-flex items-center ml-4">
+            <input
+              type="radio"
+              [(ngModel)]="selectedPaymentMode"
+              [value]="'Complimentary'"
+              class="form-radio bg-gray h-5 w-5 text-blue-600"
+              (change)="onPaymentModeChange()"
+            />
+            <span class="ml-2">Complimentary</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Amount Paid for Each Payment Mode -->
+      <div class="mb-4" *ngIf="selectedPaymentMode === 'cash' || cashAmount">
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount Paid (Cash)</label
+        >
+        <input
+          [(ngModel)]="cashAmount"
+          type="number"
+          id="1"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+
+      <div class="mb-4" *ngIf="selectedPaymentMode === 'mpesa' || mpesaAmount">
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount Paid (Mpesa)</label
+        >
+        <input
+          [(ngModel)]="mpesaAmount"
+          type="number"
+          id="2"
+          class="mt-1 p-2 border rounded w-full"
+        />
+        <label class="block text-sm font-medium text-gray-600"
+          >Mpesa Confirmation Code</label
+        >
+        <input
+          [(ngModel)]="mpesaConfirmationCode"
+          type="text"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+
+      <div class="mb-4" *ngIf="selectedPaymentMode === 'bank' || bankAmount">
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount Paid (Bank)</label
+        >
+        <input
+          [(ngModel)]="bankAmount"
+          type="number"
+          id="3"
+          class="mt-1 p-2 border rounded w-full"
+        />
+        <label class="block text-sm font-medium text-gray-600"
+          >Bank Confirmation Code</label
+        >
+        <input
+          [(ngModel)]="bankConfirmationCode"
+          type="text"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+      <div
+        class="mb-4"
+        *ngIf="selectedPaymentMode === 'Voucher' || voucherAmount"
+      >
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount Paid (Voicher)</label
+        >
+        <input
+          [(ngModel)]="voucherAmount"
+          type="number"
+          id="4"
+          class="mt-1 p-2 border rounded w-full"
+        />
+        <label class="block text-sm font-medium text-gray-600"
+          >Voicher Code</label
+        >
+        <input
+          [(ngModel)]="VoucherCode"
+          type="text"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+
+      <div
+        class="mb-4"
+        *ngIf="selectedPaymentMode === 'Complimentary' || compilmentaryAmount"
+      >
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount Paid (Complimentary)</label
+        >
+        <input
+          [(ngModel)]="compilmentaryAmount"
+          type="number"
+          id="5"
+          class="mt-1 p-2 bg-gray border rounded w-full"
+        />
+        <label class="block text-sm font-medium text-gray-600"
+          >Compimentary of</label
+        >
+        <input
+          [(ngModel)]="complimentaryOf"
+          type="text"
+          class="mt-1 p-2 border rounded w-full"
+        />
+      </div>
+
+      <!-- Balance -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600"
+          >Amount To Pay</label
+        >
+        <div
+          class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
+        >
+          Ksh.{{ selectedOrderDetails.total }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-between">
+        <button
+          (click)="updateOrder()"
+          class="bg-emerald-200 text-emerald-900 p-2 rounded-full hover:bg-blue-600"
+        >
+          Submit Payment
+        </button>
+        <button
+          (click)="closePaymentModal()"
+          class="bg-red text-black p-2 rounded-full hover:bg-maroon-600"
+        >
+          Cancel Payment
+        </button>
+      </div>
+    </div>
+
+    <div class="w-[450px] h-[92vh] mr-10 ml-10 mt-3 bg-white rounded-[20px]">
+      <div class="w-[80%] h-[90vh] flex-col gap-[20px] inline-flex ml-10 mt-10">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <h2 class="text-black text-center text-base font-normal font-lexend">
+            Amount Paid
+          </h2>
+          <input
+            #amountInput
+            type="text"
+            placeholder="0.00"
+            class="w-[75px] h-[31px] text-black text-[25px] font-semibold font-['Inter']"
+          />
+        </div>
+        <div
+          class="mt-4 w-[200px] ml-[60px]"
+          style="display: flex; align-items: center"
+        >
+          <div class="grid grid-cols-3 gap-2">
+            <!-- to add numbers 1 to 9 button -->
+            <ng-container *ngFor="let number of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+              <button
+                (click)="addToInput(number)"
+                class="w-[63px] h-[67px] bg-gray hover:bg-darkGray rounded-full text-white font-inter text-xl"
+              >
+                {{ number }}
+              </button> </ng-container
+            ><br />
+            <!-- push button with 0 to the centre -->
+            <ng-container class="mx-auto my-auto">
+              <button
+                (click)="addToInput(0)"
+                class="w-[63px] h-[67px] bg-gray hover:bg-darkGray rounded-full text-white font-inter text-xl"
+              >
+                0
+              </button>
+            </ng-container>
+            <!-- to add backspace button -->
+            <svg
+              class="uil-cancel cursor-pointer hover:bg-zinc-500 rounded-full w-[63px] h-[67px]"
+              (click)="backspace()"
+              width="76"
+              height="76"
+              viewBox="0 0 76 76"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.42162 35.8876L23.1338 17.0329C23.4293 16.6782 23.7993 16.3929 24.2175 16.1974C24.6357 16.0019 25.0918 15.9009 25.5535 15.9016H60.1203C62.6206 15.9016 65.0184 16.8949 66.7864 18.6628C68.5544 20.4308 69.5476 22.8287 69.5476 25.329V50.4685C69.5476 52.9687 68.5544 55.3666 66.7864 57.1346C65.0184 58.9025 62.6206 59.8958 60.1203 59.8958H25.5535C25.0918 59.8965 24.6357 59.7956 24.2175 59.6C23.7993 59.4045 23.4293 59.1192 23.1338 58.7645L7.42162 39.9099C6.95131 39.3452 6.69376 38.6336 6.69376 37.8987C6.69376 37.1638 6.95131 36.4522 7.42162 35.8876ZM27.0304 53.6109H60.1203C60.9537 53.6109 61.753 53.2798 62.3423 52.6905C62.9317 52.1012 63.2627 51.3019 63.2627 50.4685V25.329C63.2627 24.4955 62.9317 23.6962 62.3423 23.1069C61.753 22.5176 60.9537 22.1865 60.1203 22.1865H27.0304L13.9265 37.8987L27.0304 53.6109ZM35.8921 29.3827C36.1842 29.0882 36.5318 28.8544 36.9147 28.6949C37.2977 28.5353 37.7084 28.4532 38.1232 28.4532C38.5381 28.4532 38.9488 28.5353 39.3317 28.6949C39.7147 28.8544 40.0622 29.0882 40.3544 29.3827L44.4081 33.4679L48.4619 29.3827C49.0536 28.791 49.8561 28.4585 50.693 28.4585C51.5298 28.4585 52.3324 28.791 52.9241 29.3827C53.5159 29.9744 53.8483 30.777 53.8483 31.6138C53.8483 32.0282 53.7667 32.4385 53.6081 32.8213C53.4495 33.2041 53.2171 33.552 52.9241 33.845L48.8389 37.8987L52.9241 41.9525C53.2187 42.2446 53.4524 42.5921 53.612 42.9751C53.7715 43.358 53.8536 43.7688 53.8536 44.1836C53.8536 44.5984 53.7715 45.0092 53.612 45.3921C53.4524 45.775 53.2187 46.1226 52.9241 46.4147C52.632 46.7093 52.2844 46.943 51.9015 47.1026C51.5186 47.2621 51.1078 47.3442 50.693 47.3442C50.2781 47.3442 49.8674 47.2621 49.4845 47.1026C49.1015 46.943 48.754 46.7093 48.4619 46.4147L44.4081 42.3296L40.3544 46.4147C40.0622 46.7093 39.7147 46.943 39.3317 47.1026C38.9488 47.2621 38.5381 47.3442 38.1232 47.3442C37.7084 47.3442 37.2977 47.2621 36.9147 47.1026C36.5318 46.943 36.1842 46.7093 35.8921 46.4147C35.5976 46.1226 35.3638 45.775 35.2043 45.3921C35.0447 45.0092 34.9626 44.5984 34.9626 44.1836C34.9626 43.7688 35.0447 43.358 35.2043 42.9751C35.3638 42.5921 35.5976 42.2446 35.8921 41.9525L39.9773 37.8987L35.8921 33.845C35.5976 33.5528 35.3638 33.2053 35.2043 32.8223C35.0447 32.4394 34.9626 32.0287 34.9626 31.6138C34.9626 31.199 35.0447 30.7883 35.2043 30.4053C35.3638 30.0224 35.5976 29.6748 35.8921 29.3827Z"
+                fill="#545454"
+              />
+            </svg>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: center">
+          <!-- <span class="text-zinc-300 text-base font-semibold font-['Inter']">Print Receipt</span> -->
+          <button
+            (click)="payAll()"
+            class="w-[100px] h-[38px] bg-zinc-500 hover:bg-darkGray hover:text-white rounded-[100px]"
+            style="align-items: center"
+          >
+            Pay All
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

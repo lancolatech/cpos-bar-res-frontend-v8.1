@@ -1,0 +1,24 @@
+<main>
+  <div class="container">
+    <div class="w-44 h-16 relative">
+      <!-- to add logo image -->
+      <button _ngcontent-ng-c3141117921="" class="left-[30px] top-0">
+        <img _ngcontent-ng-c3141117921="" src="/assets/cpos-logo.png" alt="" />
+      </button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-item">
+        <span style="align-items: center">Enter Your Organization Code</span>
+        <input
+          type="text"
+          placeholder="Organization Code"
+          formControlName="organizationId"
+        />
+      </div>
+
+      <div class="form-item">
+        <button>Submit</button>
+      </div>
+    </form>
+  </div>
+</main>

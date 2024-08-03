@@ -1,0 +1,71 @@
+<!-- 
+  <div class="container">
+    <h1>Edit Product</h1>
+    <form (ngSubmit)="onEditSubmit()" #editProductForm="ngForm">
+      <div class="form-group">
+        <label for="editProductName">Product Name:</label>
+        <input type="text" id="editProductName" name="editProductName" [(ngModel)]="editedProduct.product_name" required>
+      </div>
+      <div class="form-group">
+        <label for="editProductPrice">Price:</label>
+        <input type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editedProduct.product_price" required>
+      </div>
+      <div class="form-group">
+        <label for="editProductQuantity">Quantity:</label>
+        <input type="number" id="editProductQuantity" name="editProductQuantity" [(ngModel)]="editedProduct.product_quantity" required>
+      </div>
+      <div class="form-group">
+        <label for="editProductCategory">Category:</label>
+        <select id="editProductCategory" name="editProductCategory" [(ngModel)]="editedProduct.category_id" required>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.category_name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editProductIsService">isService:</label>
+        <input type="checkbox" id="editProductIsService" name="editProductIsService" [(ngModel)]="editedProduct.is_service">
+      </div>
+        
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+   -->
+
+
+   <div class="container w-[50%]">
+    <h1 class="text-lg font-semibold text-gray-700 capitalize dark:text-white flex justify-center ">Edit Product</h1>
+    <form (ngSubmit)="onEditSubmit()" #editProductForm="ngForm" class="max-w-4xl p-6 mx-auto bg-darkGray rounded-md shadow-md ">
+      <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+        <div>
+          <label class="text-white " for="editProductName">Product Name:</label>
+          <input  type="text" id="editProductName" name="editProductName" [(ngModel)]="editedProduct.product_name" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+        </div>
+        <div>
+          <label class="text-white " for="editProductPrice">Price:</label>
+          <input type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editedProduct.product_price" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+        </div>
+        <div>
+          <label class="text-white " for="editProductQuantity">Quantity:</label>
+          <input type="number" id="editProductQuantity" name="editProductQuantity" [(ngModel)]="editedProduct.product_quantity" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+        </div>
+        <div>
+          <label class="text-white " for="editProductCategory">Category:</label>
+          <select id="editProductCategory" name="editProductCategory" [(ngModel)]="editedProduct.category_id" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.category_name }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-white " for="editProductIsService">isService:</label>
+          <input type="checkbox" id="editProductIsService" name="editProductIsService" [(ngModel)]="editedProduct.is_service" class="mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+        </div>
+
+        <div>
+          <label class="text-white " for="editProductSpecification">Speceification:</label>
+          <input  type="text" id="editProductSpecification" name="specification" [(ngModel)]="editedProduct.specification" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+        </div>
+      </div>
+      <div class="flex justify-end mt-6">
+        <button type="submit" class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Save Changes</button>
+      </div>
+    </form>
+  </div>
+  

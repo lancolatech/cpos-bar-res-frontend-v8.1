@@ -1,0 +1,52 @@
+main {
+  background: #111315;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #111315;
+    height: 100vh;
+    width: 100%;
+
+    form {
+      width: 100%; /* Make the form width 100% */
+      max-width: 400px; /* Add a max-width to limit the form's width on larger screens */
+      padding: 20px; /* Add padding for spacing */
+
+      .form-item {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        // text-align: center;
+        border-radius: 10px;
+        color: #FFFFFF;
+
+        input {
+          border: 1px solid lightgray;
+          color: #000000;
+          padding: 10px;
+        }
+
+        button {
+          background-color: #FFFFFF;
+          color: #000000;
+          border-radius: 10px;
+          margin-top: 10px;
+          padding: 10px;
+        }
+        button:hover {
+          background-color: #C2DBE9;
+        }
+      }
+    }
+  }
+}
+
+/* Add media queries for responsive design */
+@media (max-width: 768px) {
+  main .container form {
+    max-width: 90%; /* Adjust the max-width for smaller screens */
+  }
+}

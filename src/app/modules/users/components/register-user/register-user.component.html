@@ -1,0 +1,46 @@
+<main>
+  <div class="heading">
+
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="userForm" (ngSubmit)="submit()">
+
+      <div class="form-control">
+        <span>Full Names</span>
+        <input type="text" formControlName="name">
+      </div>
+
+      <div class="form-control">
+        <span>Username</span>
+        <input type="text" formControlName="username">
+      </div>
+
+      <div class="form-control">
+        <span>Email</span>
+        <input type="text" formControlName="email">
+      </div>
+
+      <div class="form-control">
+        <span>Phone</span>
+        <input type="text" formControlName="phone">
+      </div>
+
+      <div class="form-control">
+        <span>Role</span>
+
+        <div class="role" *ngFor="let role of getUserRoles()">
+          <input type="checkbox" [value]="role" [checked]="userForm.value.role === role" (click)="setUserRole(role)">
+          <span>{{role}}</span>
+        </div>
+
+      </div>
+
+
+      <div class="form-control">
+        <button>Submit</button>
+      </div>
+
+    </form>
+  </div>
+</main>

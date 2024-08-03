@@ -1,0 +1,116 @@
+<!-- add-take-out-organization.component.html -->
+<button
+  class="bg-blue-500 text-white py-2 px-4 rounded-md"
+  (click)="openModal()"
+>
+  Add Organization
+</button>
+<button
+  class="bg-blue-500 text-white py-2 px-4 rounded-md ml-5"
+  (click)="openModalAward()"
+>
+  Add Award
+</button>
+
+<div class="container mx-auto p-4" *ngIf="isOpen">
+  <h2 class="text-2xl font-semibold mb-4 text-white">
+    Add Take Out Organization
+  </h2>
+
+  <form (submit)="submitForm()">
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-white"
+        >Organization Name</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="organization.name"
+        class="mt-1 p-2 border rounded-md w-full"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-medium text-white"
+        >Status</label
+      >
+      <select
+        id="status"
+        name="status"
+        [(ngModel)]="organization.status"
+        class="mt-1 p-2 border rounded-md w-full"
+      >
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md">
+      Add Organization
+    </button>
+  </form>
+</div>
+
+<div class="container mx-auto p-4" *ngIf="isOpenAward">
+  <div class="mb-4">
+    <label for="status" class="block text-sm font-medium text-white"
+      >Orginization</label
+    >
+    <select
+      [(ngModel)]="award.org"
+      class="w-full bg-gray-100 border border-gray-300 rounded p-2"
+    >
+      <option value="" disabled selected>Select a Orgirnization</option>
+      <option *ngFor="let org of tackOutOrganization" [value]="org.id">
+        {{ org.name }}
+      </option>
+    </select>
+  </div>
+  <div class="mb-4">
+    <h3 class="text-xl font-semibold mb-2 text-white">Add Award</h3>
+    <label for="awardType" class="block text-sm font-medium text-white"
+      >Award Type</label
+    >
+    <input
+      type="text"
+      id="awardType"
+      name="awardType"
+      [(ngModel)]="award.type"
+      class="mt-1 p-2 border rounded-md w-full"
+    />
+  </div>
+
+  <div class="mb-4">
+    <label for="awardPax" class="block text-sm font-medium text-white"
+      >Award Pax</label
+    >
+    <input
+      type="number"
+      id="awardPax"
+      name="awardPax"
+      [(ngModel)]="award.pax"
+      class="mt-1 p-2 border rounded-md w-full"
+    />
+  </div>
+
+  <div class="mb-4">
+    <label for="awardCost" class="block text-sm font-medium text-white"
+      >Award Cost</label
+    >
+    <input
+      type="number"
+      id="awardCost"
+      name="awardCost"
+      [(ngModel)]="award.cost"
+      class="mt-1 p-2 border rounded-md w-full"
+    />
+  </div>
+  <button
+    type="submit"
+    class="bg-blue-500 text-white py-2 px-4 rounded-md"
+    (click)="submitFormAward()"
+  >
+    Add Award
+  </button>
+</div>

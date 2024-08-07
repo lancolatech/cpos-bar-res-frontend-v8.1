@@ -48,7 +48,7 @@ export class DisplayCreditSalesComponent implements OnInit {
       console.log('Order Details', this.normalOrder);
 
       // Now, parse the Items property
-      this.itemsArray = JSON.parse(this.normalOrder.Items);
+      this.itemsArray = this.normalOrder.Items;
       console.log('Items for the order', this.itemsArray);
     });
   }

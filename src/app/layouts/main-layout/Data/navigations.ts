@@ -31,18 +31,22 @@ export const navigations: any[] = [
     ],
   },
   {
-    navName: 'Inventory',
+    navName: 'Recipes',
     navLink: '/stock',
     icon: 'fas fa-boxes',
     hasDropdown: true,
     sublinks: [
       {
-        navName: 'Update Stock',
-        navLink: '/admin/purchase',
+        navName: 'Ingredients',
+        navLink: '/admin/ingredients',
       },
       {
-        navName: 'Transfer Stock',
-        navLink: '/admin/stock_transfer',
+        navName: 'Recipes',
+        navLink: '/admin/Recipe',
+      },
+      {
+        navName: 'Ingredients Request',
+        navLink: '/admin/ingredients-request',
       },
     ],
   },
@@ -86,6 +90,10 @@ export const navigations: any[] = [
       {
         navName: 'Credit Sales Report',
         navLink: '/credit_sales_report',
+      },
+      {
+        navName: 'Recipes Report',
+        navLink: '/recipe-report',
       },
     ],
   },

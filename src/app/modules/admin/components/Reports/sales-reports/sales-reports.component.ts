@@ -342,6 +342,8 @@ export class SalesReportsComponent implements OnInit {
     this.orders.forEach((order: any) => {
       const items = order.Items;
       items.forEach((item: any) => {
+        console.log('all order normal items', items);
+
         const itemName = item.name;
         if (itemsMap.has(itemName)) {
           const existingItem = itemsMap.get(itemName);

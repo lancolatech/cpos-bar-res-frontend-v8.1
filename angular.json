@@ -32,6 +32,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "./node_modules/@ng-vibe/dialog/styles/styles.css",
               "./node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [

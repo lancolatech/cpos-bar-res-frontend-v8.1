@@ -43,6 +43,7 @@ import { ShowAllIncredientsComponent } from './components/Recipe/show-all-incred
 import { ShowAllRecipeComponent } from './components/Recipe/show-all-recipe/show-all-recipe.component';
 import { RequestAllIncredientsForReceipeComponent } from './components/Recipe/request-all-incredients-for-receipe/request-all-incredients-for-receipe.component';
 import { ShowRecepeRequestComponent } from './components/Recipe/show-recepe-request/show-recepe-request.component';
+import { StoreCategoriesComponent } from './components/store/dtoreCategories/store-categories/store-categories.component';
 
 const routes: Routes = [
   {
@@ -225,6 +226,10 @@ const routes: Routes = [
   {
     path: 'customers',
     component: DisplayCustomersComponent,
+  },
+  {
+    path: 'store-category',
+    component: StoreCategoriesComponent,
   },
   // {
   //   path: '',

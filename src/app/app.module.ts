@@ -26,6 +26,7 @@ import { ApiInterceptorService } from './shared/services/api-interceptor/api-int
 import { HotToastModule } from '@ngneat/hot-toast';
 import { PreLoaderComponent } from './shared/pre-loader/pre-loader.component';
 import { ButtonLoaderComponent } from './shared/components/button-loader/button-loader.component';
+import { provideNgVibeDialog } from '@ng-vibe/dialog';
 
 // import { LeftSideNavTemplateComponent } from './layouts/main-layout/layoutTemplates/left-side-nav-template/left-
 
@@ -64,6 +65,7 @@ import { ButtonLoaderComponent } from './shared/components/button-loader/button-
       useClass: ApiInterceptorService,
       multi: true,
     },
+    provideNgVibeDialog(),
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import {
+  DialogRemoteControl,
+  AppearanceAnimation,
+  DisappearanceAnimation,
+} from '@ng-vibe/dialog';
+import { StoreCategoryFormComponent } from '../store-category-form/store-category-form.component';
+import { StoreCategoriesService } from 'src/app/modules/admin/services/store-categories.service';
+import { AdminService } from 'src/app/modules/admin/services/admin.service';
+import { storeCategory } from 'src/app/shared/interfaces/storecategory.interface';
 
 @Component({
   selector: 'app-store-categories',
@@ -9,16 +18,19 @@ export class StoreCategoriesComponent {
   @Input() storeCategoryId: string = '';
 
   private addDialog: DialogRemoteControl = new DialogRemoteControl(
-    AddStoreCategoryComponent
+    StoreCategoryFormComponent
   );
 
   private updateDialog: DialogRemoteControl = new DialogRemoteControl(
-    UpdateStoreCategoryComponent
+    StoreCategoryFormComponent
   );
 
   storeCategories: storeCategory[] = [];
 
-  constructor(private storeCategoriesService: StoreCategoriesService) {}
+  constructor(
+    private categoryService: AdminService,
+    private storeCategoriesService: StoreCategoriesService
+  ) {}
 
   ngOnInit() {
     this.getAllStoreCategories();

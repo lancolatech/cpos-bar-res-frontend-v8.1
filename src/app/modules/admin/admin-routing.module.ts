@@ -45,6 +45,10 @@ import { RequestAllIncredientsForReceipeComponent } from './components/Recipe/re
 import { ShowRecepeRequestComponent } from './components/Recipe/show-recepe-request/show-recepe-request.component';
 import { StoreCategoriesComponent } from './components/store/dtoreCategories/store-categories/store-categories.component';
 import { StoreProductComponent } from './components/store/dtoreProduct/store-product/store-product.component';
+import { StoreRequisitionFormComponent } from './components/store/dtoreRequisitions/store-requisition-form/store-requisition-form.component';
+import { StoreRequisitionsComponent } from './components/store/dtoreRequisitions/store-requisitions/store-requisitions.component';
+import { StorePurchasesComponent } from './components/store/dtorePurchases/store-purchases/store-purchases.component';
+import { StorePurchaseFormComponent } from './components/store/dtorePurchases/store-purchase-form/store-purchase-form.component';
 
 const routes: Routes = [
   {
@@ -235,6 +239,26 @@ const routes: Routes = [
   {
     path: 'store-products',
     component: StoreProductComponent,
+  },
+  {
+    path: 'store-products',
+    component: StoreProductComponent,
+  },
+  {
+    path: 'requistion-form',
+    component: StoreRequisitionFormComponent,
+  },
+  {
+    path: 'requistion-list',
+    component: StoreRequisitionsComponent,
+  },
+  {
+    path: 'purchase-list',
+    component: StoreRequisitionsComponent,
+  },
+  {
+    path: 'purchase-form',
+    component: StoreRequisitionsComponent,
   },
   // {
   //   path: '',

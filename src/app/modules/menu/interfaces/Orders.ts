@@ -12,4 +12,6 @@ export interface Orders {
   Served_by: string; // Add Served_by
   showDeleteIcon: boolean;
   printerIp?: string;
+  orderId?: any;
+  is_printed?: boolean;
 }

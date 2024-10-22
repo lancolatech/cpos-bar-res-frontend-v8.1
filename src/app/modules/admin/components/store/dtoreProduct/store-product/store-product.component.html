@@ -1,1 +1,320 @@
-<p>store-product works!</p>
+<section
+  *ngIf="!productsLoading"
+  class="container px-4 mx-auto overflow-auto pb-10"
+>
+  <input
+    (change)="getAllProducts(query)"
+    [(ngModel)]="query"
+    type="text"
+    placeholder="Search By Name Or Category"
+    class="outline-none w-[250px] h-[40px] px-2 rounded-full text-black bg-gray-500-800"
+  />
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <div class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-black dark:text-black">Products</h2>
+        <span
+          class="px-3 py-1 text-xs text-blue-900 bg-blue-100 rounded-full dark:bg-gray-500-800 dark:text-blue-900"
+        >
+          {{ products.length }} products
+        </span>
+      </div>
+    </div>
+    <div class="flex items-center mt-4 gap-x-3">
+      <button
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-500-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-500-800 dark:bg-gray-500-900 hover:bg-gray-500-100 dark:text-gray-500-200 dark:border-gray-700"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_3098_154395)">
+            <path
+              d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832"
+              stroke="currentColor"
+              stroke-width="1.67"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3098_154395">
+              <rect width="20" height="20" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+        <span>Import</span>
+      </button>
+      <button (click)="generatePrintableProductPage()" class="btn btn-primary">
+        Print
+      </button>
+
+      <button
+        (click)="openAddProductModal()"
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span>Add Product</span>
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-col mt-6">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div
+          class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+        >
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            <thead class="bg-gray-500 dark:bg-gray-500">
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Product Name
+                </th>
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Product Code
+                </th> -->
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Category
+                </th>
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Buying Price
+                </th> -->
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Retail Price
+                </th> -->
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Wholesale Price
+                </th> -->
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Bulk Price
+                </th> -->
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Bulk Unit
+                </th> -->
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Price
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Quantity
+                </th>
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Bulk Quantity
+                </th> -->
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Availability
+                </th> -->
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-500-900"
+            >
+              <tr
+                *ngFor="let product of products"
+                class="hover:bg-gray-100 dark:hover:bg-gray-500-800"
+              >
+                <td class="py-4 px-4 text-sm font-medium text-gray-500-900">
+                  {{ product.name }}
+                </td>
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.productEuniqueId }}
+                </td> -->
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ getCategoryNameById(product.categoryId) }}
+                </td>
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{
+                    product.buying_price || 0
+                      | currency : "KSH " : "symbol" : "1.0-2"
+                  }}
+                </td> -->
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.price | currency : "KSH " : "symbol" : "1.0-2" }}
+                </td> -->
+
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{
+                    product.bulkPrice | currency : "KSH " : "symbol" : "1.0-2"
+                  }}
+                </td> -->
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.bulkUnit }}
+                </td> -->
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.buying_price }}
+                </td>
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.quantity }} {{ product.uom }}
+                </td>
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ product.QuantityPerBulk }} {{ product.uom }}
+                </td> -->
+
+                <td
+                  class="py-4 px-4 text-sm font-medium text-right whitespace-nowrap"
+                >
+                  <div class="flex items-center space-x-4">
+                    <button
+                      (click)="openUpdateProductModal(product.id)"
+                      class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      <svg
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z"
+                          fill="#000000"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      (click)="deleteProduct(product.id)"
+                      class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      <svg
+                        width="30px"
+                        height="30px"
+                        viewBox="0 -0.5 21 21"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <title>delete [#1487]</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs></defs>
+                        <g
+                          id="Page-1"
+                          stroke="none"
+                          stroke-width="1"
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <g
+                            id="Dribbble-Light-Preview"
+                            transform="translate(-179.000000, -360.000000)"
+                            fill="#000000"
+                          >
+                            <g
+                              id="icons"
+                              transform="translate(56.000000, 160.000000)"
+                            >
+                              <path
+                                d="M130.35,216 L132.45,216 L132.45,208 L130.35,208 L130.35,216 Z M134.55,216 L136.65,216 L136.65,208 L134.55,208 L134.55,216 Z M128.25,218 L138.75,218 L138.75,206 L128.25,206 L128.25,218 Z M130.35,204 L136.65,204 L136.65,202 L130.35,202 L130.35,204 Z M138.75,204 L138.75,200 L128.25,200 L128.25,204 L123,204 L123,206 L126.15,206 L126.15,220 L140.85,220 L140.85,206 L144,206 L144,204 L138.75,204 Z"
+                                id="delete-[#1487]"
+                              ></path>
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                    </button>
+                    <button
+                      (click)="openDialog(product.id)"
+                      class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      Remove Stock
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="products.length === 0">
+                <td
+                  colspan="9"
+                  class="py-4 px-4 text-sm text-center text-gray-500-500 dark:text-gray-500-300"
+                >
+                  No products found.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="flex justify-center items-center h-screen" *ngIf="productsLoading">
+  <app-loader></app-loader>
+</div>

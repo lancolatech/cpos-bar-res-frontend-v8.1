@@ -58,6 +58,7 @@ import { StoreCategoryFormComponent } from './components/store/dtoreCategories/s
 import { StorePurchaseFormComponent } from './components/store/dtorePurchases/store-purchase-form/store-purchase-form.component';
 import { StoreProductsFormComponent } from './components/store/dtoreProduct/store-products-form/store-products-form.component';
 import { StoreRequisitionFormComponent } from './components/store/dtoreRequisitions/store-requisition-form/store-requisition-form.component';
+import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { StoreRequisitionFormComponent } from './components/store/dtoreRequisiti
     PreLoaderComponent,
     RegisterCustomerComponent,
     ButtonLoaderComponent,
+    LoaderComponent,
   ],
 })
 export class AdminModule {}

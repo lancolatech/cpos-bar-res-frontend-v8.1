@@ -249,11 +249,11 @@ const routes: Routes = [
     component: StoreRequisitionFormComponent,
   },
   {
-    path: 'requistion-list',
+    path: 'requistion',
     component: StoreRequisitionsComponent,
   },
   {
-    path: 'purchase-list',
+    path: 'store-purchases',
     component: StoreRequisitionsComponent,
   },
   {

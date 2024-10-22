@@ -254,12 +254,12 @@ const routes: Routes = [
   },
   {
     path: 'store-purchases',
-    component: StoreRequisitionsComponent,
+    component: StorePurchasesComponent,
   },
-  {
-    path: 'purchase-form',
-    component: StoreRequisitionsComponent,
-  },
+  // {
+  //   path: 'purchase-form',
+  //   component: StoreRequisitionsComponent,
+  // },
   // {
   //   path: '',
   //   redirectTo: 'register-users',

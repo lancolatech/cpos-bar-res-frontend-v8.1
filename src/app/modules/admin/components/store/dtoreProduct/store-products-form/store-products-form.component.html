@@ -1,0 +1,274 @@
+<div
+  class="container mx-auto p-6 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg shadow-lg"
+>
+  <div class="flex justify-between items-center mb-6">
+    <h2
+      class="text-3xl font-bold text-center text-purple-700 flex items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 inline-block mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+        />
+      </svg>
+      {{ isUpdateMode ? "Update" : "Add" }} Store Product
+    </h2>
+    <button
+      (click)="close()"
+      type="button"
+      class="text-white bg-red-500 hover:bg-red-600 rounded-full p-2 transition-colors duration-200"
+    >
+      <svg
+        class="w-6 h-6"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+      <span class="sr-only">Close modal</span>
+    </button>
+  </div>
+  <form
+    [formGroup]="storeProductForm"
+    (ngSubmit)="onSubmit()"
+    class="space-y-6"
+  >
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="name"
+        >
+          Product Name
+        </label>
+        <input
+          formControlName="name"
+          type="text"
+          id="name"
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          required
+        />
+      </div>
+      <div class="w-full md:w-1/2 px-3">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="categoryId"
+        >
+          Category
+        </label>
+        <div class="relative">
+          <select
+            formControlName="categoryId"
+            id="categoryId"
+            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option value="" disabled selected>Choose a category</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+          >
+            <svg
+              class="fill-current h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="quantity"
+        >
+          Quantity
+        </label>
+        <input
+          formControlName="quantity"
+          type="number"
+          id="quantity"
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          required
+          min="1"
+        />
+      </div>
+      <div class="w-full md:w-1/2 px-3">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="unitOfMeasure"
+        >
+          Unit of Measure
+        </label>
+        <input
+          formControlName="uom"
+          type="text"
+          id="unitOfMeasure"
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          required
+        />
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <!-- <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="bulkQuantity"
+        >
+          Bulk Quantity
+        </label>
+        <input
+          formControlName="QuantityPerBulk"
+          type="number"
+          id="bulkQuantity"
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          required
+        />
+      </div> -->
+      <!-- <div class="w-full md:w-1/2 px-3">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="bulkUnitOfMeasure"
+        >
+          Bulk Unit of Measure
+        </label>
+        <input
+          formControlName="bulkUnit"
+          type="text"
+          id="bulkUnitOfMeasure"
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          required
+        />
+      </div> -->
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="price"
+        >
+          Price
+        </label>
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <span class="text-gray-500 sm:text-sm">Ksh</span>
+          </div>
+          <input
+            formControlName="buying_price"
+            type="number"
+            id="price"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 pl-10 pr-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            required
+            min="1"
+          />
+        </div>
+      </div>
+      <!-- <div class="w-full md:w-1/2 px-3">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="bulkPrice"
+        >
+          Bulk Price
+        </label>
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <span class="text-gray-500 sm:text-sm">Ksh</span>
+          </div>
+          <input
+            formControlName="bulkPrice"
+            type="number"
+            id="bulkPrice"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 pl-10 pr-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            required
+          />
+        </div>
+      </div> -->
+      <!-- <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="price"
+        >
+          Product Id
+        </label>
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <span class="text-gray-500 sm:text-sm">Ksh</span>
+          </div>
+          <input
+            formControlName="productEuniqueId"
+            type="text"
+            id="productEuniqueId"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 pl-10 pr-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            required
+          />
+        </div>
+      </div> -->
+      <!-- <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="price"
+        >
+          Description
+        </label>
+        <div class="relative">
+          <textarea
+            formControlName="description"
+            type="text"
+            id="description"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 pl-10 pr-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            required
+          ></textarea>
+        </div>
+      </div> -->
+    </div>
+    <div class="flex items-center justify-center">
+      <button
+        type="submit"
+        class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 inline-block mr-2"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        {{ isUpdateMode ? "Update" : "Submit" }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -50,6 +50,15 @@ import { ShowAllRecipeComponent } from './components/Recipe/show-all-recipe/show
 import { ShowRecepeRequestComponent } from './components/Recipe/show-recepe-request/show-recepe-request.component';
 import { ButtonLoaderComponent } from 'src/app/shared/components/button-loader/button-loader.component';
 import { RecipeIngridientsReportsComponent } from './components/Reports/recipe-ingridients-reports/recipe-ingridients-reports.component';
+import { StoreProductComponent } from './components/store/dtoreProduct/store-product/store-product.component';
+import { StoreCategoriesComponent } from './components/store/dtoreCategories/store-categories/store-categories.component';
+import { StorePurchasesComponent } from './components/store/dtorePurchases/store-purchases/store-purchases.component';
+import { StoreRequisitionsComponent } from './components/store/dtoreRequisitions/store-requisitions/store-requisitions.component';
+import { StoreCategoryFormComponent } from './components/store/dtoreCategories/store-category-form/store-category-form.component';
+import { StorePurchaseFormComponent } from './components/store/dtorePurchases/store-purchase-form/store-purchase-form.component';
+import { StoreProductsFormComponent } from './components/store/dtoreProduct/store-products-form/store-products-form.component';
+import { StoreRequisitionFormComponent } from './components/store/dtoreRequisitions/store-requisition-form/store-requisition-form.component';
+import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +108,14 @@ import { RecipeIngridientsReportsComponent } from './components/Reports/recipe-i
     ShowAllRecipeComponent,
     ShowRecepeRequestComponent,
     RecipeIngridientsReportsComponent,
+    StoreProductComponent,
+    StoreCategoriesComponent,
+    StorePurchasesComponent,
+    StoreRequisitionsComponent,
+    StoreCategoryFormComponent,
+    StorePurchaseFormComponent,
+    StoreProductsFormComponent,
+    StoreRequisitionFormComponent,
   ],
   imports: [
     CommonModule,
@@ -108,6 +125,7 @@ import { RecipeIngridientsReportsComponent } from './components/Reports/recipe-i
     PreLoaderComponent,
     RegisterCustomerComponent,
     ButtonLoaderComponent,
+    LoaderComponent,
   ],
 })
 export class AdminModule {}

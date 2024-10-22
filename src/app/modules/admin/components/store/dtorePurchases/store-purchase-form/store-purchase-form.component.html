@@ -1,1 +1,345 @@
-<p>store-purchase-form works!</p>
+<div class="container mx-auto p-4 bg-gradient-to-r rounded-lg shadow-2xl">
+    <h1 class="text-3xl font-bold text-black text-center mb-6 font-lexend">
+      Create Store Purchase
+    </h1>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="relative">
+        <input
+          type="text"
+          (input)="onInputChange()"
+          [(ngModel)]="query"
+          placeholder="Search products"
+          class="w-full py-3 pl-10 pr-4 text-gray-700 bg-white border-2 border-purple-300 rounded-full focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+        />
+        <div
+          class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+        >
+          <svg
+            class="h-5 w-5 text-purple-500"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+  
+      <div class="relative">
+        <select
+          [(ngModel)]="selectedSupplier"
+          class="w-full py-3 pl-4 pr-10 text-gray-700 bg-white border-2 border-purple-300 rounded-full focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+        >
+          <option [ngValue]="null" disabled>Select Supplier</option>
+          <option *ngFor="let supplier of suppliers" [ngValue]="supplier">
+            {{ supplier.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+      <ul
+        class="bg-white text-purple-800 overflow-y-auto max-h-[50vh] border-2 border-purple-300 rounded-lg p-4 w-full md:w-1/4"
+      >
+        <li
+          *ngFor="let product of products"
+          (click)="onProductClick(product)"
+          class="cursor-pointer hover:bg-purple-100 p-2 rounded transition duration-300"
+        >
+          {{ product.name }}
+        </li>
+        <h1 *ngIf="products.length <= 0" class="text-gray-500 text-center">
+          Search to select items
+        </h1>
+      </ul>
+  
+      <div
+        class="bg-white text-purple-800 overflow-y-auto max-h-[50vh] border-2 border-purple-300 rounded-lg p-4 w-full md:w-3/4"
+      >
+        <div class="grid grid-cols-5 gap-4 font-bold mb-2">
+          <div>Product Name</div>
+          <div>Price</div>
+          <div>Quantity</div>
+          <div>Subtotal</div>
+          <!-- <div>Purchase Type</div> -->
+          <div>Remove</div>
+        </div>
+        <div
+          *ngFor="let selectedProduct of selectedProducts; let i = index"
+          class="grid grid-cols-5 gap-4 items-center py-2 border-b border-purple-200"
+        >
+          <div class="flex items-center">
+            <span>{{ getProductNameById(selectedProduct.productId) }}</span>
+          </div>
+          <div>
+            <input
+              class="w-full px-2 py-1 text-purple-800 bg-purple-100 border border-purple-300 rounded focus:outline-none focus:border-purple-500"
+              type="number"
+              [(ngModel)]="selectedProduct.price"
+              (ngModelChange)="onQuantityChange(selectedProduct)"
+              min="0.01"
+              step="1"
+            />
+          </div>
+          <div>
+            <input
+              class="w-full px-2 py-1 text-purple-800 bg-purple-100 border border-purple-300 rounded focus:outline-none focus:border-purple-500"
+              type="number"
+              [(ngModel)]="selectedProduct.quantity"
+              (ngModelChange)="onQuantityChange(selectedProduct)"
+              min="1"
+            />
+          </div>
+          <div class="text-center">
+            <input
+              readonly
+              [value]="selectedProduct.price * selectedProduct.quantity"
+              class="w-full px-2 py-1 text-purple-800 bg-purple-100 border border-purple-300 rounded focus:outline-none focus:border-purple-500"
+              type="number"
+            />
+          </div>
+          <!-- <div>
+            <select
+              [(ngModel)]="selectedProduct.purchaseType"
+              (ngModelChange)="onPurchaseTypeChange(selectedProduct)"
+              class="w-full px-2 py-1 text-purple-800 bg-purple-100 border border-purple-300 rounded focus:outline-none focus:border-purple-500"
+            >
+              <option value="single">Single</option>
+              <option value="bulk">Bulk</option>
+            </select>
+          </div> -->
+          <div>
+            <button
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded transition duration-300"
+              (click)="removeSelectedProduct(i)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="mt-6 text-right">
+      <strong class="text-2xl text-black"
+        >Grand Total:
+        {{ grandTotal | currency : "KSH " : "symbol" : "1.0-2" }}</strong
+      >
+    </div>
+  </div>
+  <div
+    class="flex flex-col md:flex-row justify-between mt-6 space-y-4 md:space-y-0"
+  >
+    <button
+      (click)="clearFilters()"
+      class="w-full md:w-auto px-6 py-3 font-medium tracking-wide text-purple-800 bg-white rounded-full hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-opacity-50 transition duration-300"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 inline mr-2"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      Clear
+    </button>
+    <button
+      (click)="openPaymentModal()"
+      class="w-full md:w-auto px-6 py-3 font-medium tracking-wide text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-opacity-50 transition duration-300"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 inline mr-2"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      Proceed to Payments
+    </button>
+  </div>
+  
+  <!-- Payment Modal -->
+  <div
+    id="paymentModal"
+    tabindex="-1"
+    aria-hidden="true"
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-600 bg-opacity-50"
+    [ngClass]="{ hidden: !isPaymentModalVisible }"
+  >
+    <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-xl">
+      <!-- Close button -->
+      <button
+        class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        (click)="closePaymentModal()"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+  
+      <!-- Payment Details -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Payment Details</h2>
+  
+      <!-- Is Purchase Paid Toggle -->
+      <!-- <div class="flex items-center justify-between mb-6">
+        <span class="text-gray-700 font-medium">Is Purchase Paid?</span>
+        <label class="flex items-center cursor-pointer">
+          <div class="relative">
+            <input type="checkbox" [(ngModel)]="isPaid" class="sr-only" />
+            <div class="w-10 h-6 bg-gray-300 rounded-full shadow-inner"></div>
+            <div
+              class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"
+            ></div>
+          </div>
+        </label>
+      </div>
+  
+      <div *ngIf="isPaid" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Payment Mode(s)</label
+          >
+          <div class="space-y-2">
+            <div
+              class="flex items-center"
+              *ngFor="let mode of paymentMethods; let i = index"
+            >
+              <select
+                [(ngModel)]="mode.method"
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="Mpesa">Mpesa</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank">Bank</option>
+              </select>
+              <input
+                type="number"
+                [(ngModel)]="mode.amount"
+                placeholder="Amount"
+                class="mt-1 ml-2 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+              <button
+                (click)="removePaymentMode(i)"
+                class="ml-2 text-red-600 hover:text-red-800"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <button
+            (click)="addPaymentMode()"
+            class="mt-2 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              ></path>
+            </svg>
+            Add Payment Mode
+          </button>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700"
+            >Total Paid Amount</label
+          >
+          <input
+            type="number"
+            [value]="getTotalPaidAmount()"
+            readonly
+            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+      </div> -->
+  
+      <!-- Credit Amount (visible when isPaid is false) -->
+      <div *ngIf="!isPaid" class="mb-4">
+        <label class="block text-sm font-medium text-gray-700"
+          >Credit Amount</label
+        >
+        <input
+          type="number"
+          [(ngModel)]="creditAmount"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+  
+      <!-- Complete Purchase Button -->
+      <button
+        (click)="completePurchase()"
+        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
+        </svg>
+        Complete Purchase
+      </button>
+    </div>
+  </div>

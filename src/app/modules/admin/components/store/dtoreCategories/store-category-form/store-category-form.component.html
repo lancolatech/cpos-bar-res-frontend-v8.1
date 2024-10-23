@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="container mx-auto p-6 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg shadow-lg"
 >
   <div class="flex justify-between items-center mb-6">
@@ -100,6 +100,92 @@
           />
         </svg>
         {{ isUpdateMode ? "Update" : "Submit" }}
+      </button>
+    </div>
+  </form>
+</div> -->
+
+<div *ngIf="true" class="container mx-auto py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2
+      class="text-3xl font-bold text-center text-purple-700 flex items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 inline-block mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+        />
+      </svg>
+      {{ isUpdateMode ? "Update" : "Add" }} Store Category
+    </h2>
+    <button
+      (click)="close()"
+      type="button"
+      class="text-black bg-red ml-2 hover:bg-red rounded-full p-2 transition-colors duration-200"
+    >
+      <svg
+        class="w-6 h-6"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+      <span class="sr-only">Close modal</span>
+    </button>
+  </div>
+  <h1 class="text-2xl font-bold mb-4 text-white">{{ isUpdateMode ? "Update" : "Add" }} Store Category</h1>
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="max-w-lg mx-auto">
+    <div class="mb-4">
+      <label for="categoryName" class="block text-white">Category Name</label>
+      <input 
+        formControlName="name"
+        type="text" 
+        id="categoryName" 
+        class="form-input mt-1 block w-full" 
+        placeholder="Enter category name"
+      >
+    </div>
+
+    <div class="mb-4">
+      <label for="description" class="block text-white">Description</label>
+      <textarea 
+        formControlName="description"
+        id="description"
+        rows="3"
+        class="form-input mt-1 block w-full" 
+        placeholder="Enter category description"
+      ></textarea>
+    </div>
+
+    <div class="mt-6 flex justify-between">
+      <button 
+        (click)="close()" 
+        type="button" 
+        class="bg-gray hover:bg-darkGray text-white font-bold py-2 px-4 rounded"
+      >
+        Cancel
+      </button>
+      <button 
+        type="submit" 
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        {{ isUpdateMode ? "Update" : "Add" }} Category
       </button>
     </div>
   </form>

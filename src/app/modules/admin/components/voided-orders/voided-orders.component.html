@@ -1,4 +1,4 @@
-<div class="flex justify-center text-white font-lexend text-lg">
+<!-- <div class="flex justify-center text-white font-lexend text-lg">
   Voided Orders
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-3">
@@ -73,26 +73,6 @@
         <span class="text-white text-base">{{ order.Served_by }}</span>
       </div>
       <div class="flex flex-row justify-center gap-8 mt-3 pl-3">
-        <!-- <div class="flex flex-row gap-1">
-        <div class="w-10 h-10 relative">
-          <button  class="w-10 h-10 left-0 top-0 absolute bg-zinc-800 rounded-lg border border-white">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0.508789" y="0.5" width="39" height="39" rx="7.5" fill="#292C2D" stroke="white"/>
-              <path d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z" fill="white"/>
-              </svg>
-              
-          </button>
-        </div>
-        <div class="w-10 h-10 relative">
-          <button class="w-10 h-10 left-0 top-0 absolute bg-zinc-800 rounded-lg border border-white">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0.508789" y="0.5" width="39" height="39" rx="7.5" fill="#292C2D" stroke="white"/>
-              <path d="M23.0088 14.1716L26.0088 17.1716M21.0088 28.1716H29.0088M13.0088 24.1716L12.0088 28.1716L16.0088 27.1716L27.5948 15.5856C27.9697 15.2105 28.1804 14.7019 28.1804 14.1716C28.1804 13.6412 27.9697 13.1326 27.5948 12.7576L27.4228 12.5856C27.0477 12.2106 26.5391 12 26.0088 12C25.4785 12 24.9698 12.2106 24.5948 12.5856L13.0088 24.1716Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              
-          </button>
-        </div>
-      </div> -->
         <div
           class="w-[100px] h-10 bg-gray rounded-lg border border-white flex justify-center items-center"
         >
@@ -110,6 +90,80 @@
             class="h-[15px] text-white text-sm font-normal"
             (click)="declineDelete(order.id)"
           >
+            Decline Void
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="flex flex-col">
+  <div class="flex justify-center text-white font-lexend text-lg">
+    Voided Orders
+  </div>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-3">
+    <div *ngFor="let order of voidedOrders" 
+         class="flex w-full bg-zinc-900 p-4 rounded-xl font-lexend shadow-lg">
+      <div class="w-full min-h-[500px] max-h-[500px] flex flex-col rounded-lg">
+        <div class="flex flex-row w-full justify-between px-3 mt-3 text-white text-lg">
+          <span>{{ order.TableName }}</span>
+          <span class="text-gray-300">Order #{{ order.orderId }}</span>
+        </div>
+
+        <div class="mt-4 flex-grow overflow-y-auto mb-2">
+          <table class="w-[100%] mx-3 bg-zinc-800 rounded-lg overflow-hidden">
+            <thead class="bg-zinc-700 sticky top-0">
+              <tr class="flex flex-row justify-between pr-3">
+                <th class="p-3 text-white text-sm font-medium">
+                  <div>QT</div>
+                </th>
+                <th class="p-3 text-white text-sm font-medium flex-grow text-left">
+                  <div>Items</div>
+                </th>
+                <th class="p-3 text-white text-sm font-medium">
+                  <div>Price</div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="block max-h-[200px] overflow-y-auto">
+              <tr *ngFor="let item of order.Items"
+                  class="flex justify-between pr-3 border-b border-zinc-700 last:border-b-0 hover:bg-zinc-700/50">
+                <td class="p-3">
+                  <div class="w-6 h-6 bg-zinc-600 rounded-full flex items-center justify-center text-white">
+                    {{ item.selectedItems }}
+                  </div>
+                </td>
+                <td class="p-3 flex-grow">
+                  <div class="text-white text-sm">{{ item.name }}</div>
+                </td>
+                <td class="p-3">
+                  <div class="text-white text-sm">{{ item.price * item.selectedItems }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex flex-row justify-between px-4 mx-3">
+          <span class="text-white text-sm">Subtotal</span>
+          <span class="text-white text-base">Ksh.{{ order.Total }}</span>
+        </div>
+        <div class="flex flex-row justify-between px-4 mx-3">
+          <span class="text-white text-sm">Voided By</span>
+          <span class="text-white text-base">{{ order.Served_by }}</span>
+        </div>
+
+        <div class="flex flex-row justify-between mt-4 px-3 gap-4">
+          <button (click)="confirmDelete(order.id)"
+                  class="flex-1 px-4 py-2 bg-zinc-800 text-white text-sm rounded-lg border border-zinc-600 hover:bg-red-600 hover:border-red-600 transition-colors">
+            Confirm Void
+          </button>
+          <button (click)="declineDelete(order.id)"
+                  class="flex-1 px-4 py-2 bg-zinc-800 text-white text-sm rounded-lg border border-zinc-600 hover:bg-blue-600 hover:border-blue-600 transition-colors">
             Decline Void
           </button>
         </div>

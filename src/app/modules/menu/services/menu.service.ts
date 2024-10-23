@@ -282,7 +282,7 @@ export class MenuService {
   // }
   updateOrder(orderId: number, orderData: any): Observable<any> {
     const url = ` ${this.apiUrl}/orders/${orderId}`;
-    console.log('Data being updated:', orderData);
+    console.log('Data being updated and sent to the api:', orderData);
     return this.http.put(url, orderData, httpOptions);
   }
   createUpdateOrders(orderData: any): Observable<any> {

@@ -504,6 +504,7 @@ export class EditOrdersComponent implements OnInit {
         id: item.id,
         name: item.name,
         price: item.price,
+        category_id: item.category_id,
         quantity: item.product_quantity || null,
         selectedItems: item.selectedItems || 0,
       });
@@ -525,6 +526,7 @@ export class EditOrdersComponent implements OnInit {
           id: product.id,
           name: product.product_name,
           price: product.product_price,
+          category_id: product.category_id,
           quantity: product.product_quantity || null,
           selectedItems: product.selectedItems || 0,
         });
@@ -534,23 +536,24 @@ export class EditOrdersComponent implements OnInit {
     // Convert Map values to array to get the final list of items
     const itemsToPost = Array.from(itemsMap.values());
 
-    console.log('Items to Post:', itemsToPost);
+    // console.log('Items to Post:', itemsToPost);
     this.orderId = this.selectedOrder?.id;
-    console.log('Order ID for Update:', this.orderId);
+    // console.log('Order ID for Update:', this.orderId);
 
     if (this.orderId) {
       const updatedOrderData = {
         TableName: this.selectedTable?.name || 'Table 1',
         ShiftID: this.selectedOrder?.ShiftID,
         Items: itemsToPost,
+        is_printed: false,
         Total: this.selectedProductsTotal() + this.originalTotal, // Use the total calculation method
         Served_by: this.selectedOrder?.Served_by, // Change this to the actual server or user information
       };
 
-      console.log(
-        'Updated Order Data items to update:',
-        updatedOrderData.Items
-      );
+      // console.log(
+      //   'Updated Order Data items to update:',
+      //   updatedOrderData.Items
+      // );
 
       // Log the URL to verify if it includes the correct order ID
       const apiUrl = `https://backend.c-pos.co.ke/api/orders/${this.orderId}`;
@@ -627,6 +630,7 @@ export class EditOrdersComponent implements OnInit {
       name: product.product_name,
       id: product.id,
       price: product.product_price,
+      category_id: product.category_id,
       selectedItems: product.selectedItems, // Ensure selectedItems is properly updated
     }));
 
@@ -640,7 +644,7 @@ export class EditOrdersComponent implements OnInit {
       time: new Date().toISOString(),
       ShiftID: this.selectedOrder?.ShiftID,
       Served_by: this.selectedOrder?.Served_by,
-      orderId: this.selectedOrder?.id,
+      orderId: this.selectedOrder?.orderId.toString(),
       printerIp: this.selectedOrder?.printerIp,
     };
 

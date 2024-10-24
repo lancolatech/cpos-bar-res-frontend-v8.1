@@ -1,4 +1,3 @@
-<!-- order-payment-card.component.html -->
 
 <div class="big-screenn">
   <div class="flex flex-row justify-between w-full">
@@ -12,7 +11,7 @@
         <div
           class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
         >
-          Order #{{ selectedOrderDetails.orderId }}
+          Order # {{ selectedOrderDetails.orderId }}
         </div>
         <div
           class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
@@ -22,11 +21,10 @@
         <div
           class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-900 gap-x-2 bg-emerald-100/60"
         >
-          By:{{ selectedOrderDetails.Served_by }}
+          By: {{ selectedOrderDetails.Served_by }}
         </div>
       </div>
 
-      <!-- Payment Modes -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-black"
           >Payment Modes</label
@@ -99,7 +97,6 @@
         </div>
       </div>
 
-      <!-- Amount Paid for Each Payment Mode -->
       <div class="mb-4" *ngIf="selectedPaymentMode === 'cash' || cashAmount">
         <label class="block text-sm font-medium text-gray-600"
           >Amount Paid (Cash)</label
@@ -165,7 +162,7 @@
           class="mt-1 p-2 border rounded w-full"
         />
         <label class="block text-sm font-medium text-gray-600"
-          >Voicher Code</label
+          >Voucher Code</label
         >
         <input
           [(ngModel)]="VoucherCode"
@@ -212,7 +209,6 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
       <div class="flex justify-between">
         <button
           *ngIf="
@@ -323,7 +319,6 @@
                 0
               </button>
             </ng-container>
-            <!-- to add backspace button -->
             <svg
               class="uil-cancel cursor-pointer hover:bg-zinc-500 rounded-full w-[63px] h-[67px]"
               (click)="backspace()"
@@ -341,7 +336,6 @@
           </div>
         </div>
         <div style="display: flex; justify-content: center">
-          <!-- <span class="text-zinc-300 text-base font-semibold font-['Inter']">Print Receipt</span> -->
           <button
             (click)="payAll()"
             class="w-[100px] h-[38px] bg-zinc-500 hover:bg-darkGray hover:text-white rounded-[100px]"
@@ -357,6 +351,9 @@
     </div>
   </div>
 </div>
+
+
+
 <div class="small-screen">
   <div class="flex flex-col overflow-y-auto">
     <div
@@ -383,7 +380,6 @@
         </div>
       </div>
 
-      <!-- Payment Modes -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-black"
           >Payment Modes</label
@@ -456,7 +452,6 @@
         </div>
       </div>
 
-      <!-- Amount Paid for Each Payment Mode -->
       <div class="mb-4" *ngIf="selectedPaymentMode === 'cash' || cashAmount">
         <label class="block text-sm font-medium text-gray-600"
           >Amount Paid (Cash)</label
@@ -522,7 +517,7 @@
           class="mt-1 p-2 border rounded w-full"
         />
         <label class="block text-sm font-medium text-gray-600"
-          >Voicher Code</label
+          >Voucher Code</label
         >
         <input
           [(ngModel)]="VoucherCode"
@@ -554,7 +549,6 @@
         />
       </div>
 
-      <!-- Balance -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-600"
           >Amount To Pay</label

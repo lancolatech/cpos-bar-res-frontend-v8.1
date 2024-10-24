@@ -6,4 +6,5 @@ export interface storeProduct {
   quantity: number;
   price: number;
   categoryId: string;
+  bulkPrice: number; 
 }

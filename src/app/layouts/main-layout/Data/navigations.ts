@@ -31,6 +31,30 @@ export const navigations: any[] = [
     ],
   },
   {
+    navName: 'Store',
+    navLink: '/store-products',
+    icon: 'fas fa-boxes',
+    hasDropdown: true,
+    sublinks: [
+      {
+        navName: 'Store Products',
+        navLink: '/admin/store-products',
+      },
+      {
+        navName: 'Store Categories',
+        navLink: '/admin/store-categories',
+      },
+      {
+        navName: 'Store Purchases',
+        navLink: '/admin/store-purchases',
+      },
+      {
+        navName: 'Store Requisitions',
+        navLink: '/admin/requistion',
+      },
+    ],
+  },
+  {
     navName: 'Recipes',
     navLink: '/stock',
     icon: 'fas fa-boxes',

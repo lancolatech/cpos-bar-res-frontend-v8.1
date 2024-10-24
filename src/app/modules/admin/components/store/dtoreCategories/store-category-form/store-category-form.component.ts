@@ -72,6 +72,7 @@ export class StoreCategoryFormComponent
       .addStoreCategory(this.categoryForm.value)
       .subscribe(
         (response: any) => {
+          console.log('Store category created successfully');
           this.close();
         },
         (error) => {
@@ -85,6 +86,7 @@ export class StoreCategoryFormComponent
       .updateStoreCategory(this.store, this.categoryForm.value)
       .subscribe(
         (response: any) => {
+          console.log('Store category updated successfully');
           this.close();
         },
         (error) => {

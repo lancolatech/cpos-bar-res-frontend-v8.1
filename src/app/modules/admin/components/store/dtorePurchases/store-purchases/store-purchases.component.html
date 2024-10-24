@@ -1,1 +1,259 @@
-<p>store-purchases works!</p>
+<section
+  *ngIf="!StorePurchasesLoading"
+  class="container px-4 mx-auto overflow-auto pb-10"
+>
+  <!-- <input
+    [(ngModel)]="searchTerm"
+    (input)="onSearch()"
+    type="text"
+    placeholder="Search Purchases"
+    class="outline-none w-[250px] h-[40px] px-2 rounded-full text-white bg-gray-500-800"
+  /> -->
+  <div class="w-full flex flex-row justify-between">
+    <div>
+      <label for="Birthday" class="block text-sm text-gray-500"
+        >Search By Date</label
+      >
+
+      <input
+        type="date"
+        name="date"
+        placeholder="John Doe"
+        [(ngModel)]="selectedDate"
+        (input)="getStorePurchaseForRange(selectedDate, selectedDate)"
+        class="block mt-2 w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+      />
+    </div>
+    <div>
+      <label for="Birthday" class="block text-sm text-gray-500"
+        >Search By Range from</label
+      >
+
+      <input
+        type="date"
+        name="date"
+        [(ngModel)]="startDate"
+        (input)="getStorePurchaseForRange(startDate, endDate)"
+        placeholder="John Doe"
+        class="block mt-2 w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+      />
+    </div>
+    <div>
+      <label for="Birthday" class="block text-sm text-gray-500">To:</label>
+
+      <input
+        type="date"
+        name="date"
+        [(ngModel)]="endDate"
+        (input)="getStorePurchaseForRange(startDate, endDate)"
+        placeholder="John Doe"
+        class="block mt-2 w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+      />
+    </div>
+  </div>
+  <div class="sm:flex sm:items-center sm:justify-between mt-4">
+    <div>
+      <div class="flex items-center gap-x-3">
+        <h2 class="text-lg font-medium text-black dark:text-black">
+          Store Purchases
+        </h2>
+        <span
+          class="px-3 py-1 text-xs text-blue-900 bg-blue-100 rounded-full dark:bg-gray-500-800 dark:text-blue-900"
+        >
+          {{ StorePurchases.length }} purchases
+        </span>
+      </div>
+    </div>
+    <div class="flex items-center mt-4 gap-x-3">
+      <button
+        routerLink="/make-store-purchase"
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span>Add Store Purchase</span>
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-col mt-6">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div
+          class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+        >
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            <thead class="bg-gray-500 dark:bg-gray-500">
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Items
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Supplier
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Grand Total
+                </th>
+                <!-- <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Payment Method
+                </th> -->
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Amount Paid
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Credit Amount
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Added By
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-white"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-500-900"
+            >
+              <tr
+                *ngFor="let purchase of StorePurchases"
+                class="hover:bg-gray-100 dark:hover:bg-gray-500-800"
+              >
+                <td class="px-4 py-4 text-sm text-gray-500">
+                  <div *ngFor="let product of purchase.items">
+                    <div class="font-semibold">
+                      {{ getProductNameById(product.productId) }}
+                    </div>
+                    <div class="text-sm">Qty: {{ product.quantity }}</div>
+                  </div>
+                </td>
+                <td class="py-4 px-4 text-sm font-medium text-gray-500-900">
+                  {{ getSupplierNameById(purchase.supplier_id) }}
+                </td>
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{
+                    purchase.grandTotal | currency : "KSH " : "symbol" : "1.0-2"
+                  }}
+                </td>
+                <!-- <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+               <div class="flex flex-row gap-2" *ngFor="let paymentMethod of purchase.paymentMethods">
+                <span>{{paymentMethod.method}}</span>
+                <span> KSH: {{paymentMethod.amount}}</span>
+               </div>
+                  
+                </td> -->
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{
+                    purchase.amountPaid | currency : "KSH " : "symbol" : "1.0-2"
+                  }}
+                </td>
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{
+                    purchase.creditAmount
+                      | currency : "KSH " : "symbol" : "1.0-2"
+                  }}
+                </td>
+                <td
+                  class="py-4 px-4 text-sm text-gray-500-500 dark:text-gray-500-300"
+                >
+                  {{ purchase.added_by }}
+                </td>
+                <td
+                  class="py-4 px-4 text-sm font-medium text-right whitespace-nowrap"
+                >
+                  <div class="flex items-center space-x-4">
+                    <button
+                      class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                      (click)="printGRN(purchase)"
+                    >
+                      <svg
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 32 32"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <g id="icomoon-ignore"></g>
+                        <path
+                          d="M7.47 12.268c-0.589 0-1.066 0.477-1.066 1.066s0.477 1.066 1.066 1.066c0.588 0 1.066-0.477 1.066-1.066s-0.478-1.066-1.066-1.066z"
+                          fill="#000000"
+                        ></path>
+                        <path
+                          d="M10.669 12.268c-0.589 0-1.066 0.477-1.066 1.066s0.477 1.066 1.066 1.066c0.588 0 1.066-0.477 1.066-1.066s-0.478-1.066-1.066-1.066z"
+                          fill="#000000"
+                        ></path>
+                        <path
+                          d="M29.328 8.003h-5.864v-5.331h-14.928v5.331h-5.864c-0.295 0-0.533 0.238-0.533 0.533v15.994c0 0.295 0.238 0.533 0.533 0.533h5.864v4.265h14.928v-4.265h5.864c0.295 0 0.533-0.238 0.533-0.533v-15.994c0-0.295-0.238-0.533-0.533-0.533zM9.602 3.738h12.795v4.265h-12.795v-4.265zM22.398 28.262h-12.795v-9.596h12.795v9.596zM28.795 23.997h-5.331v-6.398h-14.928v6.398h-5.331v-14.928h25.59v14.928z"
+                          fill="#000000"
+                        ></path>
+                      </svg>
+                    </button>
+                    <!-- <button
+                      (click)="deleteStorePurchase(purchase.id!)"
+                      class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      Delete
+                    </button> -->
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="StorePurchases.length === 0">
+                <td
+                  colspan="7"
+                  class="py-4 px-4 text-sm text-center text-gray-500-500 dark:text-gray-500-300"
+                >
+                  No purchases found.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

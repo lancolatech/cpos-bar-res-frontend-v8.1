@@ -1,364 +1,121 @@
-<!-- <div *ngIf="order" class="flex w-[100%] bg-darkGray font-lexend">
-  <div class="w-[100%] h-[380px] bg-darkGray flex-col">
-    <div
-      class="flex flex-row w-[100%] justify-between pr-3 pl-3 mt-3 text-white text-lg"
-    >
-      <span>{{ order.TableName }}</span>
-      <span>Order #{{ order.orderId }}</span>
-    </div>
-    <div>
-      <table
-        class="w-[90%] h-[200px] ml-3 overflow-y-auto"
-        style="
-          border-collapse: collapse;
-          display: flex;
-          flex-direction: column;
-          align-items: start;
-        "
-      >
-        <thead class="w-[100%]" style="line-height: 1">
-          <tr class="flex flex-row justify-between pr-3">
-            <th style="padding: 3px; margin: 0">
-              <div class="text-white text-sm font-medium">QT</div>
-            </th>
-            <th style="padding: 3px; margin: 0">
-              <div class="text-white text-sm font-medium">Items</div>
-            </th>
-            <th style="padding: 3px; margin: 0">
-              <div class="text-white text-sm font-medium">Price</div>
-            </th>
-          </tr>
-        </thead>
-        <tbody
-          class="w-[100%]"
-          *ngFor="let item of order.Items"
-          style="line-height: 1"
-        >
-          <tr class="flex justify-between pr-3">
-            <td style="padding: 3px; margin: 0">
-              <div
-                class="w-5 h-5 bg-gray rounded-full flex items-center justify-center"
-              >
-                {{ item.selectedItems }}
-              </div>
-            </td>
-            <td style="padding: 3px; margin: 0">
-              <div class="text-white text-sm font-normal flex items-start">
-                {{ item.name }}
-              </div>
-            </td>
-            <td style="padding: 3px; margin: 0">
-              <div class="text-white text-sm font-normal">
-                {{ item.price * item.selectedItems }}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="w-[90%] h-[0px] border border-white"></div>
-    <div class="flex flex-row justify-between pr-4 ml-3 mt-3">
-      <span class="text-white text-sm">Subtotal</span>
-      <span class="text-white text-base">Ksh.{{ order.Total }}</span>
-    </div>
-    <div class="flex flex-row gap-8 mt-3 pl-3">
-      <div class="flex flex-row gap-1">
-        <div
-          *ngIf="
-            (currentUser$ | async)?.role === 'SALES' ||
-            (currentUser$ | async)?.role === 'Admin'
-          "
-          class="w-10 h-10 relative"
-        >
-          <button
-            (click)="deleteOrder(order.id)"
-            class="w-10 h-10 left-0 top-0 absolute bg-zinc-800 rounded-lg border border-white"
-          >
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.508789"
-                y="0.5"
-                width="39"
-                height="39"
-                rx="7.5"
-                fill="#292C2D"
-                stroke="white"
-              />
-              <path
-                d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z"
-                fill="white"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          *ngIf="(currentUser$ | async)?.role === 'WAITER'"
-          class="w-10 h-10 relative"
-        >
-          <button
-            (click)="notification()"
-            class="w-10 h-10 left-0 top-0 absolute bg-zinc-800 rounded-lg border border-white"
-          >
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.508789"
-                y="0.5"
-                width="39"
-                height="39"
-                rx="7.5"
-                fill="#292C2D"
-                stroke="white"
-              />
-              <path
-                d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z"
-                fill="white"
-              />
-            </svg>
-          </button>
-        </div>
-        <div class="w-10 h-10 relative">
-          <button
-            (click)="updateOrder(order)"
-            class="w-10 h-10 left-0 top-0 absolute bg-zinc-800 rounded-lg border border-white"
-          >
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.508789"
-                y="0.5"
-                width="39"
-                height="39"
-                rx="7.5"
-                fill="#292C2D"
-                stroke="white"
-              />
-              <path
-                d="M23.0088 14.1716L26.0088 17.1716M21.0088 28.1716H29.0088M13.0088 24.1716L12.0088 28.1716L16.0088 27.1716L27.5948 15.5856C27.9697 15.2105 28.1804 14.7019 28.1804 14.1716C28.1804 13.6412 27.9697 13.1326 27.5948 12.7576L27.4228 12.5856C27.0477 12.2106 26.5391 12 26.0088 12C25.4785 12 24.9698 12.2106 24.5948 12.5856L13.0088 24.1716Z"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div
-        *ngIf="
-          (currentUser$ | async)?.role === 'SALES' ||
-          (currentUser$ | async)?.role === 'Admin'
-        "
-        class="w-[100px] h-10 bg-gray rounded-lg border border-white flex justify-center items-center"
-      >
-        <button
-          class="w-[62px] h-[15px] text-white text-sm font-normal"
-          (click)="initiatePay(false, order.id)"
-        >
-          Payment
-        </button>
-      </div>
-      <div
-        *ngIf="(currentUser$ | async)?.role === 'WAITER'"
-        class="w-[100px] h-10 bg-gray rounded-lg border border-white flex justify-center items-center"
-      >
-        <button
-          class="w-[62px] h-[15px] text-white text-sm font-normal"
-          (click)="notification()"
-        >
-          Payment
-        </button>
-      </div>
-    </div>
-    <div class="flex flex-row">
-      <div
-        class="flex justify-start text-white italic text-sm mt-3 bg-gray rounded-lg px-1 ml-3"
-      >
-        <button (click)="printOrder(order.id)">Print Bill</button>
-      </div>
-    </div>
-  </div>
-</div> -->
 
-<div *ngIf="order" class="flex w-full bg-zinc-900 p-4 rounded-xl font-lexend shadow-lg">
-  <div class="w-full min-h-[500px] max-h-[500px] flex flex-col rounded-lg">
-    <div class="flex flex-row w-full justify-between px-3 mt-3 text-white text-lg">
-      <span>{{ order.TableName }}</span>
-      <span class="text-gray-300">Order #{{ order.orderId }}</span>
+<div *ngIf="order" class="flex w-full bg-zinc-900 p-2 sm:p-4 rounded-xl font-lexend shadow-lg">
+  <div class="w-full min-h-[400px] sm:min-h-[500px] max-h-[500px] sm:max-h-[600px] flex flex-col rounded-lg">
+ 
+    <div class="flex flex-col sm:flex-row w-full justify-between px-2 sm:px-3 mt-2 sm:mt-3 text-white">
+      <span class="text-base sm:text-lg">{{ order.TableName }}</span>
+      <span class="text-gray-300 text-base sm:text-lg">Order #{{ order.orderId }}</span>
     </div>
 
-    <div class="mt-4 flex-grow overflow-y-auto mb-2">
-      <table class="w-[100%] mx-3 bg-zinc-800 rounded-lg overflow-hidden">
+ 
+    <div class="mt-3 sm:mt-4 flex-grow overflow-y-auto mb-2">
+      <table class="w-[98%] sm:w-[100%] mx-auto sm:mx-3 bg-zinc-800 rounded-lg overflow-hidden">
         <thead class="bg-zinc-700 sticky top-0">
-          <tr class="flex flex-row justify-between pr-3">
-            <th class="p-3 text-white text-sm font-medium">
+          <tr class="flex flex-row justify-between pr-2 sm:pr-3">
+            <th class="p-2 sm:p-3 text-white text-xs sm:text-sm font-medium">
               <div>QT</div>
             </th>
-            <th class="p-3 text-white text-sm font-medium flex-grow text-left">
+            <th class="p-2 sm:p-3 text-white text-xs sm:text-sm font-medium flex-grow text-left">
               <div>Items</div>
             </th>
-            <th class="p-3 text-white text-sm font-medium">
+            <th class="p-2 sm:p-3 text-white text-xs sm:text-sm font-medium">
               <div>Price</div>
             </th>
           </tr>
         </thead>
   
-        <tbody class="block max-h-[200px] overflow-y-auto">
+        <tbody class="block max-h-[150px] sm:max-h-[200px] overflow-y-auto">
           <tr *ngFor="let item of order.Items" 
-              class="flex justify-between pr-3 border-b border-zinc-700 last:border-b-0 hover:bg-zinc-700/50">
-            <td class="p-3">
-              <div class="w-6 h-6 bg-zinc-600 rounded-full flex items-center justify-center text-white">
+              class="flex justify-between pr-2 sm:pr-3 border-b border-zinc-700 last:border-b-0 hover:bg-zinc-700/50">
+            <td class="p-2 sm:p-3">
+              <div class="w-5 h-5 sm:w-6 sm:h-6 bg-zinc-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm">
                 {{ item.selectedItems }}
               </div>
             </td>
-            <td class="p-3 flex-grow">
-              <div class="text-white text-sm">{{ item.name }}</div>
+            <td class="p-2 sm:p-3 flex-grow">
+              <div class="text-white text-xs sm:text-sm">{{ item.name }}</div>
             </td>
-            <td class="p-3">
-              <div class="text-white text-sm">{{ item.price * item.selectedItems }}</div>
+            <td class="p-2 sm:p-3">
+              <div class="text-white text-xs sm:text-sm">{{ item.price * item.selectedItems }}</div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="flex flex-row justify-between px-4 mx-3">
-      <span class="text-white text-sm">Subtotal</span>
-      <span class="text-white text-base">Ksh.{{ order.Total }}</span>
-    </div>
-    <div class="flex flex-row justify-between px-4 mx-3">
-      <span class="text-white text-sm">Served By</span>
-      <span class="text-white text-base">{{order.Served_by}}</span>
+    
+    <div class="pl -2 w-full ">
+      <div class="flex justify-between     mt-2">
+        <span class="text-white text-xs sm:text-sm">Subtotal</span>
+        <span class="text-white text-sm sm:text-base">Ksh.{{ order.Total }}</span>
+      </div>
+      <div class="flex justify-between  w-full  sm:space-x-4">
+        <span class="text-white text-xs sm:text-sm">Served By</span>
+        <span class="text-white text-sm sm:text-base">{{order.Served_by}}</span>
+      </div>
     </div>
 
-    <div class="flex flex-row gap-4 mt-4 px-3">
-      <div class="flex flex-row gap-2">
+    
+    <div class="flex flex-row gap-2 sm:gap-4 mt-3 sm:mt-4 px-2 sm:px-3">
+      <div class="flex flex-row gap-1 sm:gap-2">
+        
         <div *ngIf="(currentUser$ | async)?.role === 'SALES' || (currentUser$ | async)?.role === 'Admin'" 
              class="relative">
           <button (click)="deleteOrder(order.id)" 
-                  class="w-10 h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-red-600 hover:border-red-600 transition-colors">
-                  <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="0.508789"
-                    y="0.5"
-                    width="39"
-                    height="39"
-                    rx="7.5"
-                    fill="#292C2D"
-                    stroke="white"
-                  />
-                  <path
-                    d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z"
-                    fill="white"
-                  />
-                </svg>
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-red-600 hover:border-red-600 transition-colors">
+            <svg class="w-full h-full p-1" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.508789" y="0.5" width="39" height="39" rx="7.5" fill="#292C2D" stroke="white"/>
+              <path d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z" fill="white"/>
+            </svg>
           </button>
         </div>
-
+       
         <div *ngIf="(currentUser$ | async)?.role === 'WAITER'" 
              class="relative">
           <button (click)="notification()" 
-                  class="w-10 h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-blue-600 hover:border-blue-600 transition-colors">
-                  <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="0.508789"
-                    y="0.5"
-                    width="39"
-                    height="39"
-                    rx="7.5"
-                    fill="#292C2D"
-                    stroke="white"
-                  />
-                  <path
-                    d="M27.0088 26C27.0088 26.7956 26.6927 27.5587 26.1301 28.1213C25.5675 28.6839 24.8044 29 24.0088 29H17.0088C16.2131 29 15.4501 28.6839 14.8875 28.1213C14.3249 27.5587 14.0088 26.7956 14.0088 26V14H13.0088V11H17.5088L18.5088 10H22.5088L23.5088 11H28.0088V14H27.0088V26ZM15.0088 14V26C15.0088 26.5304 15.2195 27.0391 15.5946 27.4142C15.9696 27.7893 16.4784 28 17.0088 28H24.0088C24.5392 28 25.0479 27.7893 25.423 27.4142C25.7981 27.0391 26.0088 26.5304 26.0088 26V14H15.0088ZM27.0088 13V12H23.0088L22.0088 11H19.0088L18.0088 12H14.0088V13H27.0088ZM17.0088 16H18.0088V26H17.0088V16ZM23.0088 16H24.0088V26H23.0088V16Z"
-                    fill="white"
-                  />
-                </svg>
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-blue-600 hover:border-blue-600 transition-colors">
+            <svg class="w-full h-full p-1" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.508789" y="0.5" width="39" height="39" rx="7.5" fill="#292C2D" stroke="white"/>
+              <path d="M20.0088 30C18.9088 30 18.0088 29.1 18.0088 28H22.0088C22.0088 29.1 21.1088 30 20.0088 30ZM27.0088 25H13.0088V23L15.0088 21V16C15.0088 12.9 17.0088 10.2 20.0088 9.3V8C20.0088 7.4 20.5088 7 21.0088 7C21.5088 7 22.0088 7.4 22.0088 8V9.3C25.0088 10.2 27.0088 12.9 27.0088 16V21L29.0088 23V25ZM25.0088 16C25.0088 13.2 22.8088 11 20.0088 11C17.2088 11 15.0088 13.2 15.0088 16V22H25.0088V16Z" fill="white"/>
+            </svg>
           </button>
         </div>
 
         <div class="relative">
           <button (click)="updateOrder(order)" 
-                  class="w-10 h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-blue-600 hover:border-blue-600 transition-colors">
-                  <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="0.508789"
-                    y="0.5"
-                    width="39"
-                    height="39"
-                    rx="7.5"
-                    fill="#292C2D"
-                    stroke="white"
-                  />
-                  <path
-                    d="M23.0088 14.1716L26.0088 17.1716M21.0088 28.1716H29.0088M13.0088 24.1716L12.0088 28.1716L16.0088 27.1716L27.5948 15.5856C27.9697 15.2105 28.1804 14.7019 28.1804 14.1716C28.1804 13.6412 27.9697 13.1326 27.5948 12.7576L27.4228 12.5856C27.0477 12.2106 26.5391 12 26.0088 12C25.4785 12 24.9698 12.2106 24.5948 12.5856L13.0088 24.1716Z"
-                    stroke="white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-zinc-800 rounded-lg border border-zinc-600 hover:bg-blue-600 hover:border-blue-600 transition-colors">
+            <svg class="w-full h-full p-1" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.508789" y="0.5" width="39" height="39" rx="7.5" fill="#292C2D" stroke="white"/>
+              <path d="M23.0088 14.1716L26.0088 17.1716M21.0088 28.1716H29.0088M13.0088 24.1716L12.0088 28.1716L16.0088 27.1716L27.5948 15.5856C27.9697 15.2105 28.1804 14.7019 28.1804 14.1716C28.1804 13.6412 27.9697 13.1326 27.5948 12.7576L27.4228 12.5856C27.0477 12.2106 26.5391 12 26.0088 12C25.4785 12 24.9698 12.2106 24.5948 12.5856L13.0088 24.1716Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-row justify-between mt-4">
-      <div class="flex px-3 flex-1">
+    <div class="flex flex-col sm:flex-row justify-between mt-3 sm:mt-4 space-y-2 sm:space-y-0 sm:space-x-2">
+      <div class="flex px-2 sm:px-3 flex-1">
         <button (click)="printOrder(order.id)"
-          class="w-full px-4 py-2 bg-yellow-400 text-black text-sm italic rounded-lg hover:bg-yellow-500 transition-colors">
+          class="w-full px-3 sm:px-4 py-2 bg-yellow-400 text-black text-xs sm:text-sm italic rounded-lg hover:bg-yellow-500 transition-colors">
           Print Bill
         </button>
       </div>
     
-      <div *ngIf="(currentUser$ | async)?.role === 'SALES' || (currentUser$ | async)?.role === 'Admin'" class="flex px-3 flex-1">
+      <div *ngIf="(currentUser$ | async)?.role === 'SALES' || (currentUser$ | async)?.role === 'Admin'" 
+           class="flex px-2 sm:px-3 flex-1">
         <button (click)="initiatePay(false, order.id)"
-          class="w-full px-4 py-2 bg-green-400 text-black text-sm italic rounded-lg hover:bg-green-500 transition-colors">
+          class="w-full px-3 sm:px-4 py-2 bg-green-400 text-black text-xs sm:text-sm italic rounded-lg hover:bg-green-500 transition-colors">
           Payment
         </button>
       </div>
     
-      <div *ngIf="(currentUser$ | async)?.role === 'WAITER'" class="flex px-3 flex-1">
+      <div *ngIf="(currentUser$ | async)?.role === 'WAITER'" 
+           class="flex px-2 sm:px-3 flex-1">
         <button (click)="notification()"
-          class="w-full px-4 py-2 bg-green-400 text-black text-sm italic rounded-lg hover:bg-green-500 transition-colors">
+          class="w-full px-3 sm:px-4 py-2 bg-green-400 text-black text-xs sm:text-sm italic rounded-lg hover:bg-green-500 transition-colors">
           Payment
         </button>
       </div>
     </div>
-
   </div>
 </div>

@@ -104,8 +104,8 @@ export class StoreRequisitionsComponent {
 
   openDialog(optionalPayload?: any) {
     this.dialog.options = {
-      width: '80vw',
-      height: 'auto',
+      width: '50vw',
+      height: '80vh',
       showOverlay: true,
       animationIn: AppearanceAnimation.ZOOM_IN_ROTATE,
       animationOut: DisappearanceAnimation.ZOOM_OUT,
@@ -118,8 +118,8 @@ export class StoreRequisitionsComponent {
 
   openUpdateDialog(optionalPayload: any) {
     this.updateDialog.options = {
-      width: '80vw',
-      height: 'auto',
+      width: '50vw',
+      height: '80vh',
       showOverlay: true,
       animationIn: AppearanceAnimation.ZOOM_IN_ROTATE,
       animationOut: DisappearanceAnimation.ZOOM_OUT,

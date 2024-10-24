@@ -12,7 +12,7 @@
   <div class="sm:flex sm:items-center sm:justify-between">
     <div>
       <div class="flex items-center gap-x-3">
-        <h2 class="text-lg font-medium text-black dark:text-black">
+        <h2 class="text-lg font-medium text-white dark:text-black">
           Requisitions
         </h2>
         <span
@@ -157,31 +157,29 @@
                   <div class="flex items-center space-x-4">
                     <button
                       (click)="openUpdateDialog(requisition.id)"
-                      class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Approve
+                      class="px-4 py-2 text-sm font-medium text-green-800 bg-green-100 
+                             hover:bg-green-200 rounded-md transition-colors duration-200
+                             focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                  >
+                  <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    Approve
+                  </span>
                     </button>
                     <button
                       (click)="deleteRequisition(requisition.id)"
-                      class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      <svg width="30px" height="30px" viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    
-                          <title>delete [#1487]</title>
-                          <desc>Created with Sketch.</desc>
-                          <defs>
-                      
-                      </defs>
-                          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                              <g id="Dribbble-Light-Preview" transform="translate(-179.000000, -360.000000)" fill="#000000">
-                                  <g id="icons" transform="translate(56.000000, 160.000000)">
-                                      <path d="M130.35,216 L132.45,216 L132.45,208 L130.35,208 L130.35,216 Z M134.55,216 L136.65,216 L136.65,208 L134.55,208 L134.55,216 Z M128.25,218 L138.75,218 L138.75,206 L128.25,206 L128.25,218 Z M130.35,204 L136.65,204 L136.65,202 L130.35,202 L130.35,204 Z M138.75,204 L138.75,200 L128.25,200 L128.25,204 L123,204 L123,206 L126.15,206 L126.15,220 L140.85,220 L140.85,206 L144,206 L144,204 L138.75,204 Z" id="delete-[#1487]">
-                      
-                      </path>
-                                  </g>
-                              </g>
-                          </g>
-                      </svg>
+                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 
+                             hover:bg-red-700 rounded-md transition-colors duration-200
+                             focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                  >
+                  <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete
+                  </span>
                     </button>
                   </div>
                 </td>

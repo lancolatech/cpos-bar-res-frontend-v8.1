@@ -233,13 +233,13 @@ const routes: Routes = [
     component: DisplayCustomersComponent,
   },
   {
-    path: 'store-category',
+    path: 'store-categories',
     component: StoreCategoriesComponent,
   },
-  {
-    path: 'store-products',
-    component: StoreProductComponent,
-  },
+  // {
+  //   path: 'store-products',
+  //   component: StoreProductComponent,
+  // },
   {
     path: 'store-products',
     component: StoreProductComponent,
